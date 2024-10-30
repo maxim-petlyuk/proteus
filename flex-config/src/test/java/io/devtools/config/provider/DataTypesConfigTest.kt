@@ -30,7 +30,10 @@ class DataTypesConfigTest {
             }
         }
 
-        val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(configFactory)
+        val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
+            StubFeatureConfigProvider,
+            configFactory
+        )
 
         // When
         val mockedValueOfFeatureA = configProvider.getBoolean(featureA)
@@ -65,7 +68,10 @@ class DataTypesConfigTest {
             }
         }
 
-        val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(configFactory)
+        val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
+            StubFeatureConfigProvider,
+            configFactory
+        )
 
         // When
         val mockedValueOfFeatureB = configProvider.getString(featureB)
@@ -100,7 +106,10 @@ class DataTypesConfigTest {
             }
         }
 
-        val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(configFactory)
+        val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
+            StubFeatureConfigProvider,
+            configFactory
+        )
 
         // When
         val mockedValueOfFeatureB = configProvider.getLong(featureB)
@@ -135,7 +144,10 @@ class DataTypesConfigTest {
             }
         }
 
-        val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(configFactory)
+        val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
+            StubFeatureConfigProvider,
+            configFactory
+        )
 
         // When
         val mockedValueOfFeatureB = configProvider.getDouble(featureB)

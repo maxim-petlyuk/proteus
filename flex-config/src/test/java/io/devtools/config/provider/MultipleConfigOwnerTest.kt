@@ -63,6 +63,7 @@ class MultipleConfigOwnerTest {
         val cleverTapFeatureConfigProvider = MemoryFeatureConfigProvider(featureTestGuideB)
 
         val featureConfigProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
+            StubFeatureConfigProvider,
             MockFeatureConfigProviderFactory(
                 firebaseFeatureConfigProvider,
                 cleverTapFeatureConfigProvider

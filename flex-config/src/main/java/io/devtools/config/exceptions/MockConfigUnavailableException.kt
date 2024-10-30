@@ -8,4 +8,9 @@ package io.devtools.config.exceptions
  * @author  Maxim Petlyuk
  * @since   1.0
  */
-class MockConfigUnavailableException : Exception()
+class MockConfigUnavailableException : Exception {
+
+    constructor() : super("Mock config is not available for the specific feature")
+
+    constructor(message: String) : super(message)
+}
