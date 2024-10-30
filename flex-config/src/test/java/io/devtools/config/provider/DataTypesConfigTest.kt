@@ -1,10 +1,5 @@
-package io.devtools.config.factory
+package io.devtools.config.provider
 
-import io.devtools.config.provider.Feature
-import io.devtools.config.provider.FeatureConfigOwner
-import io.devtools.config.provider.FeatureConfigProvider
-import io.devtools.config.provider.FeatureConfigProviderFactory
-import io.devtools.config.provider.FeatureConfigProviderImpl
 import io.devtools.config.mock.FeatureTestGuide
 import io.devtools.config.mock.MemoryFeatureConfigProvider
 import io.devtools.config.mock.MockFeatureConfigOwner
