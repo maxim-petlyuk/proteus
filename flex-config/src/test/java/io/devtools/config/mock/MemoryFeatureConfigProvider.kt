@@ -1,7 +1,7 @@
 package io.devtools.config.mock
 
-import io.devtools.config.domain.Feature
-import io.devtools.config.domain.FeatureConfigProvider
+import io.devtools.config.provider.Feature
+import io.devtools.config.provider.FeatureConfigProvider
 
 internal class MemoryFeatureConfigProvider(
     private val featuresGuide: List<FeatureTestGuide<*>>

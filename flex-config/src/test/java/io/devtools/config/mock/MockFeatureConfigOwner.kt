@@ -1,6 +1,6 @@
 package io.devtools.config.mock
 
-import io.devtools.config.domain.FeatureConfigOwner
+import io.devtools.config.provider.FeatureConfigOwner
 
 internal sealed class MockFeatureConfigOwner : FeatureConfigOwner {
 

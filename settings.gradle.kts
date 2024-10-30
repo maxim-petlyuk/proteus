@@ -23,4 +23,4 @@ dependencyResolutionManagement {
 rootProject.name = "MockConfigLab"
 
 include(":sample")
-include(":mock-config-lab")
+include(":flex-config")

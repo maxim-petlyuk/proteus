@@ -1,10 +1,10 @@
 package io.devtools.config.factory
 
-import io.devtools.config.domain.Feature
-import io.devtools.config.domain.FeatureConfigOwner
-import io.devtools.config.domain.FeatureConfigProvider
-import io.devtools.config.domain.FeatureConfigProviderFactory
-import io.devtools.config.domain.FeatureConfigProviderImpl
+import io.devtools.config.provider.Feature
+import io.devtools.config.provider.FeatureConfigOwner
+import io.devtools.config.provider.FeatureConfigProvider
+import io.devtools.config.provider.FeatureConfigProviderFactory
+import io.devtools.config.provider.FeatureConfigProviderImpl
 import io.devtools.config.mock.FeatureTestGuide
 import io.devtools.config.mock.MemoryFeatureConfigProvider
 import io.devtools.config.mock.MockFeatureConfigOwner

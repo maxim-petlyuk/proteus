@@ -1,8 +1,8 @@
 package io.devtools.config.mock
 
-import io.devtools.config.domain.FeatureConfigOwner
-import io.devtools.config.domain.FeatureConfigProvider
-import io.devtools.config.domain.FeatureConfigProviderFactory
+import io.devtools.config.provider.FeatureConfigOwner
+import io.devtools.config.provider.FeatureConfigProvider
+import io.devtools.config.provider.FeatureConfigProviderFactory
 import io.devtools.config.exceptions.IllegalConfigOwnerException
 
 internal class MockFeatureConfigProviderFactory(

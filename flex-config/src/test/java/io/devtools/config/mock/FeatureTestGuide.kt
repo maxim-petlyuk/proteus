@@ -1,6 +1,6 @@
 package io.devtools.config.mock
 
-import io.devtools.config.domain.Feature
+import io.devtools.config.provider.Feature
 
 internal data class FeatureTestGuide<DataType : Any>(
     val feature: Feature<DataType>,

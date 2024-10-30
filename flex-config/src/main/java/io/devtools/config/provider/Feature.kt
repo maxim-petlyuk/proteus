@@ -1,4 +1,4 @@
-package io.devtools.config.domain
+package io.devtools.config.provider
 
 import kotlin.reflect.KClass
 
