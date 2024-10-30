@@ -2,11 +2,11 @@ package io.devtools.config.domain
 
 interface FeatureConfigProvider {
 
-    fun isFeatureAvailable(feature: Feature): Boolean
+    fun getBoolean(feature: Feature<Boolean>): Boolean
 
-    fun getString(feature: Feature): String
+    fun getString(feature: Feature<String>): String
 
-    fun getLong(feature: Feature): Long
+    fun getLong(feature: Feature<Long>): Long
 
-    fun getDouble(feature: Feature): Double
+    fun getDouble(feature: Feature<Double>): Double
 }
