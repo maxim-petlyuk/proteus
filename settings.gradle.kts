@@ -23,4 +23,5 @@ dependencyResolutionManagement {
 rootProject.name = "ProteusConfig"
 
 include(":sample")
-include(":proteus")
+include(":proteus-core")
+include(":proteus-ui")
