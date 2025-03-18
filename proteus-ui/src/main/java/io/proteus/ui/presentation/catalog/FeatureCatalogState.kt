@@ -1,7 +1,10 @@
 package io.proteus.ui.presentation.catalog
 
+import io.proteus.ui.domain.entity.FeatureNote
+
 internal data class FeatureCatalogState(
     val searchQuery: String = "",
+    val featureBook: List<FeatureNote<*>> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null
 ) {

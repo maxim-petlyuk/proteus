@@ -1,0 +1,50 @@
+[
+  {
+    "feature_key": "primary_server",
+    "default_value": "https://google.com",
+    "value_type": "text",
+    "service_owner": "firebase"
+  },
+  {
+    "feature_key": "optional_server",
+    "default_value": "https://test.com",
+    "value_type": "text",
+    "service_owner": "firebase"
+  },
+  {
+    "feature_key": "max_group_chat_size",
+    "default_value": "25",
+    "value_type": "long",
+    "service_owner": "firebase"
+  },
+  {
+    "feature_key": "anim_threshold",
+    "default_value": "0.5",
+    "value_type": "double",
+    "service_owner": "firebase"
+  },
+  {
+    "feature_key": "multifactor_login",
+    "default_value": "true",
+    "value_type": "boolean",
+    "service_owner": "firebase"
+  },
+  {
+    "feature_key": "design_v2",
+    "default_value": "true",
+    "value_type": "boolean",
+    "service_owner": "firebase"
+  },
+  {
+    "feature_key": "flexible_navigation",
+    "default_value": "true",
+    "value_type": "boolean",
+    "service_owner": "firebase"
+  },
+  {
+    "feature_key": "profile_icon_alpha",
+    "default_value": "1.0",
+    "value_type": "double",
+    "service_owner": "firebase"
+  }
+]
