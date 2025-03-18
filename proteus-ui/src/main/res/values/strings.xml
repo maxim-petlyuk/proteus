@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="remote_feature_catalog_toolbar" translatable="false">Feature Catalog</string>
+    <string name="remote_feature_key_title" translatable="false">Feature key:</string>
+    <string name="remote_feature_overridden_title" translatable="false">Overridden:</string>
+    <string name="remote_feature_default_value_title" translatable="false">Default value:</string>
+    <string name="remote_feature_remote_value_title" translatable="false">Remote value:</string>
+    <string name="remote_feature_local_value_title" translatable="false">Local value:</string>
+    <string name="remote_feature_feature_owner_title" translatable="false">Feature owner:</string>
+
+</resources>

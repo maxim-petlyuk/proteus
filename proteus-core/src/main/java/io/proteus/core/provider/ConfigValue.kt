@@ -3,7 +3,7 @@ package io.proteus.core.provider
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal sealed class ConfigValue<Value> {
+sealed class ConfigValue<Value> {
 
     abstract val value: Value
 
