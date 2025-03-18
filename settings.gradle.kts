@@ -20,7 +20,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MockConfigLab"
+rootProject.name = "ProteusConfig"
 
 include(":sample")
-include(":flex-config")
+include(":proteus")
