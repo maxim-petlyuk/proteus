@@ -16,13 +16,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.firebase.FirebaseApp
 import io.config.sample.ui.theme.MockConfigLabTheme
+import io.proteus.core.data.AssetsFeatureBookDataSource
+import io.proteus.core.provider.Proteus
+import io.proteus.firebase.FirebaseOnlyProviderFactory
 import io.proteus.ui.presentation.FeatureBookActivity
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        FirebaseApp.initializeApp(application)
+
+        Proteus.Builder(application)
+            .registerConfigProviderFactory(FirebaseOnlyProviderFactory())
+            .registerFeatureBookDataSource(
+                AssetsFeatureBookDataSource(
+                    context = this,
+                    jsonFilePath = "featurebook.json"
+                )
+            )
+            .build()
 
         enableEdgeToEdge()
         setContent {

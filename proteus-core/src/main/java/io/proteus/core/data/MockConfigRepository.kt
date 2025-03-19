@@ -2,10 +2,10 @@ package io.proteus.core.data
 
 import io.proteus.core.exceptions.IllegalConfigDataTypeException
 import io.proteus.core.provider.ConfigValue
-import io.proteus.core.provider.Feature
+import io.proteus.core.provider.FeatureContext
 
-internal interface MockConfigRepository {
+interface MockConfigRepository {
 
     @Throws(IllegalConfigDataTypeException::class)
-    fun getMockedConfigValue(feature: Feature<*>): ConfigValue<*>?
+    fun getMockedConfigValue(feature: FeatureContext<*>): ConfigValue<*>?
 }

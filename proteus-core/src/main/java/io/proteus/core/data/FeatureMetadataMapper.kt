@@ -5,7 +5,7 @@ import io.proteus.core.provider.Feature
 import io.proteus.core.provider.FeatureConfigOwner
 import io.proteus.core.provider.FeatureContext
 
-internal class FeatureMetadataMapper {
+class FeatureMetadataMapper {
 
     @Throws(IllegalArgumentException::class)
     internal fun toFeatureContext(from: FeatureMetadata): FeatureContext<*> {

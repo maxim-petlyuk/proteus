@@ -2,11 +2,11 @@ package io.proteus.core.provider
 
 interface FeatureConfigProvider {
 
-    fun getBoolean(feature: Feature<Boolean>): Boolean
+    fun getBoolean(feature: FeatureContext<Boolean>): Boolean
 
-    fun getString(feature: Feature<String>): String
+    fun getString(feature: FeatureContext<String>): String
 
-    fun getLong(feature: Feature<Long>): Long
+    fun getLong(feature: FeatureContext<Long>): Long
 
-    fun getDouble(feature: Feature<Double>): Double
+    fun getDouble(feature: FeatureContext<Double>): Double
 }

@@ -16,7 +16,7 @@ internal object ProteusInjection {
         return PreferenceMockConfigStorage(context = context)
     }
 
-    fun providerMockConfigRepository(mockConfigStorage: MockConfigStorage): MockConfigRepository {
+    fun provideMockConfigRepository(mockConfigStorage: MockConfigStorage): MockConfigRepository {
         return MockConfigRepositoryImpl(mockConfigStorage)
     }
 

@@ -66,7 +66,12 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
 
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.config)
+
+    implementation(project(":proteus-core"))
     implementation(project(":proteus-ui"))
+    implementation(project(":proteus-firebase"))
 
     testImplementation(libs.junit)
 

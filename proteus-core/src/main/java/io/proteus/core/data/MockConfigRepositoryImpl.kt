@@ -2,14 +2,14 @@ package io.proteus.core.data
 
 import io.proteus.core.exceptions.IllegalConfigDataTypeException
 import io.proteus.core.provider.ConfigValue
-import io.proteus.core.provider.Feature
+import io.proteus.core.provider.FeatureContext
 
 internal class MockConfigRepositoryImpl(
     private val mockConfigStorage: MockConfigStorage
 ) : MockConfigRepository {
 
     @Throws(IllegalConfigDataTypeException::class)
-    override fun getMockedConfigValue(feature: Feature<*>): ConfigValue<*>? {
+    override fun getMockedConfigValue(feature: FeatureContext<*>): ConfigValue<*>? {
         if (!mockConfigStorage.contains(feature.key)) {
             return null
         }

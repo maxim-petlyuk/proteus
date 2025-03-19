@@ -1,10 +1,10 @@
 package io.proteus.ui.domain.entity
 
 import io.proteus.core.provider.ConfigValue
-import io.proteus.core.provider.Feature
+import io.proteus.core.provider.FeatureContext
 
 internal data class FeatureNote<DataType : Any>(
-    val feature: Feature<DataType>,
+    val feature: FeatureContext<DataType>,
     val remoteConfigValue: String,
     private val localConfigValue: ConfigValue<DataType>? = null,
 ) {
