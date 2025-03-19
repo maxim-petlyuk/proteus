@@ -7,7 +7,7 @@ import kotlinx.serialization.json.Json
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-class AssetsFeatureBookDataSource(
+internal class AssetsFeatureBookDataSource(
     private val context: Context,
     private val jsonFilePath: String = "featurebook.json",
     private val featureMetadataMapper: FeatureMetadataMapper

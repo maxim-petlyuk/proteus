@@ -2,12 +2,12 @@ package io.proteus.core.data
 
 import android.content.Context
 import android.content.SharedPreferences
-import java.security.MessageDigest
 import androidx.core.content.edit
+import java.security.MessageDigest
 
 internal class PreferenceMockConfigStorage(
     private val context: Context,
-    private val fileName: String
+    private val fileName: String = "config_storage"
 ) : MockConfigStorage {
 
     private val sharedPreferences: SharedPreferences

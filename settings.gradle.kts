@@ -25,3 +25,4 @@ rootProject.name = "ProteusConfig"
 include(":sample")
 include(":proteus-core")
 include(":proteus-ui")
+include(":proteus-firebase")
