@@ -239,7 +239,7 @@ private fun FeatureAttributeKey(
 @Composable
 private fun FeatureAttributeTextValue(
     modifier: Modifier,
-    text: String
+    text: String,
 ) {
     Text(
         text = text,

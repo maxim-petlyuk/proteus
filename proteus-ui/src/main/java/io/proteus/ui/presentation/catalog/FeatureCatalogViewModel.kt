@@ -16,8 +16,41 @@ internal class FeatureCatalogViewModel(
 
     val screenState = MutableStateFlow(FeatureCatalogState.idle())
 
+    private val currentState: FeatureCatalogState
+        get() = screenState.value
+
     init {
         loadState()
+    }
+
+    fun onAction(action: FeatureCatalogAction) {
+        when (action) {
+            is FeatureCatalogAction.QueryChanged -> {
+                processQueryChanged(action.query)
+            }
+
+            is FeatureCatalogAction.ResetSearch -> {
+                processQueryChanged("")
+            }
+        }
+    }
+
+    private fun processQueryChanged(query: String) {
+        rebuildAsync {
+            copy(
+                searchQuery = query
+            )
+        }
+
+        viewModelScope.launch(Dispatchers.Default) {
+            rebuild {
+                copy(
+                    filteredFeatureBook = currentState.originalFeatureBook.filter {
+                        it.feature.key.contains(query, ignoreCase = true)
+                    }
+                )
+            }
+        }
     }
 
     private fun loadState() {
@@ -32,7 +65,8 @@ internal class FeatureCatalogViewModel(
                 .onSuccess { featureBook ->
                     rebuild {
                         copy(
-                            featureBook = featureBook,
+                            originalFeatureBook = featureBook,
+                            filteredFeatureBook = featureBook,
                             isLoading = false
                         )
                     }
@@ -44,6 +78,10 @@ internal class FeatureCatalogViewModel(
                     }
                 }
         }
+    }
+
+    private fun rebuildAsync(stateBuilder: FeatureCatalogState.() -> FeatureCatalogState) {
+        screenState.tryEmit(stateBuilder.invoke(screenState.value))
     }
 
     private suspend fun rebuild(stateBuilder: FeatureCatalogState.() -> FeatureCatalogState) {

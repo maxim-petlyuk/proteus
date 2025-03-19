@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -19,8 +20,11 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
@@ -28,21 +32,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SearchActionBar(
+internal fun SearchActionBar(
     modifier: Modifier = Modifier,
     searchQuery: String,
     onQueryChanged: (String) -> Unit = {},
+    onClearSearch: () -> Unit = {},
     isLoading: Boolean = false,
-    onBack: () -> Unit = {}
+    onBack: () -> Unit = {},
 ) {
     Box(
         modifier = modifier.fillMaxWidth(),
         contentAlignment = Alignment.BottomEnd
     ) {
-        SearchActionBar(
+        SearchField(
             searchQuery = searchQuery,
             onQueryChanged = onQueryChanged,
-            onBack = onBack
+            onBack = onBack,
+            onClearSearch = onClearSearch,
         )
 
         val progressAlpha: Float by animateFloatAsState(
@@ -64,16 +70,26 @@ fun SearchActionBar(
 }
 
 @Composable
-private fun SearchActionBar(
+private fun SearchField(
     modifier: Modifier = Modifier,
     searchQuery: String,
     onQueryChanged: (String) -> Unit = {},
-    onBack: () -> Unit = {}
+    onBack: () -> Unit = {},
+    onClearSearch: () -> Unit = {},
 ) {
+    val trailingIcon = if (searchQuery.isEmpty()) {
+        Icons.Default.Search
+    } else {
+        Icons.Default.Clear
+    }
+
+    val focusRequester = remember { FocusRequester() }
+
     TextField(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = 56.dp),
+            .heightIn(min = 56.dp)
+            .focusRequester(focusRequester),
         value = searchQuery,
         singleLine = true,
         onValueChange = {
@@ -91,9 +107,16 @@ private fun SearchActionBar(
         },
         trailingIcon = {
             Icon(
-                imageVector = Icons.Default.Search,
+                imageVector = trailingIcon,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onBackground
+                tint = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.clickable {
+                    if (searchQuery.isEmpty()) {
+                        focusRequester.requestFocus()
+                    } else {
+                        onClearSearch.invoke()
+                    }
+                }
             )
         },
         colors = TextFieldDefaults.colors(
@@ -118,9 +141,17 @@ private fun SearchActionBar(
 
 @Preview
 @Composable
-fun PreviewSearchBar() {
+private fun EmptySearchPreview() {
     SearchActionBar(
         searchQuery = ""
+    )
+}
+
+@Preview
+@Composable
+private fun FilledSearchPreview() {
+    SearchActionBar(
+        searchQuery = "sol"
     )
 }
 

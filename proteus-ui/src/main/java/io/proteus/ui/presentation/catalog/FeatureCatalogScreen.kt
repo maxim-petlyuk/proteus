@@ -6,11 +6,12 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
@@ -38,7 +39,9 @@ internal fun FeatureCatalogScreen(
     FeatureCatalogScreen(
         state = state,
         snackBarHostState = snackBarHostState,
-        onBack = onBack
+        onBack = onBack,
+        onQueryChanged = { viewModel.onAction(FeatureCatalogAction.QueryChanged(it)) },
+        onClearSearch = { viewModel.onAction(FeatureCatalogAction.QueryChanged("")) },
     )
 }
 
@@ -46,17 +49,21 @@ internal fun FeatureCatalogScreen(
 internal fun FeatureCatalogScreen(
     state: FeatureCatalogState,
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
-    onBack: () -> Unit = {}
+    onBack: () -> Unit = {},
+    onQueryChanged: (String) -> Unit = {},
+    onClearSearch: () -> Unit = {},
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        contentWindowInsets = WindowInsets.systemBars,
+        contentWindowInsets = WindowInsets.statusBars,
         topBar = {
             SearchActionBar(
                 modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
                 searchQuery = state.searchQuery,
                 onBack = onBack,
-                isLoading = state.isLoading
+                isLoading = state.isLoading,
+                onQueryChanged = onQueryChanged,
+                onClearSearch = onClearSearch,
             )
         },
         snackbarHost = {
@@ -130,7 +137,8 @@ private fun LoadedContent(
 ) {
     LazyColumn(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        contentPadding = WindowInsets.navigationBars.asPaddingValues()
     ) {
         featureCatalog(
             featureBook = state.featureBook,

@@ -19,7 +19,7 @@ internal class LoadedStatePreviewProvider : PreviewParameterProvider<FeatureCata
         FeatureCatalogState(
             isLoading = false,
             searchQuery = "feed",
-            featureBook = listOf(
+            originalFeatureBook = listOf(
                 FeatureNote<String>(
                     feature = Feature<String>(
                         key = "primary_server",
