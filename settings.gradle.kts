@@ -22,7 +22,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "ProteusConfig"
 
-include(":sample")
+include(":sample-firebase")
 include(":proteus-core")
 include(":proteus-ui")
 include(":proteus-firebase")

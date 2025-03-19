@@ -15,7 +15,7 @@ internal class AssetsFeatureBookDataSourceTest {
             // Given
             val dataSource = AssetsFeatureBookDataSource(
                 context = ApplicationProvider.getApplicationContext(),
-                jsonFilePath = "featurebook.json",
+                jsonFilePath = "testbook.json",
                 featureMetadataMapper = FeatureMetadataMapper()
             )
 
