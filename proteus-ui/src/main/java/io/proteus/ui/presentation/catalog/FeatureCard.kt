@@ -3,7 +3,6 @@ package io.proteus.ui.presentation.catalog
 import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -35,6 +34,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import io.proteus.ui.R
 import io.proteus.ui.domain.entity.FeatureNote
+import io.proteus.ui.presentation.theme.ProteusTheme
 
 internal fun LazyListScope.featureCatalog(
     featureBook: List<FeatureNote<*>>,
@@ -258,11 +258,12 @@ private fun StringFeatureNotePreview(
     @PreviewParameter(StringFeatureNotePreviewProvider::class)
     featureNote: FeatureNote<*>
 ) {
-    FeatureCard(
-        modifier = Modifier
-            .background(Color.White),
-        featureNote = featureNote
-    )
+    ProteusTheme {
+        FeatureCard(
+            modifier = Modifier,
+            featureNote = featureNote
+        )
+    }
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
@@ -271,11 +272,12 @@ private fun LongFeatureNotePreview(
     @PreviewParameter(LongFeatureNotePreviewProvider::class)
     featureNote: FeatureNote<*>
 ) {
-    FeatureCard(
-        modifier = Modifier
-            .background(Color.White),
-        featureNote = featureNote
-    )
+    ProteusTheme {
+        FeatureCard(
+            modifier = Modifier,
+            featureNote = featureNote
+        )
+    }
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
@@ -284,11 +286,12 @@ private fun FeatureBookPreview(
     @PreviewParameter(FeatureBookPreviewProvider::class)
     featureBook: List<FeatureNote<*>>
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-    ) {
-        featureCatalog(featureBook = featureBook)
+    ProteusTheme {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            featureCatalog(featureBook = featureBook)
+        }
     }
 }

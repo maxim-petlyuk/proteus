@@ -5,27 +5,41 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.proteus.ui.domain.entity.FeatureNote
+import io.proteus.ui.presentation.theme.ProteusTheme
 
 @Composable
-internal fun FeatureCatalogScreen(viewModel: FeatureCatalogViewModel) {
+internal fun FeatureCatalogScreen(
+    viewModel: FeatureCatalogViewModel,
+    onBack: () -> Unit = {}
+) {
+    val snackBarHostState = remember { SnackbarHostState() }
+    val state: FeatureCatalogState by viewModel.screenState.collectAsStateWithLifecycle()
+
+    FeatureCatalogScreen(
+        state = state,
+        snackBarHostState = snackBarHostState,
+        onBack = onBack
+    )
 }
 
 @Composable
@@ -36,10 +50,10 @@ internal fun FeatureCatalogScreen(
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = Color.Transparent,
-        contentWindowInsets = WindowInsets.statusBars,
+        contentWindowInsets = WindowInsets.systemBars,
         topBar = {
             SearchActionBar(
+                modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
                 searchQuery = state.searchQuery,
                 onBack = onBack,
                 isLoading = state.isLoading
@@ -67,25 +81,25 @@ private fun ContentSwitcher(
             fadeIn(animationSpec = tween(700)) togetherWith fadeOut(animationSpec = tween(500))
         },
         contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
     ) { targetState ->
         when (targetState) {
             FeatureCatalogState.UiState.Loading -> {
                 LoadingContent(
-                    modifier = modifier
+                    modifier = Modifier
                 )
             }
 
             FeatureCatalogState.UiState.Loaded -> {
                 LoadedContent(
-                    modifier = modifier,
+                    modifier = Modifier,
                     state = state,
                 )
             }
 
             FeatureCatalogState.UiState.Error -> {
                 ErrorContent(
-                    modifier = modifier,
+                    modifier = Modifier,
                     message = state.errorMessage!!
                 )
             }
@@ -117,7 +131,6 @@ private fun LoadedContent(
     LazyColumn(
         modifier = modifier
             .fillMaxWidth()
-            .background(Color.White)
     ) {
         featureCatalog(
             featureBook = state.featureBook,
@@ -132,9 +145,11 @@ private fun LoadingStatePreview(
     @PreviewParameter(LoadingStatePreviewProvider::class)
     state: FeatureCatalogState
 ) {
-    FeatureCatalogScreen(
-        state = state
-    )
+    ProteusTheme {
+        FeatureCatalogScreen(
+            state = state
+        )
+    }
 }
 
 @Preview
@@ -143,7 +158,9 @@ private fun LoadedStatePreview(
     @PreviewParameter(LoadedStatePreviewProvider::class)
     state: FeatureCatalogState
 ) {
-    FeatureCatalogScreen(
-        state = state
-    )
+    ProteusTheme {
+        FeatureCatalogScreen(
+            state = state
+        )
+    }
 }
