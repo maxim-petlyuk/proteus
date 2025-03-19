@@ -2,14 +2,15 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
-    namespace = "io.config.sample"
+    namespace = "io.proteus.sample"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "io.config.sample"
+        applicationId = "io.proteus.sample"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

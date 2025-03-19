@@ -1,4 +1,4 @@
-package io.config.sample.ui.theme
+package io.proteus.sample.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
