@@ -20,7 +20,7 @@ class FeatureBookActivity : ComponentActivity() {
 
                 NavHost(
                     navController = navController,
-                    startDestination = FeatureBookScreen,
+                    startDestination = FeatureBookPage,
                 ) {
                     featureBookRoute(
                         navController = navController,

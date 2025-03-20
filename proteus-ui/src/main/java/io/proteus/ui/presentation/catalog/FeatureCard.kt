@@ -62,7 +62,7 @@ internal fun FeatureCard(
             .fillMaxWidth()
             .wrapContentHeight()
             .clickable(
-                indication = ripple(color = Color.White),
+                indication = ripple(color = Color.Gray),
                 interactionSource = remember { MutableInteractionSource() },
                 onClick = { onFeatureNoteClick?.invoke(featureNote) },
                 enabled = onFeatureNoteClick != null

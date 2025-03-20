@@ -31,7 +31,8 @@ import io.proteus.ui.presentation.theme.ProteusTheme
 @Composable
 internal fun FeatureCatalogScreen(
     viewModel: FeatureCatalogViewModel,
-    onBack: () -> Unit = {}
+    onBack: () -> Unit = {},
+    openFeatureConfigurator: (String) -> Unit = {},
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     val state: FeatureCatalogState by viewModel.screenState.collectAsStateWithLifecycle()
@@ -40,6 +41,7 @@ internal fun FeatureCatalogScreen(
         state = state,
         snackBarHostState = snackBarHostState,
         onBack = onBack,
+        openFeatureConfigurator = openFeatureConfigurator,
         onQueryChanged = { viewModel.onAction(FeatureCatalogAction.QueryChanged(it)) },
         onClearSearch = { viewModel.onAction(FeatureCatalogAction.QueryChanged("")) },
     )
@@ -52,6 +54,7 @@ internal fun FeatureCatalogScreen(
     onBack: () -> Unit = {},
     onQueryChanged: (String) -> Unit = {},
     onClearSearch: () -> Unit = {},
+    openFeatureConfigurator: (String) -> Unit = {},
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -73,6 +76,7 @@ internal fun FeatureCatalogScreen(
         ContentSwitcher(
             modifier = Modifier.padding(it),
             state = state,
+            openFeatureConfigurator = openFeatureConfigurator
         )
     }
 }
@@ -81,6 +85,7 @@ internal fun FeatureCatalogScreen(
 private fun ContentSwitcher(
     modifier: Modifier = Modifier,
     state: FeatureCatalogState,
+    openFeatureConfigurator: (String) -> Unit = {},
 ) {
     AnimatedContent(
         targetState = state.uiState,
@@ -101,6 +106,7 @@ private fun ContentSwitcher(
                 LoadedContent(
                     modifier = Modifier,
                     state = state,
+                    onFeatureNoteClick = { openFeatureConfigurator(it.feature.key) }
                 )
             }
 
