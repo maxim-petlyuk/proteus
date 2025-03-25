@@ -14,22 +14,4 @@ internal data class FeatureNote<DataType : Any>(
 
     val isOverrideActivated: Boolean
         get() = localConfigValue != null
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as FeatureNote<*>
-
-        if (feature.key != other.feature.key) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = feature.hashCode()
-        result = 31 * result + remoteConfigValue.hashCode()
-        result = 31 * result + localConfigValue.hashCode()
-        return result
-    }
 }

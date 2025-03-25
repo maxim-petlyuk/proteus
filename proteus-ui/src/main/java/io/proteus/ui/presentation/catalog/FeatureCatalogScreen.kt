@@ -18,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -33,9 +34,16 @@ internal fun FeatureCatalogScreen(
     viewModel: FeatureCatalogViewModel,
     onBack: () -> Unit = {},
     openFeatureConfigurator: (String) -> Unit = {},
+    forceRefresh: Boolean = false
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     val state: FeatureCatalogState by viewModel.screenState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(forceRefresh) {
+        if (forceRefresh) {
+            viewModel.onAction(FeatureCatalogAction.RefreshCatalog)
+        }
+    }
 
     FeatureCatalogScreen(
         state = state,

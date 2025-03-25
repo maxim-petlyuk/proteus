@@ -75,6 +75,7 @@ internal class FeatureConfiguratorViewModel(
 
 
                 if (currentState.isOverrideActivated) {
+                    // todo: handle validation errors
                     featureBookRepository.saveMockedConfig(
                         feature = featureNote.feature,
                         configValue = mockInputType.asConfigValue()

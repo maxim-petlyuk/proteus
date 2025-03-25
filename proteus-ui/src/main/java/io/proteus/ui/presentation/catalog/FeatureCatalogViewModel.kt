@@ -32,6 +32,10 @@ internal class FeatureCatalogViewModel(
             is FeatureCatalogAction.ResetSearch -> {
                 processQueryChanged("")
             }
+
+            is FeatureCatalogAction.RefreshCatalog -> {
+                processRefreshSilently()
+            }
         }
     }
 
@@ -74,6 +78,22 @@ internal class FeatureCatalogViewModel(
                     rebuild {
                         copy(
                             isLoading = false
+                        )
+                    }
+                }
+        }
+    }
+
+    private fun processRefreshSilently() {
+        viewModelScope.launch(Dispatchers.IO) {
+            featureBookRepository.getFeatureBook()
+                .onSuccess { featureBook ->
+                    rebuild {
+                        copy(
+                            originalFeatureBook = featureBook,
+                            filteredFeatureBook = featureBook.filter {
+                                it.feature.key.contains(currentState.searchQuery, ignoreCase = true)
+                            }
                         )
                     }
                 }

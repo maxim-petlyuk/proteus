@@ -5,4 +5,6 @@ internal sealed class FeatureCatalogAction {
     data class QueryChanged(val query: String) : FeatureCatalogAction()
 
     data object ResetSearch : FeatureCatalogAction()
+
+    data object RefreshCatalog : FeatureCatalogAction()
 }

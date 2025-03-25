@@ -22,6 +22,11 @@ private fun NavController.navigateToFeatureConfigurator(featureKey: String) {
     navigate(FeatureConfiguratorPage(featureKey))
 }
 
+private fun NavController.backToCatalog() {
+    popBackStack()
+    currentBackStackEntry?.savedStateHandle?.set(FORCE_REFRESH_CATALOG, true)
+}
+
 internal fun NavGraphBuilder.featureBookRoute(
     navController: NavHostController,
     onBack: () -> Unit = {}
@@ -32,9 +37,13 @@ internal fun NavGraphBuilder.featureBookRoute(
             factory = FeatureCatalogViewModel.Factory
         )
 
+        val forceRefresh = navBackStackEntry.savedStateHandle.get<Boolean>(FORCE_REFRESH_CATALOG)
+            ?.also { navBackStackEntry.savedStateHandle.remove<Boolean>(FORCE_REFRESH_CATALOG) } == true
+
         FeatureCatalogScreen(
             viewModel = viewModel,
             onBack = onBack,
+            forceRefresh = forceRefresh,
             openFeatureConfigurator = { featureKey ->
                 navController.navigateToFeatureConfigurator(featureKey)
             }
@@ -52,8 +61,10 @@ internal fun NavGraphBuilder.featureBookRoute(
         FeatureConfiguratorScreen(
             viewModel = viewModel,
             onBack = {
-                navController.popBackStack()
+                navController.backToCatalog()
             }
         )
     }
 }
+
+private const val FORCE_REFRESH_CATALOG = "FORCE_REFRESH_CATALOG"
