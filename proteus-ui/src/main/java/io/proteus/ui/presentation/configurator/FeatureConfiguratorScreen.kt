@@ -62,6 +62,7 @@ internal fun FeatureConfiguratorScreen(
     OperationStateHandler(
         operationState = state.operationState,
         snackBarHostState = snackBarHostState,
+        onConsumeFailureMessage = { viewModel.onAction(FeatureConfiguratorAction.ConsumeFailureMessage) },
         onBack = onBack
     )
 
@@ -80,6 +81,7 @@ internal fun FeatureConfiguratorScreen(
 private fun OperationStateHandler(
     operationState: FeatureConfiguratorState.OperationState,
     onBack: () -> Unit = {},
+    onConsumeFailureMessage: () -> Unit = {},
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     LaunchedEffect(operationState) {
@@ -90,6 +92,7 @@ private fun OperationStateHandler(
 
             is FeatureConfiguratorState.OperationState.Failure -> {
                 snackBarHostState.showSnackbar(operationState.message)
+                onConsumeFailureMessage.invoke()
             }
 
             else -> {

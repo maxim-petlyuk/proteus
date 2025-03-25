@@ -22,7 +22,7 @@ internal class PreferenceMockConfigStorage(
     }
 
     override fun getDouble(featureKey: String): Double {
-        return sharedPreferences.getFloat(featureKey.asPreferenceKey(), DEFAULT_FLOAT).toDouble()
+        return sharedPreferences.getFloat(featureKey.asPreferenceKey(), DEFAULT_FLOAT).toString().toDouble()
     }
 
     override fun getString(featureKey: String): String {

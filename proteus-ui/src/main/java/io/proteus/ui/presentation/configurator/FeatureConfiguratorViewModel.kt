@@ -45,6 +45,18 @@ internal class FeatureConfiguratorViewModel(
             is FeatureConfiguratorAction.SaveChanges -> {
                 processSaveChangesAction()
             }
+
+            is FeatureConfiguratorAction.ConsumeFailureMessage -> {
+                processConsumeFailureMessage()
+            }
+        }
+    }
+
+    private fun processConsumeFailureMessage() {
+        rebuildAsync {
+            copy(
+                operationState = FeatureConfiguratorState.OperationState.Idle
+            )
         }
     }
 
