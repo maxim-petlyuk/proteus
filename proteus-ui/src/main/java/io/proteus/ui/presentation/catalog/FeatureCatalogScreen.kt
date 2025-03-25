@@ -96,13 +96,13 @@ private fun ContentSwitcher(
         modifier = modifier.fillMaxSize(),
     ) { targetState ->
         when (targetState) {
-            FeatureCatalogState.UiState.Loading -> {
+            UiState.Loading -> {
                 LoadingContent(
                     modifier = Modifier
                 )
             }
 
-            FeatureCatalogState.UiState.Loaded -> {
+            UiState.Loaded -> {
                 LoadedContent(
                     modifier = Modifier,
                     state = state,
@@ -110,7 +110,7 @@ private fun ContentSwitcher(
                 )
             }
 
-            FeatureCatalogState.UiState.Error -> {
+            UiState.Error -> {
                 ErrorContent(
                     modifier = Modifier,
                     message = state.errorMessage!!

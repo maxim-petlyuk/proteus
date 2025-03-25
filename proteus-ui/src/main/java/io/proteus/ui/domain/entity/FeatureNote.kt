@@ -6,13 +6,13 @@ import io.proteus.core.provider.FeatureContext
 internal data class FeatureNote<DataType : Any>(
     val feature: FeatureContext<DataType>,
     val remoteConfigValue: String,
-    private val localConfigValue: ConfigValue<DataType>? = null,
+    val localConfigValue: ConfigValue<DataType>? = null,
 ) {
 
     val mockedConfigValue: String?
         get() = localConfigValue?.toString()
 
-    val isOverloaded: Boolean
+    val isOverrideActivated: Boolean
         get() = localConfigValue != null
 
     override fun equals(other: Any?): Boolean {

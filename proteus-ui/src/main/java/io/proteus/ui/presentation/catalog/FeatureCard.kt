@@ -98,7 +98,7 @@ internal fun FeatureCard(
             )
 
             FeatureAttributeKey(
-                title = R.string.remote_feature_key_title,
+                title = R.string.feature_book_key_title,
                 modifier = Modifier.constrainAs(keyTitle) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
@@ -116,14 +116,14 @@ internal fun FeatureCard(
             )
 
             FeatureAttributeKey(
-                title = R.string.remote_feature_overridden_title,
+                title = R.string.feature_book_overridden_title,
                 modifier = Modifier.constrainAs(overrideTitle) {
                     top.linkTo(keyTitle.bottom, margin = 8.dp)
                     start.linkTo(parent.start)
                 }
             )
 
-            val activatedStatusIcon = if (featureNote.isOverloaded) {
+            val activatedStatusIcon = if (featureNote.isOverrideActivated) {
                 R.drawable.ic_remote_feature_override_activated
             } else {
                 R.drawable.ic_remote_feature_override_deactivated
@@ -141,7 +141,7 @@ internal fun FeatureCard(
             )
 
             FeatureAttributeKey(
-                title = R.string.remote_feature_remote_value_title,
+                title = R.string.feature_book_remote_value_title,
                 modifier = Modifier.constrainAs(remoteConfigTitle) {
                     top.linkTo(overrideTitle.bottom, margin = 8.dp)
                     start.linkTo(parent.start)
@@ -159,7 +159,7 @@ internal fun FeatureCard(
             )
 
             FeatureAttributeKey(
-                title = R.string.remote_feature_local_value_title,
+                title = R.string.feature_book_local_value_title,
                 modifier = Modifier.constrainAs(localConfigTitle) {
                     top.linkTo(remoteConfigTitle.bottom, margin = 8.dp)
                     start.linkTo(parent.start)
@@ -177,7 +177,7 @@ internal fun FeatureCard(
             )
 
             FeatureAttributeKey(
-                title = R.string.remote_feature_default_value_title,
+                title = R.string.feature_book_default_value_title,
                 modifier = Modifier.constrainAs(defaultConfigTitle) {
                     top.linkTo(localConfigTitle.bottom, margin = 8.dp)
                     start.linkTo(parent.start)
@@ -195,7 +195,7 @@ internal fun FeatureCard(
             )
 
             FeatureAttributeKey(
-                title = R.string.remote_feature_feature_owner_title,
+                title = R.string.feature_book_owner_title,
                 modifier = Modifier.constrainAs(featureOwnerTitle) {
                     top.linkTo(defaultConfigTitle.bottom, margin = 8.dp)
                     start.linkTo(parent.start)

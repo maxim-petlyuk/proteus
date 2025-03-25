@@ -58,6 +58,12 @@ internal class PreferenceMockConfigStorage(
         }
     }
 
+    override fun remove(featureKey: String) {
+        sharedPreferences.edit {
+            remove(featureKey.asPreferenceKey())
+        }
+    }
+
     override fun clear() {
         sharedPreferences.edit {
             clear()

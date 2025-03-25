@@ -8,4 +8,8 @@ interface MockConfigRepository {
 
     @Throws(IllegalConfigDataTypeException::class)
     fun getMockedConfigValue(feature: FeatureContext<*>): ConfigValue<*>?
+
+    fun save(feature: FeatureContext<*>, configValue: ConfigValue<*>)
+
+    fun remove(feature: FeatureContext<*>)
 }

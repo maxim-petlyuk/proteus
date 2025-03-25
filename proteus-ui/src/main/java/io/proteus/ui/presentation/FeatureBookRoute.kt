@@ -50,7 +50,10 @@ internal fun NavGraphBuilder.featureBookRoute(
         )
 
         FeatureConfiguratorScreen(
-            viewModel = viewModel
+            viewModel = viewModel,
+            onBack = {
+                navController.popBackStack()
+            }
         )
     }
 }

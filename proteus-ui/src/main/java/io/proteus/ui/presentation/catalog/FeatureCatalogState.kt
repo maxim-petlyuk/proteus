@@ -22,12 +22,6 @@ internal data class FeatureCatalogState(
             else -> UiState.Loaded
         }
 
-    enum class UiState {
-        Loading,
-        Error,
-        Loaded
-    }
-
     companion object {
 
         fun idle(): FeatureCatalogState {

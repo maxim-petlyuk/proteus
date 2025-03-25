@@ -41,4 +41,45 @@ internal class MockConfigRepositoryImpl(
             }
         }
     }
+
+    override fun save(feature: FeatureContext<*>, configValue: ConfigValue<*>) {
+        when (feature.valueClass) {
+            Int::class,
+            Long::class -> {
+                configValue as? ConfigValue.Long
+                    ?: throw IllegalConfigDataTypeException("Invalid data type: ${configValue::class}")
+
+                mockConfigStorage.save(feature.key, configValue.value)
+            }
+
+            Double::class -> {
+                configValue as? ConfigValue.Double
+                    ?: throw IllegalConfigDataTypeException("Invalid data type: ${configValue::class}")
+
+                mockConfigStorage.save(feature.key, configValue.value)
+            }
+
+            String::class -> {
+                configValue as? ConfigValue.Text
+                    ?: throw IllegalConfigDataTypeException("Invalid data type: ${configValue::class}")
+
+                mockConfigStorage.save(feature.key, configValue.value)
+            }
+
+            Boolean::class -> {
+                configValue as? ConfigValue.Boolean
+                    ?: throw IllegalConfigDataTypeException("Invalid data type: ${configValue::class}")
+
+                mockConfigStorage.save(feature.key, configValue.value)
+            }
+
+            else -> {
+                throw IllegalConfigDataTypeException("Unsupported data type: ${feature.valueClass}")
+            }
+        }
+    }
+
+    override fun remove(feature: FeatureContext<*>) {
+        mockConfigStorage.remove(feature.key)
+    }
 }

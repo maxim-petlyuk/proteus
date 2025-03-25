@@ -15,6 +15,26 @@ internal class FeatureBookRepository(
     private val mockConfigRepository: MockConfigRepository
 ) {
 
+    suspend fun removeMockedConfig(feature: FeatureContext<*>) {
+        mockConfigRepository.remove(feature)
+    }
+
+    suspend fun saveMockedConfig(feature: FeatureContext<*>, configValue: ConfigValue<*>) {
+        mockConfigRepository.save(feature, configValue)
+    }
+
+    suspend fun getFeatureNote(featureKey: String): Result<FeatureNote<*>> {
+        return try {
+            getFeatureBook()
+                .map {
+                    it.find { it.feature.key == featureKey }
+                        ?: throw IllegalStateException("Feature with key $featureKey not found")
+                }
+        } catch (error: IllegalStateException) {
+            Result.failure(error)
+        }
+    }
+
     suspend fun getFeatureBook(): Result<List<FeatureNote<*>>> {
         return featureBookDataSource.getFeatureBook()
             .map { it.aggregateConfig() }

@@ -20,5 +20,7 @@ interface MockConfigStorage {
 
     fun save(featureKey: String, value: Boolean)
 
+    fun remove(featureKey: String)
+
     fun clear()
 }
