@@ -34,7 +34,13 @@ internal data class FeatureConfiguratorState(
 
         data class Toggle(val isActivated: Boolean) : MockInputType()
 
-        data class TextInput(val text: String, val textInputType: TextType) : MockInputType()
+        data class TextInput(
+            val text: String,
+            val textInputType: TextType
+        ) : MockInputType() {
+
+            val keyboardType = textInputType.asKeyboardType()
+        }
     }
 
     enum class TextType {

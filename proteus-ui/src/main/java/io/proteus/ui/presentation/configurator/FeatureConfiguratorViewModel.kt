@@ -3,6 +3,7 @@ package io.proteus.ui.presentation.configurator
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import io.proteus.core.exceptions.IllegalConfigDataTypeException
 import io.proteus.core.provider.ConfigValue
 import io.proteus.core.provider.Proteus
 import io.proteus.ui.data.FeatureBookRepository
@@ -33,12 +34,44 @@ internal class FeatureConfiguratorViewModel(
                 processChangeBooleanMockedValue(action.isActivated)
             }
 
+            is FeatureConfiguratorAction.ChangeTextFeatureValue -> {
+                processChangeTextMockedValue(action.mockedValue)
+            }
+
             is FeatureConfiguratorAction.ToggleMockConfiguration -> {
                 processToggleMockConfiguration(action.isActivated)
             }
 
             is FeatureConfiguratorAction.SaveChanges -> {
                 processSaveChangesAction()
+            }
+        }
+    }
+
+    private fun processChangeBooleanMockedValue(activated: Boolean) {
+        viewModelScope.launch(Dispatchers.Default) {
+            currentState.featureNote?.let { featureNote ->
+                rebuild {
+                    copy(
+                        mockInputType = MockDataType.Toggle(activated)
+                    )
+                }
+            }
+        }
+    }
+
+    private fun processChangeTextMockedValue(mockedValue: String) {
+        currentState.featureNote?.let { featureNote ->
+            val currentMockedValue = currentState.mockInputType as? MockDataType.TextInput
+                ?: MockDataType.TextInput(
+                    text = featureNote.localConfigValue?.toString() ?: "",
+                    textInputType = featureNote.asInputType()
+                )
+
+            rebuildAsync {
+                copy(
+                    mockInputType = currentMockedValue.copy(text = mockedValue)
+                )
             }
         }
     }
@@ -73,33 +106,27 @@ internal class FeatureConfiguratorViewModel(
                     )
                 }
 
+                try {
+                    if (currentState.isOverrideActivated) {
+                        featureBookRepository.saveMockedConfig(
+                            feature = featureNote.feature,
+                            configValue = mockInputType.asConfigValue()
+                        )
+                    } else {
+                        featureBookRepository.removeMockedConfig(featureNote.feature)
+                    }
 
-                if (currentState.isOverrideActivated) {
-                    // todo: handle validation errors
-                    featureBookRepository.saveMockedConfig(
-                        feature = featureNote.feature,
-                        configValue = mockInputType.asConfigValue()
-                    )
-                } else {
-                    featureBookRepository.removeMockedConfig(featureNote.feature)
-                }
-
-                rebuild {
-                    copy(
-                        operationState = FeatureConfiguratorState.OperationState.Ready
-                    )
-                }
-            }
-        }
-    }
-
-    private fun processChangeBooleanMockedValue(activated: Boolean) {
-        viewModelScope.launch(Dispatchers.Default) {
-            currentState.featureNote?.let { featureNote ->
-                rebuild {
-                    copy(
-                        mockInputType = MockDataType.Toggle(activated)
-                    )
+                    rebuild {
+                        copy(
+                            operationState = FeatureConfiguratorState.OperationState.Ready
+                        )
+                    }
+                } catch (e: IllegalConfigDataTypeException) {
+                    rebuild {
+                        copy(
+                            operationState = FeatureConfiguratorState.OperationState.Failure(e.message)
+                        )
+                    }
                 }
             }
         }

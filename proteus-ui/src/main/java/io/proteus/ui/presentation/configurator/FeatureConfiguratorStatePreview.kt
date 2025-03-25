@@ -28,7 +28,8 @@ internal class TextFeatureConfiguratorStatePreview : PreviewParameterProvider<Fe
                 remoteConfigValue = "http://google.com",
                 localConfigValue = ConfigValue.Text("http://override.com")
             ),
-            mockInputType = FeatureConfiguratorState.MockInputType.TextInput("http://override.com", FeatureConfiguratorState.TextType.RAW)
+            mockInputType = FeatureConfiguratorState.MockInputType.TextInput("http://override.com", FeatureConfiguratorState.TextType.RAW),
+            isOverrideActivated = true
         )
     )
 }
@@ -48,7 +49,8 @@ internal class DecimalFeatureConfiguratorStatePreview : PreviewParameterProvider
                 remoteConfigValue = "http://google.com",
                 localConfigValue = ConfigValue.Double(0.9)
             ),
-            mockInputType = FeatureConfiguratorState.MockInputType.TextInput("0.9", FeatureConfiguratorState.TextType.DECIMAL)
+            mockInputType = FeatureConfiguratorState.MockInputType.TextInput("0.9", FeatureConfiguratorState.TextType.DECIMAL),
+            isOverrideActivated = true
         )
     )
 }
@@ -68,7 +70,8 @@ internal class LongFeatureConfiguratorStatePreview : PreviewParameterProvider<Fe
                 remoteConfigValue = "100",
                 localConfigValue = ConfigValue.Long(200)
             ),
-            mockInputType = FeatureConfiguratorState.MockInputType.TextInput("12", FeatureConfiguratorState.TextType.INTEGER)
+            mockInputType = FeatureConfiguratorState.MockInputType.TextInput("12", FeatureConfiguratorState.TextType.INTEGER),
+            isOverrideActivated = true
         )
     )
 }
@@ -87,7 +90,8 @@ internal class BooleanFeatureConfiguratorStatePreview : PreviewParameterProvider
                 ),
                 remoteConfigValue = "true"
             ),
-            mockInputType = FeatureConfiguratorState.MockInputType.Toggle(false)
+            mockInputType = FeatureConfiguratorState.MockInputType.Toggle(false),
+            isOverrideActivated = true
         )
     )
 }

@@ -6,5 +6,7 @@ internal sealed class FeatureConfiguratorAction {
 
     data class ChangeBooleanFeatureValue(val isActivated: Boolean) : FeatureConfiguratorAction()
 
+    data class ChangeTextFeatureValue(val mockedValue: String) : FeatureConfiguratorAction()
+
     data object SaveChanges : FeatureConfiguratorAction()
 }

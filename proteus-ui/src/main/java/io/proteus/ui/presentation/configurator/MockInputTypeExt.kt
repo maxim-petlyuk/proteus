@@ -1,5 +1,6 @@
 package io.proteus.ui.presentation.configurator
 
+import androidx.compose.ui.text.input.KeyboardType
 import io.proteus.core.exceptions.IllegalConfigDataTypeException
 import io.proteus.core.provider.ConfigValue
 import io.proteus.ui.domain.entity.FeatureNote
@@ -42,5 +43,13 @@ internal fun FeatureNote<*>.asInputType(): TextType {
         String::class -> TextType.RAW
         Double::class -> TextType.DECIMAL
         else -> throw IllegalConfigDataTypeException("Unsupported data type: ${this.feature.valueClass}")
+    }
+}
+
+internal fun TextType.asKeyboardType(): KeyboardType {
+    return when (this) {
+        TextType.INTEGER -> KeyboardType.NumberPassword
+        TextType.DECIMAL -> KeyboardType.Decimal
+        TextType.RAW -> KeyboardType.Text
     }
 }

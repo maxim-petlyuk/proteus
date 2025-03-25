@@ -7,4 +7,4 @@ package io.proteus.core.exceptions
  * @author  Maxim Petlyuk
  * @since   1.0
  */
-class IllegalConfigDataTypeException(message: String) : RuntimeException(message)
+class IllegalConfigDataTypeException(override val message: String) : RuntimeException(message)

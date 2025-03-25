@@ -17,10 +17,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -35,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -58,6 +61,7 @@ internal fun FeatureConfiguratorScreen(
 
     OperationStateHandler(
         operationState = state.operationState,
+        snackBarHostState = snackBarHostState,
         onBack = onBack
     )
 
@@ -66,6 +70,7 @@ internal fun FeatureConfiguratorScreen(
         onBack = onBack,
         snackBarHostState = snackBarHostState,
         onChangeBooleanMockedValue = { viewModel.onAction(FeatureConfiguratorAction.ChangeBooleanFeatureValue(it)) },
+        onChangeTextMockedValue = { viewModel.onAction(FeatureConfiguratorAction.ChangeTextFeatureValue(it)) },
         onToggleMockConfig = { viewModel.onAction(FeatureConfiguratorAction.ToggleMockConfiguration(it)) },
         onSaveChanges = { viewModel.onAction(FeatureConfiguratorAction.SaveChanges) }
     )
@@ -74,11 +79,22 @@ internal fun FeatureConfiguratorScreen(
 @Composable
 private fun OperationStateHandler(
     operationState: FeatureConfiguratorState.OperationState,
-    onBack: () -> Unit = {}
+    onBack: () -> Unit = {},
+    snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     LaunchedEffect(operationState) {
-        if (operationState is FeatureConfiguratorState.OperationState.Ready) {
-            onBack.invoke()
+        when (operationState) {
+            is FeatureConfiguratorState.OperationState.Ready -> {
+                onBack.invoke()
+            }
+
+            is FeatureConfiguratorState.OperationState.Failure -> {
+                snackBarHostState.showSnackbar(operationState.message)
+            }
+
+            else -> {
+                /* no op */
+            }
         }
     }
 }
@@ -90,6 +106,7 @@ internal fun FeatureConfiguratorScreen(
     onBack: () -> Unit = {},
     onToggleMockConfig: (Boolean) -> Unit = {},
     onChangeBooleanMockedValue: (Boolean) -> Unit = {},
+    onChangeTextMockedValue: (String) -> Unit = {},
     onSaveChanges: () -> Unit = {},
 ) {
     Scaffold(
@@ -109,6 +126,7 @@ internal fun FeatureConfiguratorScreen(
             modifier = Modifier.padding(innerPadding),
             state = state,
             onChangeBooleanMockedValue = onChangeBooleanMockedValue,
+            onChangeTextMockedValue = onChangeTextMockedValue,
             onToggleMockConfig = onToggleMockConfig,
             onSaveChanges = onSaveChanges,
         )
@@ -121,6 +139,7 @@ private fun ContentSwitcher(
     state: FeatureConfiguratorState,
     onToggleMockConfig: (Boolean) -> Unit = {},
     onChangeBooleanMockedValue: (Boolean) -> Unit = {},
+    onChangeTextMockedValue: (String) -> Unit = {},
     onSaveChanges: () -> Unit = {},
 ) {
     AnimatedContent(
@@ -146,6 +165,7 @@ private fun ContentSwitcher(
                     isOverrideActivated = state.isOverrideActivated,
                     onToggleMockConfig = onToggleMockConfig,
                     onChangeBooleanMockedValue = onChangeBooleanMockedValue,
+                    onChangeTextMockedValue = onChangeTextMockedValue,
                     onSaveChanges = onSaveChanges,
                 )
             }
@@ -183,6 +203,7 @@ private fun LoadedContent(
     isOverrideActivated: Boolean = true,
     onToggleMockConfig: (Boolean) -> Unit = {},
     onChangeBooleanMockedValue: (Boolean) -> Unit = {},
+    onChangeTextMockedValue: (String) -> Unit = {},
     onSaveChanges: () -> Unit = {},
 ) {
     Column(
@@ -213,7 +234,8 @@ private fun LoadedContent(
                     MockSetupLayout(
                         modifier = Modifier,
                         mockInputType = mockInputType,
-                        onToggle = onChangeBooleanMockedValue
+                        onChangeBooleanMockedValue = onChangeBooleanMockedValue,
+                        onChangeTextMockedValue = onChangeTextMockedValue,
                     )
                 }
             }
@@ -272,7 +294,8 @@ private fun MockFeatureActivationToggle(
 private fun MockSetupLayout(
     modifier: Modifier = Modifier,
     mockInputType: MockInputType,
-    onToggle: (Boolean) -> Unit = {}
+    onChangeBooleanMockedValue: (Boolean) -> Unit = {},
+    onChangeTextMockedValue: (String) -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -294,7 +317,7 @@ private fun MockSetupLayout(
                 ToggleInput(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                     isActivated = mockInputType.isActivated,
-                    onToggle = onToggle,
+                    onToggle = onChangeBooleanMockedValue,
                     text = stringResource(id = R.string.feature_editor_activated_label)
                 )
             }
@@ -302,7 +325,9 @@ private fun MockSetupLayout(
             is MockInputType.TextInput -> {
                 TextInput(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                    text = mockInputType.text
+                    text = mockInputType.text,
+                    keyboardType = mockInputType.keyboardType,
+                    onTextChanged = onChangeTextMockedValue
                 )
             }
         }
@@ -353,9 +378,23 @@ private fun ToggleInput(
 private fun TextInput(
     modifier: Modifier = Modifier,
     text: String,
+    keyboardType: KeyboardType,
+    enabled: Boolean = true,
     onTextChanged: (String) -> Unit = {}
 ) {
-
+    OutlinedTextField(
+        value = text,
+        onValueChange = {
+            onTextChanged(it)
+        },
+        modifier = modifier
+            .fillMaxWidth(),
+        singleLine = true,
+        textStyle = MaterialTheme.typography.titleSmall,
+        enabled = enabled,
+        readOnly = !enabled,
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType)
+    )
 }
 
 @Preview
