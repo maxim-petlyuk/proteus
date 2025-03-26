@@ -71,8 +71,12 @@ dependencies {
     implementation(libs.firebase.config)
 
     implementation(libs.proteus.core)
-    implementation(libs.proteus.firebase)
-    implementation(project(":proteus-ui"))
+    implementation(libs.proteus.firebase) {
+        exclude(group = "io.github.maxim-petlyuk", module = "proteus-core")
+    }
+    implementation(libs.proteus.ui) {
+        exclude(group = "io.github.maxim-petlyuk", module = "proteus-core")
+    }
 
     testImplementation(libs.junit)
 
