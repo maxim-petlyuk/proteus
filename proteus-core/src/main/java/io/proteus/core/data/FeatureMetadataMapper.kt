@@ -1,9 +1,9 @@
 package io.proteus.core.data
 
+import io.proteus.core.domain.Feature
+import io.proteus.core.domain.FeatureContext
 import io.proteus.core.domain.FeatureMetadata
-import io.proteus.core.provider.Feature
 import io.proteus.core.provider.FeatureConfigOwner
-import io.proteus.core.provider.FeatureContext
 
 class FeatureMetadataMapper {
 

@@ -1,6 +1,6 @@
 package io.proteus.core.data
 
-import io.proteus.core.provider.ConfigValue
+import io.proteus.core.domain.ConfigValue
 import org.junit.Test
 
 internal class ConfigValueTest {

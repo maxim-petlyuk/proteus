@@ -1,5 +1,6 @@
 package io.proteus.core.provider
 
+import io.proteus.core.domain.Feature
 import io.proteus.core.mock.FeatureTestGuide
 import io.proteus.core.mock.MemoryFeatureConfigProvider
 import io.proteus.core.mock.MockFeatureConfigOwner

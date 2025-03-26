@@ -1,6 +1,6 @@
 package io.proteus.core.mock
 
-import io.proteus.core.provider.Feature
+import io.proteus.core.domain.Feature
 
 internal data class FeatureTestGuide<DataType : Any>(
     val feature: Feature<DataType>,

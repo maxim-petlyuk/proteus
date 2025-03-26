@@ -1,4 +1,4 @@
-package io.proteus.core.provider
+package io.proteus.core.domain
 
 import kotlinx.serialization.Serializable
 

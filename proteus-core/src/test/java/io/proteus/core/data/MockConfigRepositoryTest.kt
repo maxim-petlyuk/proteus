@@ -1,10 +1,10 @@
 package io.proteus.core.data
 
+import io.proteus.core.domain.ConfigValue
+import io.proteus.core.domain.Feature
 import io.proteus.core.exceptions.IllegalConfigDataTypeException
 import io.proteus.core.mock.MemoryMockConfigStorage
 import io.proteus.core.mock.MockFeatureConfigOwner
-import io.proteus.core.provider.ConfigValue
-import io.proteus.core.provider.Feature
 import org.junit.Before
 import org.junit.Test
 

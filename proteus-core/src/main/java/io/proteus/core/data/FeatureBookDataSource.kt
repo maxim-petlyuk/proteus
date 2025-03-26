@@ -1,6 +1,6 @@
 package io.proteus.core.data
 
-import io.proteus.core.provider.FeatureContext
+import io.proteus.core.domain.FeatureContext
 
 interface FeatureBookDataSource {
 

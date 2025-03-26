@@ -1,5 +1,7 @@
 package io.proteus.core.provider
 
+import io.proteus.core.domain.FeatureContext
+
 interface FeatureConfigProvider {
 
     fun getBoolean(feature: FeatureContext<Boolean>): Boolean

@@ -1,7 +1,7 @@
 package io.proteus.core.mock
 
+import io.proteus.core.domain.FeatureContext
 import io.proteus.core.provider.FeatureConfigProvider
-import io.proteus.core.provider.FeatureContext
 
 internal class MemoryFeatureConfigProvider(
     private val featuresGuide: List<FeatureTestGuide<*>>

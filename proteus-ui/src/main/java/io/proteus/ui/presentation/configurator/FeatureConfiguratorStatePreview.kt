@@ -1,8 +1,8 @@
 package io.proteus.ui.presentation.configurator
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import io.proteus.core.provider.ConfigValue
-import io.proteus.core.provider.Feature
+import io.proteus.core.domain.ConfigValue
+import io.proteus.core.domain.Feature
 import io.proteus.core.provider.FeatureConfigOwner
 import io.proteus.ui.domain.entity.FeatureNote
 

@@ -1,7 +1,7 @@
 package io.proteus.ui.domain.entity
 
-import io.proteus.core.provider.ConfigValue
-import io.proteus.core.provider.FeatureContext
+import io.proteus.core.domain.ConfigValue
+import io.proteus.core.domain.FeatureContext
 
 internal data class FeatureNote<DataType : Any>(
     val feature: FeatureContext<DataType>,

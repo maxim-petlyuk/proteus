@@ -46,6 +46,10 @@ internal class MemoryMockConfigStorage : MockConfigStorage {
         storage[featureKey] = value
     }
 
+    override fun remove(featureKey: String) {
+        storage.remove(featureKey)
+    }
+
     override fun clear() {
         storage.clear()
     }

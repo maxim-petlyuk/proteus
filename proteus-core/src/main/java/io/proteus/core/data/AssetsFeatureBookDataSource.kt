@@ -1,8 +1,8 @@
 package io.proteus.core.data
 
 import android.content.Context
+import io.proteus.core.domain.FeatureContext
 import io.proteus.core.domain.FeatureMetadata
-import io.proteus.core.provider.FeatureContext
 import kotlinx.serialization.json.Json
 import java.io.BufferedReader
 import java.io.InputStreamReader

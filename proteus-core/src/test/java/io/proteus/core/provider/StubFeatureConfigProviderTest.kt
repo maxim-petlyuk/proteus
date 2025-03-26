@@ -1,5 +1,6 @@
 package io.proteus.core.provider
 
+import io.proteus.core.domain.Feature
 import io.proteus.core.exceptions.MockConfigUnavailableException
 import io.proteus.core.mock.MockFeatureConfigOwner
 import org.junit.Assert.assertEquals

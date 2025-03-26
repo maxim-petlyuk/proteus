@@ -2,6 +2,7 @@ package io.proteus.core.provider
 
 import io.proteus.core.data.MockConfigRepositoryImpl
 import io.proteus.core.data.MockConfigStorage
+import io.proteus.core.domain.Feature
 import io.proteus.core.exceptions.MockConfigUnavailableException
 import io.proteus.core.mock.MemoryMockConfigStorage
 import io.proteus.core.mock.MockFeatureConfigOwner

@@ -2,10 +2,10 @@ package io.proteus.ui.data
 
 import io.proteus.core.data.FeatureBookDataSource
 import io.proteus.core.data.MockConfigRepository
-import io.proteus.core.provider.ConfigValue
-import io.proteus.core.provider.Feature
+import io.proteus.core.domain.ConfigValue
+import io.proteus.core.domain.Feature
+import io.proteus.core.domain.FeatureContext
 import io.proteus.core.provider.FeatureConfigProviderFactory
-import io.proteus.core.provider.FeatureContext
 import io.proteus.ui.domain.entity.FeatureNote
 import kotlin.reflect.KClass
 

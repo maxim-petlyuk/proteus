@@ -1,8 +1,8 @@
 package io.proteus.firebase
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import io.proteus.core.domain.FeatureContext
 import io.proteus.core.provider.FeatureConfigProvider
-import io.proteus.core.provider.FeatureContext
 
 class FirebaseFeatureConfigProvider : FeatureConfigProvider {
 

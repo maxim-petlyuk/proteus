@@ -70,7 +70,8 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)
 
-    implementation(project(":proteus-core"))
+//    implementation(project(":proteus-core"))
+    implementation(libs.proteus.core)
     implementation(project(":proteus-ui"))
     implementation(project(":proteus-firebase"))
 

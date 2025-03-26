@@ -1,8 +1,8 @@
 package io.proteus.ui.presentation.configurator
 
 import androidx.compose.ui.text.input.KeyboardType
+import io.proteus.core.domain.ConfigValue
 import io.proteus.core.exceptions.IllegalConfigDataTypeException
-import io.proteus.core.provider.ConfigValue
 import io.proteus.ui.domain.entity.FeatureNote
 import io.proteus.ui.presentation.configurator.FeatureConfiguratorState.MockInputType
 import io.proteus.ui.presentation.configurator.FeatureConfiguratorState.MockInputType.TextInput

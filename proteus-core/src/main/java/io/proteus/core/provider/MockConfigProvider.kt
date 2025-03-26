@@ -1,6 +1,8 @@
 package io.proteus.core.provider
 
 import io.proteus.core.data.MockConfigRepository
+import io.proteus.core.domain.ConfigValue
+import io.proteus.core.domain.FeatureContext
 import io.proteus.core.exceptions.MockConfigUnavailableException
 
 internal class MockConfigProvider(

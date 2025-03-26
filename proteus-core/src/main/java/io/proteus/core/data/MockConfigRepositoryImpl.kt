@@ -1,8 +1,8 @@
 package io.proteus.core.data
 
+import io.proteus.core.domain.ConfigValue
+import io.proteus.core.domain.FeatureContext
 import io.proteus.core.exceptions.IllegalConfigDataTypeException
-import io.proteus.core.provider.ConfigValue
-import io.proteus.core.provider.FeatureContext
 
 internal class MockConfigRepositoryImpl(
     private val mockConfigStorage: MockConfigStorage

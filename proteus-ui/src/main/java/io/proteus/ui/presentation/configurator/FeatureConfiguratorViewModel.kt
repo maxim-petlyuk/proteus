@@ -3,8 +3,8 @@ package io.proteus.ui.presentation.configurator
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import io.proteus.core.domain.ConfigValue
 import io.proteus.core.exceptions.IllegalConfigDataTypeException
-import io.proteus.core.provider.ConfigValue
 import io.proteus.core.provider.Proteus
 import io.proteus.ui.data.FeatureBookRepository
 import io.proteus.ui.di.ProteusPresentationInjection

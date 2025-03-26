@@ -1,5 +1,6 @@
 package io.proteus.core.provider
 
+import io.proteus.core.domain.FeatureContext
 import io.proteus.core.exceptions.MockConfigUnavailableException
 
 data object StubFeatureConfigProvider : FeatureConfigProvider {
