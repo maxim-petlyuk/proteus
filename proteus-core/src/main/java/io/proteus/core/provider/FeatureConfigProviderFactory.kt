@@ -5,5 +5,5 @@ import io.proteus.core.exceptions.IllegalConfigOwnerException
 interface FeatureConfigProviderFactory {
 
     @Throws(IllegalConfigOwnerException::class)
-    fun getProvider(owner: FeatureConfigOwner): FeatureConfigProvider
+    fun getProvider(owner: String): FeatureConfigProvider
 }

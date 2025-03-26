@@ -10,7 +10,7 @@ import io.proteus.core.mock.MockFeatureConfigOwner
 import org.junit.Before
 import org.junit.Test
 
-class ConfigSubstitutionTest {
+internal class ConfigSubstitutionTest {
 
     private val memoryMockConfigStorage: MockConfigStorage = MemoryMockConfigStorage()
     private val mockConfigProvider: MockConfigProvider =
@@ -28,7 +28,7 @@ class ConfigSubstitutionTest {
             "featureA",
             false,
             Boolean::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = true
@@ -41,15 +41,9 @@ class ConfigSubstitutionTest {
             givenSource = FeatureTestGuide.Source.Mock
         )
 
-        val configFactory = object : FeatureConfigProviderFactory {
-            override fun getProvider(owner: FeatureConfigOwner): FeatureConfigProvider {
-                return MemoryFeatureConfigProvider(featureTestGuideA)
-            }
-        }
-
         val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
             mockConfigProvider,
-            configFactory
+            provideMemoryConfigFactory(featureTestGuideA)
         )
 
         // When
@@ -69,7 +63,7 @@ class ConfigSubstitutionTest {
             "featureA",
             false,
             Boolean::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = true
@@ -81,15 +75,9 @@ class ConfigSubstitutionTest {
             givenSource = FeatureTestGuide.Source.Remote
         )
 
-        val configFactory = object : FeatureConfigProviderFactory {
-            override fun getProvider(owner: FeatureConfigOwner): FeatureConfigProvider {
-                return MemoryFeatureConfigProvider(featureTestGuideA)
-            }
-        }
-
         val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
             mockConfigProvider,
-            configFactory
+            provideMemoryConfigFactory(featureTestGuideA)
         )
 
         // When
@@ -109,7 +97,7 @@ class ConfigSubstitutionTest {
             "featureB",
             "",
             String::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = "this is a string"
@@ -122,15 +110,9 @@ class ConfigSubstitutionTest {
             givenSource = FeatureTestGuide.Source.Mock
         )
 
-        val configFactory = object : FeatureConfigProviderFactory {
-            override fun getProvider(owner: FeatureConfigOwner): FeatureConfigProvider {
-                return MemoryFeatureConfigProvider(featureTestGuideB)
-            }
-        }
-
         val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
             mockConfigProvider,
-            configFactory
+            provideMemoryConfigFactory(featureTestGuideB)
         )
 
         // When
@@ -150,7 +132,7 @@ class ConfigSubstitutionTest {
             "featureB",
             "",
             String::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = "this is a string"
@@ -162,15 +144,9 @@ class ConfigSubstitutionTest {
             givenSource = FeatureTestGuide.Source.Remote
         )
 
-        val configFactory = object : FeatureConfigProviderFactory {
-            override fun getProvider(owner: FeatureConfigOwner): FeatureConfigProvider {
-                return MemoryFeatureConfigProvider(featureTestGuideB)
-            }
-        }
-
         val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
             mockConfigProvider,
-            configFactory
+            provideMemoryConfigFactory(featureTestGuideB)
         )
 
         // When
@@ -190,7 +166,7 @@ class ConfigSubstitutionTest {
             "featureC",
             0L,
             Long::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = 5L
@@ -203,15 +179,9 @@ class ConfigSubstitutionTest {
             givenSource = FeatureTestGuide.Source.Mock
         )
 
-        val configFactory = object : FeatureConfigProviderFactory {
-            override fun getProvider(owner: FeatureConfigOwner): FeatureConfigProvider {
-                return MemoryFeatureConfigProvider(featureTestGuideC)
-            }
-        }
-
         val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
             mockConfigProvider,
-            configFactory
+            provideMemoryConfigFactory(featureTestGuideC)
         )
 
         // When
@@ -231,7 +201,7 @@ class ConfigSubstitutionTest {
             "featureC",
             0L,
             Long::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = 5L
@@ -243,15 +213,9 @@ class ConfigSubstitutionTest {
             givenSource = FeatureTestGuide.Source.Remote
         )
 
-        val configFactory = object : FeatureConfigProviderFactory {
-            override fun getProvider(owner: FeatureConfigOwner): FeatureConfigProvider {
-                return MemoryFeatureConfigProvider(featureTestGuideC)
-            }
-        }
-
         val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
             mockConfigProvider,
-            configFactory
+            provideMemoryConfigFactory(featureTestGuideC)
         )
 
         // When
@@ -271,7 +235,7 @@ class ConfigSubstitutionTest {
             "featureD",
             0.0,
             Double::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = 5.0
@@ -284,15 +248,9 @@ class ConfigSubstitutionTest {
             givenSource = FeatureTestGuide.Source.Mock
         )
 
-        val configFactory = object : FeatureConfigProviderFactory {
-            override fun getProvider(owner: FeatureConfigOwner): FeatureConfigProvider {
-                return MemoryFeatureConfigProvider(featureTestGuideD)
-            }
-        }
-
         val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
             mockConfigProvider,
-            configFactory
+            provideMemoryConfigFactory(featureTestGuideD)
         )
 
         // When
@@ -312,7 +270,7 @@ class ConfigSubstitutionTest {
             "featureD",
             0.0,
             Double::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = 5.0
@@ -324,15 +282,9 @@ class ConfigSubstitutionTest {
             givenSource = FeatureTestGuide.Source.Remote
         )
 
-        val configFactory = object : FeatureConfigProviderFactory {
-            override fun getProvider(owner: FeatureConfigOwner): FeatureConfigProvider {
-                return MemoryFeatureConfigProvider(featureTestGuideD)
-            }
-        }
-
         val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
             mockConfigProvider,
-            configFactory
+            provideMemoryConfigFactory(featureTestGuideD)
         )
 
         // When
@@ -342,6 +294,14 @@ class ConfigSubstitutionTest {
         assert(mockedValueOfFeatureD == expectedValue) {
             "Expected mocked value of feature is [$expectedValue], " +
                 "but was [$mockedValueOfFeatureD]"
+        }
+    }
+
+    private fun provideMemoryConfigFactory(vararg featuresGuide: FeatureTestGuide<*>): FeatureConfigProviderFactory {
+        return object : FeatureConfigProviderFactory {
+            override fun getProvider(owner: String): FeatureConfigProvider {
+                return MemoryFeatureConfigProvider(*featuresGuide)
+            }
         }
     }
 }

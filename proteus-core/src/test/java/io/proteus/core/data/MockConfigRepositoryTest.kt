@@ -26,7 +26,7 @@ internal class MockConfigRepositoryTest {
             "feature",
             false,
             Boolean::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         // When
@@ -43,7 +43,7 @@ internal class MockConfigRepositoryTest {
             "feature",
             0L,
             Long::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = 5L
@@ -69,7 +69,7 @@ internal class MockConfigRepositoryTest {
             "feature",
             "",
             String::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = "John Doe"
@@ -95,7 +95,7 @@ internal class MockConfigRepositoryTest {
             "feature",
             0.0,
             Double::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = 5.7
@@ -121,7 +121,7 @@ internal class MockConfigRepositoryTest {
             "feature",
             false,
             Boolean::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = true
@@ -147,7 +147,7 @@ internal class MockConfigRepositoryTest {
             "feature",
             MockFeatureConfigOwner.Firebase,
             MockFeatureConfigOwner::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = "John Doe"

@@ -3,16 +3,19 @@ package io.proteus.core.data
 import io.proteus.core.domain.Feature
 import io.proteus.core.domain.FeatureContext
 import io.proteus.core.domain.FeatureMetadata
-import io.proteus.core.provider.FeatureConfigOwner
 
 class FeatureMetadataMapper {
 
     @Throws(IllegalArgumentException::class)
     internal fun toFeatureContext(from: FeatureMetadata): FeatureContext<*> {
         val featureKey = from.featureKey
-
         if (featureKey.isEmpty()) {
             throw IllegalArgumentException("Feature key must not be empty")
+        }
+
+        val serviceOwner = from.serviceOwner
+        if (serviceOwner.isEmpty()) {
+            throw IllegalArgumentException("Feature service owner must not be empty")
         }
 
         return when (from.valueType) {
@@ -21,7 +24,7 @@ class FeatureMetadataMapper {
                     key = from.featureKey,
                     defaultValue = from.defaultValue,
                     valueClass = String::class,
-                    owner = Stub()
+                    owner = serviceOwner
                 )
             }
 
@@ -33,7 +36,7 @@ class FeatureMetadataMapper {
                     key = from.featureKey,
                     defaultValue = defaultValue,
                     valueClass = Long::class,
-                    owner = Stub()
+                    owner = serviceOwner
                 )
             }
 
@@ -45,7 +48,7 @@ class FeatureMetadataMapper {
                     key = from.featureKey,
                     defaultValue = defaultValue,
                     valueClass = Boolean::class,
-                    owner = Stub()
+                    owner = serviceOwner
                 )
             }
 
@@ -57,7 +60,7 @@ class FeatureMetadataMapper {
                     key = from.featureKey,
                     defaultValue = defaultValue,
                     valueClass = Double::class,
-                    owner = Stub()
+                    owner = serviceOwner
                 )
             }
 
@@ -66,8 +69,6 @@ class FeatureMetadataMapper {
             }
         }
     }
-
-    private class Stub : FeatureConfigOwner
 
     private companion object {
 

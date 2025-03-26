@@ -14,7 +14,7 @@ internal class StubFeatureConfigProviderTest {
         // Arrange
         val featureA = Feature(
             key = "featureA",
-            owner = MockFeatureConfigOwner.Firebase,
+            owner = MockFeatureConfigOwner.Firebase.serviceOwner,
             defaultValue = false,
             valueClass = Boolean::class
         )
@@ -38,7 +38,7 @@ internal class StubFeatureConfigProviderTest {
         // Arrange
         val featureB = Feature(
             key = "featureB",
-            owner = MockFeatureConfigOwner.CleverTap,
+            owner = MockFeatureConfigOwner.CleverTap.serviceOwner,
             defaultValue = "",
             valueClass = String::class
         )
@@ -62,7 +62,7 @@ internal class StubFeatureConfigProviderTest {
         // Arrange
         val featureC = Feature(
             key = "featureC",
-            owner = MockFeatureConfigOwner.Firebase,
+            owner = MockFeatureConfigOwner.Firebase.serviceOwner,
             defaultValue = 0L,
             valueClass = Long::class
         )
@@ -86,7 +86,7 @@ internal class StubFeatureConfigProviderTest {
         // Arrange
         val featureD = Feature(
             key = "featureD",
-            owner = MockFeatureConfigOwner.CleverTap,
+            owner = MockFeatureConfigOwner.CleverTap.serviceOwner,
             defaultValue = 0.0,
             valueClass = Double::class
         )

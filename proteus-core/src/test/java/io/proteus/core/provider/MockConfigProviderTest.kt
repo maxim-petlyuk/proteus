@@ -27,7 +27,7 @@ internal class MockConfigProviderTest {
             "featureA",
             false,
             Boolean::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = true
@@ -49,7 +49,7 @@ internal class MockConfigProviderTest {
             "featureA",
             false,
             Boolean::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         // When
@@ -66,7 +66,7 @@ internal class MockConfigProviderTest {
             "featureB",
             "",
             String::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = "this is a string"
@@ -88,7 +88,7 @@ internal class MockConfigProviderTest {
             "featureB",
             "",
             String::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         // When
@@ -105,7 +105,7 @@ internal class MockConfigProviderTest {
             "featureC",
             0L,
             Long::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = 100L
@@ -127,7 +127,7 @@ internal class MockConfigProviderTest {
             "featureC",
             0L,
             Long::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         // When
@@ -144,7 +144,7 @@ internal class MockConfigProviderTest {
             "featureD",
             0.0,
             Double::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         val expectedValue = 100.0
@@ -166,7 +166,7 @@ internal class MockConfigProviderTest {
             "featureD",
             0.0,
             Double::class,
-            MockFeatureConfigOwner.Firebase
+            MockFeatureConfigOwner.Firebase.serviceOwner
         )
 
         // When

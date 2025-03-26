@@ -1,10 +1,15 @@
 package io.proteus.core.mock
 
-import io.proteus.core.provider.FeatureConfigOwner
+import io.proteus.core.mock.MockFeatureConfigOwner.entries
 
-internal sealed class MockFeatureConfigOwner : FeatureConfigOwner {
+internal enum class MockFeatureConfigOwner(val serviceOwner: String) {
+    Firebase("firebase"),
+    CleverTap("clevertap");
 
-    data object Firebase : MockFeatureConfigOwner()
+    companion object {
 
-    data object CleverTap : MockFeatureConfigOwner()
+        fun fromServiceOwner(serviceOwner: String): MockFeatureConfigOwner? {
+            return entries.firstOrNull { it.serviceOwner.equals(serviceOwner, ignoreCase = true) }
+        }
+    }
 }

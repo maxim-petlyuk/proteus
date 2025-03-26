@@ -6,14 +6,14 @@ import io.proteus.core.mock.MemoryFeatureConfigProvider
 import io.proteus.core.mock.MockFeatureConfigOwner
 import org.junit.Test
 
-class DataTypesConfigTest {
+internal class DataTypesConfigTest {
 
     @Test
     fun `verify that boolean type function is giving correct result`() {
         // Given
         val featureA = Feature(
             key = "featureA",
-            owner = MockFeatureConfigOwner.Firebase,
+            owner = MockFeatureConfigOwner.Firebase.serviceOwner,
             defaultValue = false,
             valueClass = Boolean::class
         )
@@ -26,7 +26,7 @@ class DataTypesConfigTest {
         )
 
         val configFactory = object : FeatureConfigProviderFactory {
-            override fun getProvider(owner: FeatureConfigOwner): FeatureConfigProvider {
+            override fun getProvider(owner: String): FeatureConfigProvider {
                 return MemoryFeatureConfigProvider(featureTestGuideA)
             }
         }
@@ -51,7 +51,7 @@ class DataTypesConfigTest {
         // Given
         val featureB = Feature(
             key = "featureB",
-            owner = MockFeatureConfigOwner.CleverTap,
+            owner = MockFeatureConfigOwner.CleverTap.serviceOwner,
             defaultValue = "",
             valueClass = String::class
         )
@@ -63,15 +63,9 @@ class DataTypesConfigTest {
             givenSource = FeatureTestGuide.Source.Mock
         )
 
-        val configFactory = object : FeatureConfigProviderFactory {
-            override fun getProvider(owner: FeatureConfigOwner): FeatureConfigProvider {
-                return MemoryFeatureConfigProvider(featureTestGuideB)
-            }
-        }
-
         val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
             StubFeatureConfigProvider,
-            configFactory
+            provideMemoryConfigFactory(featureTestGuideB)
         )
 
         // When
@@ -89,7 +83,7 @@ class DataTypesConfigTest {
         // Given
         val featureB = Feature(
             key = "featureB",
-            owner = MockFeatureConfigOwner.CleverTap,
+            owner = MockFeatureConfigOwner.CleverTap.serviceOwner,
             defaultValue = 5L,
             valueClass = Long::class
         )
@@ -101,15 +95,9 @@ class DataTypesConfigTest {
             givenSource = FeatureTestGuide.Source.Mock
         )
 
-        val configFactory = object : FeatureConfigProviderFactory {
-            override fun getProvider(owner: FeatureConfigOwner): FeatureConfigProvider {
-                return MemoryFeatureConfigProvider(featureTestGuideB)
-            }
-        }
-
         val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
             StubFeatureConfigProvider,
-            configFactory
+            provideMemoryConfigFactory(featureTestGuideB)
         )
 
         // When
@@ -127,7 +115,7 @@ class DataTypesConfigTest {
         // Given
         val featureB = Feature(
             key = "featureB",
-            owner = MockFeatureConfigOwner.CleverTap,
+            owner = MockFeatureConfigOwner.CleverTap.serviceOwner,
             defaultValue = 5.0,
             valueClass = Double::class
         )
@@ -139,15 +127,9 @@ class DataTypesConfigTest {
             givenSource = FeatureTestGuide.Source.Mock
         )
 
-        val configFactory = object : FeatureConfigProviderFactory {
-            override fun getProvider(owner: FeatureConfigOwner): FeatureConfigProvider {
-                return MemoryFeatureConfigProvider(featureTestGuideB)
-            }
-        }
-
         val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
             StubFeatureConfigProvider,
-            configFactory
+            provideMemoryConfigFactory(featureTestGuideB)
         )
 
         // When
@@ -157,6 +139,14 @@ class DataTypesConfigTest {
         assert(mockedValueOfFeatureB == featureTestGuideB.mockValue) {
             "Expected mocked value of feature is [${featureTestGuideB.mockValue}], " +
                 "but was [$mockedValueOfFeatureB]"
+        }
+    }
+
+    private fun provideMemoryConfigFactory(vararg featuresGuide: FeatureTestGuide<*>): FeatureConfigProviderFactory {
+        return object : FeatureConfigProviderFactory {
+            override fun getProvider(owner: String): FeatureConfigProvider {
+                return MemoryFeatureConfigProvider(*featuresGuide)
+            }
         }
     }
 }

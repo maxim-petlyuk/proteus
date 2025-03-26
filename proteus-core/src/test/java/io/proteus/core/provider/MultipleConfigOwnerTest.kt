@@ -8,7 +8,7 @@ import io.proteus.core.mock.MockFeatureConfigOwner
 import io.proteus.core.mock.MockFeatureConfigProviderFactory
 import org.junit.Test
 
-class MultipleConfigOwnerTest {
+internal class MultipleConfigOwnerTest {
 
     @Test(expected = IllegalConfigOwnerException::class)
     fun `verify that factory will throw exception if provider is not registered`() {
@@ -22,8 +22,7 @@ class MultipleConfigOwnerTest {
         )
 
         // When
-        val unknownProvider = object : FeatureConfigOwner {}
-        configProviderFactory.getProvider(unknownProvider)
+        configProviderFactory.getProvider("unknownProvider")
 
         // Then
         // Expecting IllegalConfigOwnerException
@@ -34,7 +33,7 @@ class MultipleConfigOwnerTest {
         // Given
         val featureA = Feature(
             key = "featureA",
-            owner = MockFeatureConfigOwner.Firebase,
+            owner = MockFeatureConfigOwner.Firebase.serviceOwner,
             defaultValue = false,
             valueClass = Boolean::class
         )
@@ -48,7 +47,7 @@ class MultipleConfigOwnerTest {
 
         val featureB = Feature(
             key = "featureB",
-            owner = MockFeatureConfigOwner.CleverTap,
+            owner = MockFeatureConfigOwner.CleverTap.serviceOwner,
             defaultValue = "",
             valueClass = String::class
         )

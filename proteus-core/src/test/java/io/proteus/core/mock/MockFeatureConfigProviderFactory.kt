@@ -1,7 +1,6 @@
 package io.proteus.core.mock
 
 import io.proteus.core.exceptions.IllegalConfigOwnerException
-import io.proteus.core.provider.FeatureConfigOwner
 import io.proteus.core.provider.FeatureConfigProvider
 import io.proteus.core.provider.FeatureConfigProviderFactory
 
@@ -11,10 +10,10 @@ internal class MockFeatureConfigProviderFactory(
 ) : FeatureConfigProviderFactory {
 
     @Throws(IllegalConfigOwnerException::class)
-    override fun getProvider(owner: FeatureConfigOwner): FeatureConfigProvider {
-        return when (owner) {
-            is MockFeatureConfigOwner.Firebase -> firebaseConfigProvider
-            is MockFeatureConfigOwner.CleverTap -> clevertapConfigProvider
+    override fun getProvider(owner: String): FeatureConfigProvider {
+        return when (MockFeatureConfigOwner.fromServiceOwner(owner)) {
+            MockFeatureConfigOwner.Firebase -> firebaseConfigProvider
+            MockFeatureConfigOwner.CleverTap -> clevertapConfigProvider
             else -> throw IllegalConfigOwnerException("Unknown owner: $owner")
         }
     }
