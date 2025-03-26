@@ -1,11 +1,14 @@
-package io.proteus.core.provider
+package core.provider
 
+import core.mock.FeatureTestGuide
+import core.mock.MemoryFeatureConfigProvider
+import core.mock.MockFeatureConfigOwner
+import core.mock.MockFeatureConfigProviderFactory
 import io.proteus.core.domain.Feature
 import io.proteus.core.exceptions.IllegalConfigOwnerException
-import io.proteus.core.mock.FeatureTestGuide
-import io.proteus.core.mock.MemoryFeatureConfigProvider
-import io.proteus.core.mock.MockFeatureConfigOwner
-import io.proteus.core.mock.MockFeatureConfigProviderFactory
+import io.proteus.core.provider.FeatureConfigProvider
+import io.proteus.core.provider.FeatureConfigProviderImpl
+import io.proteus.core.provider.StubFeatureConfigProvider
 import org.junit.Test
 
 internal class MultipleConfigOwnerTest {

@@ -1,4 +1,4 @@
-package io.proteus.core.mock
+package core.mock
 
 import io.proteus.core.domain.FeatureContext
 import io.proteus.core.provider.FeatureConfigProvider

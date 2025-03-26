@@ -1,6 +1,6 @@
-package io.proteus.core.mock
+package core.mock
 
-import io.proteus.core.mock.MockFeatureConfigOwner.entries
+import core.mock.MockFeatureConfigOwner.entries
 
 internal enum class MockFeatureConfigOwner(val serviceOwner: String) {
     Firebase("firebase"),

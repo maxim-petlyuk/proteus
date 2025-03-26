@@ -1,8 +1,9 @@
-package io.proteus.core.provider
+package core.provider
 
+import core.mock.MockFeatureConfigOwner
 import io.proteus.core.domain.Feature
 import io.proteus.core.exceptions.MockConfigUnavailableException
-import io.proteus.core.mock.MockFeatureConfigOwner
+import io.proteus.core.provider.StubFeatureConfigProvider
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test

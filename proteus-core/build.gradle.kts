@@ -1,3 +1,4 @@
+import org.jreleaser.model.Active
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -118,6 +119,44 @@ publishing {
     repositories {
         maven {
             setUrl(layout.buildDirectory.dir("staging-deploy"))
+        }
+    }
+}
+
+jreleaser {
+    project {
+        inceptionYear = "2025"
+        author("@maxim-petlyuk")
+    }
+    gitRootSearch = true
+    signing {
+        active = Active.ALWAYS
+        armored = true
+        verify = true
+    }
+    release {
+        github {
+            skipTag = true
+            sign = true
+            branch = "main"
+            branchPush = "main"
+            overwrite = true
+        }
+    }
+    deploy {
+        maven {
+            mavenCentral.create("sonatype") {
+                active = Active.ALWAYS
+                url = "https://central.sonatype.com/api/v1/publisher"
+                stagingRepository(layout.buildDirectory.dir("staging-deploy").get().toString())
+                setAuthorization("Basic")
+                applyMavenCentralRules = false // Wait for fix: https://github.com/kordamp/pomchecker/issues/21
+                sign = true
+                checksums = true
+                sourceJar = true
+                javadocJar = true
+                retryDelay = 60
+            }
         }
     }
 }

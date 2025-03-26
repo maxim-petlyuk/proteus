@@ -1,12 +1,16 @@
-package io.proteus.core.provider
+package core.provider
 
+import core.mock.FeatureTestGuide
+import core.mock.MemoryFeatureConfigProvider
+import core.mock.MemoryMockConfigStorage
+import core.mock.MockFeatureConfigOwner
 import io.proteus.core.data.MockConfigRepositoryImpl
 import io.proteus.core.data.MockConfigStorage
 import io.proteus.core.domain.Feature
-import io.proteus.core.mock.FeatureTestGuide
-import io.proteus.core.mock.MemoryFeatureConfigProvider
-import io.proteus.core.mock.MemoryMockConfigStorage
-import io.proteus.core.mock.MockFeatureConfigOwner
+import io.proteus.core.provider.FeatureConfigProvider
+import io.proteus.core.provider.FeatureConfigProviderFactory
+import io.proteus.core.provider.FeatureConfigProviderImpl
+import io.proteus.core.provider.MockConfigProvider
 import org.junit.Before
 import org.junit.Test
 
