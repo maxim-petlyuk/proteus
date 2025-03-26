@@ -1,3 +1,15 @@
 -keep interface io.proteus.core.domain.FeatureContext { *; }
 -keep interface io.proteus.core.provider.FeatureConfigProvider { *; }
 -keep interface io.proteus.core.provider.FeatureConfigProviderFactory { *; }
+-keep interface io.proteus.core.data.FeatureBookDataSource { *; }
+-keep interface io.proteus.core.data.MockConfigRepository { *; }
+-keep class io.proteus.core.domain.Feature { *; }
+-keep class io.proteus.core.domain.ConfigValue { *; }
+-keep class io.proteus.core.domain.ConfigValue$* { *; }
+-keep class io.proteus.core.provider.Proteus { *; }
+-keep class io.proteus.core.provider.Proteus$Companion { *; }
+-keep class io.proteus.core.provider.Proteus$Builder { *; }
+-keep class io.proteus.core.exceptions.IllegalConfigDataTypeException { *; }
+-keep class io.proteus.core.exceptions.IllegalConfigOwnerException { *; }
+-keep class io.proteus.core.exceptions.MockConfigUnavailableException { *; }
+-keep class io.proteus.core.data.AssetsFeatureBookDataSource { *; }

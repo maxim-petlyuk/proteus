@@ -3,7 +3,6 @@ package io.proteus.ui.presentation.catalog
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.proteus.core.domain.ConfigValue
 import io.proteus.core.domain.Feature
-import io.proteus.core.provider.FeatureConfigOwner
 import io.proteus.ui.domain.entity.FeatureNote
 
 internal class LoadingStatePreviewProvider : PreviewParameterProvider<FeatureCatalogState> {
@@ -25,7 +24,7 @@ internal class LoadedStatePreviewProvider : PreviewParameterProvider<FeatureCata
                         key = "primary_server",
                         defaultValue = "http://example.com",
                         valueClass = String::class,
-                        owner = object : FeatureConfigOwner {}
+                        owner = "Firebase"
                     ),
                     remoteConfigValue = "http://google.com",
                     localConfigValue = ConfigValue.Text("http://override.com")
@@ -35,7 +34,7 @@ internal class LoadedStatePreviewProvider : PreviewParameterProvider<FeatureCata
                         key = "max_group_chat_size",
                         defaultValue = 24,
                         valueClass = Long::class,
-                        owner = object : FeatureConfigOwner {}
+                        owner = "Firebase"
                     ),
                     remoteConfigValue = "12"
                 ),
@@ -44,7 +43,7 @@ internal class LoadedStatePreviewProvider : PreviewParameterProvider<FeatureCata
                         key = "secondary_server",
                         defaultValue = "http://example.com",
                         valueClass = String::class,
-                        owner = object : FeatureConfigOwner {}
+                        owner = "Firebase"
                     ),
                     remoteConfigValue = "http://google.com"
                 ),
@@ -53,7 +52,7 @@ internal class LoadedStatePreviewProvider : PreviewParameterProvider<FeatureCata
                         key = "primary_domain",
                         defaultValue = "http://example.com",
                         valueClass = String::class,
-                        owner = object : FeatureConfigOwner {}
+                        owner = "Firebase"
                     ),
                     remoteConfigValue = "http://google.com"
                 ),
@@ -62,7 +61,7 @@ internal class LoadedStatePreviewProvider : PreviewParameterProvider<FeatureCata
                         key = "optional_domain",
                         defaultValue = "http://example.com",
                         valueClass = String::class,
-                        owner = object : FeatureConfigOwner {}
+                        owner = "Firebase"
                     ),
                     remoteConfigValue = "http://google.com"
                 ),
@@ -71,7 +70,7 @@ internal class LoadedStatePreviewProvider : PreviewParameterProvider<FeatureCata
                         key = "optional_domain",
                         defaultValue = "http://example.com",
                         valueClass = String::class,
-                        owner = object : FeatureConfigOwner {}
+                        owner = "Firebase"
                     ),
                     remoteConfigValue = "http://google.com"
                 )

@@ -3,7 +3,6 @@ package io.proteus.ui.presentation.configurator
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.proteus.core.domain.ConfigValue
 import io.proteus.core.domain.Feature
-import io.proteus.core.provider.FeatureConfigOwner
 import io.proteus.ui.domain.entity.FeatureNote
 
 internal class ConfiguratorLoadingStatePreview : PreviewParameterProvider<FeatureConfiguratorState> {
@@ -23,7 +22,7 @@ internal class TextFeatureConfiguratorStatePreview : PreviewParameterProvider<Fe
                     key = "optional_domain",
                     defaultValue = "http://example.com",
                     valueClass = String::class,
-                    owner = object : FeatureConfigOwner {}
+                    owner = "Firebase"
                 ),
                 remoteConfigValue = "http://google.com",
                 localConfigValue = ConfigValue.Text("http://override.com")
@@ -44,7 +43,7 @@ internal class DecimalFeatureConfiguratorStatePreview : PreviewParameterProvider
                     key = "optional_domain",
                     defaultValue = 0.2,
                     valueClass = Double::class,
-                    owner = object : FeatureConfigOwner {}
+                    owner = "Firebase"
                 ),
                 remoteConfigValue = "http://google.com",
                 localConfigValue = ConfigValue.Double(0.9)
@@ -65,7 +64,7 @@ internal class LongFeatureConfiguratorStatePreview : PreviewParameterProvider<Fe
                     key = "optional_domain",
                     defaultValue = 50,
                     valueClass = Long::class,
-                    owner = object : FeatureConfigOwner {}
+                    owner = "Firebase"
                 ),
                 remoteConfigValue = "100",
                 localConfigValue = ConfigValue.Long(200)
@@ -86,7 +85,7 @@ internal class BooleanFeatureConfiguratorStatePreview : PreviewParameterProvider
                     key = "optional_domain",
                     defaultValue = false,
                     valueClass = Boolean::class,
-                    owner = object : FeatureConfigOwner {}
+                    owner = "Firebase"
                 ),
                 remoteConfigValue = "true"
             ),

@@ -28,7 +28,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -136,22 +135,6 @@ private fun SearchField(
                 textAlign = TextAlign.Center
             )
         }
-    )
-}
-
-@Preview
-@Composable
-private fun EmptySearchPreview() {
-    SearchActionBar(
-        searchQuery = ""
-    )
-}
-
-@Preview
-@Composable
-private fun FilledSearchPreview() {
-    SearchActionBar(
-        searchQuery = "sol"
     )
 }
 

@@ -40,8 +40,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.proteus.ui.R
@@ -49,7 +47,6 @@ import io.proteus.ui.domain.entity.FeatureNote
 import io.proteus.ui.presentation.catalog.FeatureCard
 import io.proteus.ui.presentation.catalog.UiState
 import io.proteus.ui.presentation.configurator.FeatureConfiguratorState.MockInputType
-import io.proteus.ui.presentation.theme.ProteusTheme
 
 @Composable
 internal fun FeatureConfiguratorScreen(
@@ -398,59 +395,4 @@ private fun TextInput(
         readOnly = !enabled,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType)
     )
-}
-
-@Preview
-@Composable
-private fun LoadingPreview(
-    @PreviewParameter(ConfiguratorLoadingStatePreview::class)
-    state: FeatureConfiguratorState
-) {
-    ProteusTheme {
-        FeatureConfiguratorScreen(state = state)
-    }
-}
-
-@Preview
-@Composable
-private fun TextFeaturePreview(
-    @PreviewParameter(TextFeatureConfiguratorStatePreview::class)
-    state: FeatureConfiguratorState
-) {
-    ProteusTheme {
-        FeatureConfiguratorScreen(state = state)
-    }
-}
-
-@Preview
-@Composable
-private fun DoubleFeaturePreview(
-    @PreviewParameter(DecimalFeatureConfiguratorStatePreview::class)
-    state: FeatureConfiguratorState
-) {
-    ProteusTheme {
-        FeatureConfiguratorScreen(state = state)
-    }
-}
-
-@Preview
-@Composable
-private fun LongFeaturePreview(
-    @PreviewParameter(LongFeatureConfiguratorStatePreview::class)
-    state: FeatureConfiguratorState
-) {
-    ProteusTheme {
-        FeatureConfiguratorScreen(state = state)
-    }
-}
-
-@Preview
-@Composable
-private fun BooleanFeaturePreview(
-    @PreviewParameter(BooleanFeatureConfiguratorStatePreview::class)
-    state: FeatureConfiguratorState
-) {
-    ProteusTheme {
-        FeatureConfiguratorScreen(state = state)
-    }
 }

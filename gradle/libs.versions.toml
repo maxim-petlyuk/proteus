@@ -52,6 +52,8 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-config = { module = "com.google.firebase:firebase-config-ktx" }
 proteus-core = { group = "io.github.maxim-petlyuk", name = "proteus-core", version.ref = "proteus" }
+proteus-firebase = { group = "io.github.maxim-petlyuk", name = "proteus-firebase", version.ref = "proteus" }
+proteus-ui = { group = "io.github.maxim-petlyuk", name = "proteus-ui", version.ref = "proteus" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

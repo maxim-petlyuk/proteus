@@ -1,6 +1,5 @@
 package io.proteus.ui.presentation.catalog
 
-import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
@@ -27,14 +25,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import io.proteus.ui.R
 import io.proteus.ui.domain.entity.FeatureNote
-import io.proteus.ui.presentation.theme.ProteusTheme
 
 internal fun LazyListScope.featureCatalog(
     featureBook: List<FeatureNote<*>>,
@@ -250,48 +245,4 @@ private fun FeatureAttributeTextValue(
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
     )
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Composable
-private fun StringFeatureNotePreview(
-    @PreviewParameter(StringFeatureNotePreviewProvider::class)
-    featureNote: FeatureNote<*>
-) {
-    ProteusTheme {
-        FeatureCard(
-            modifier = Modifier,
-            featureNote = featureNote
-        )
-    }
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Composable
-private fun LongFeatureNotePreview(
-    @PreviewParameter(LongFeatureNotePreviewProvider::class)
-    featureNote: FeatureNote<*>
-) {
-    ProteusTheme {
-        FeatureCard(
-            modifier = Modifier,
-            featureNote = featureNote
-        )
-    }
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Composable
-private fun FeatureBookPreview(
-    @PreviewParameter(FeatureBookPreviewProvider::class)
-    featureBook: List<FeatureNote<*>>
-) {
-    ProteusTheme {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            featureCatalog(featureBook = featureBook)
-        }
-    }
 }

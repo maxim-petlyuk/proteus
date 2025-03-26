@@ -23,11 +23,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.proteus.ui.domain.entity.FeatureNote
-import io.proteus.ui.presentation.theme.ProteusTheme
 
 @Composable
 internal fun FeatureCatalogScreen(
@@ -157,32 +154,6 @@ private fun LoadedContent(
         featureCatalog(
             featureBook = state.featureBook,
             onFeatureNoteClick = onFeatureNoteClick
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun LoadingStatePreview(
-    @PreviewParameter(LoadingStatePreviewProvider::class)
-    state: FeatureCatalogState
-) {
-    ProteusTheme {
-        FeatureCatalogScreen(
-            state = state
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun LoadedStatePreview(
-    @PreviewParameter(LoadedStatePreviewProvider::class)
-    state: FeatureCatalogState
-) {
-    ProteusTheme {
-        FeatureCatalogScreen(
-            state = state
         )
     }
 }
