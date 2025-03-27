@@ -77,9 +77,12 @@ class Proteus private constructor(
 
         @Volatile
         private var instance: Proteus? = null
+        private var mutex = Object()
 
         fun getInstance(): Proteus {
-            return instance ?: throw IllegalStateException("Proteus is not initialized. Call Builder().build() first.")
+            return synchronized(mutex) {
+                instance ?: throw IllegalStateException("Proteus is not initialized. Call Builder().build() first.")
+            }
         }
     }
 }

@@ -154,6 +154,7 @@ jreleaser {
     }
     release {
         github {
+            name = "proteus"
             skipTag = true
             sign = true
             branch = "main"

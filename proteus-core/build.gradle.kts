@@ -127,6 +127,8 @@ jreleaser {
     project {
         inceptionYear = "2025"
         author("@maxim-petlyuk")
+        name = publishProperties["CORE_ARTIFACT_ID"].toString()
+        version = publishProperties["CORE_VERSION_NAME"].toString()
     }
     gitRootSearch = true
     signing {
@@ -136,6 +138,7 @@ jreleaser {
     }
     release {
         github {
+            name = "proteus"
             skipTag = true
             sign = true
             branch = "main"
