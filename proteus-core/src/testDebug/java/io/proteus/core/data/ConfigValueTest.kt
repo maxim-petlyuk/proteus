@@ -1,4 +1,4 @@
-package core.data
+package io.proteus.core.data
 
 import io.proteus.core.domain.ConfigValue
 import org.junit.Test

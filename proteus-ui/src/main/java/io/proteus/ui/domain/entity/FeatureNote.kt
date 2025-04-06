@@ -5,6 +5,7 @@ import io.proteus.core.domain.FeatureContext
 
 internal data class FeatureNote<DataType : Any>(
     val feature: FeatureContext<DataType>,
+    val serviceOwner: String,
     val remoteConfigValue: String,
     val localConfigValue: ConfigValue<DataType>? = null,
 ) {

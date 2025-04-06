@@ -24,6 +24,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // simple implementation of DI just for demo, better to create a single instance via
+        // your DI framework - dagger/hilt, koin, etc..
+        val featureConfigProvider = (application as MainApp).getFeatureConfigProvider()
+
         enableEdgeToEdge()
         setContent {
             MockConfigLabTheme {

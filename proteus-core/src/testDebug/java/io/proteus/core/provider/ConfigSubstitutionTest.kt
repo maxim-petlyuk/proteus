@@ -1,16 +1,10 @@
-package core.provider
+package io.proteus.core.provider
 
-import core.mock.FeatureTestGuide
-import core.mock.MemoryFeatureConfigProvider
-import core.mock.MemoryMockConfigStorage
-import core.mock.MockFeatureConfigOwner
 import io.proteus.core.data.MockConfigRepositoryImpl
 import io.proteus.core.data.MockConfigStorage
-import io.proteus.core.domain.Feature
-import io.proteus.core.provider.FeatureConfigProvider
-import io.proteus.core.provider.FeatureConfigProviderFactory
-import io.proteus.core.provider.FeatureConfigProviderImpl
-import io.proteus.core.provider.MockConfigProvider
+import io.proteus.core.mock.FeatureTestGuide
+import io.proteus.core.mock.MemoryFeatureConfigProvider
+import io.proteus.core.mock.MemoryMockConfigStorage
 import org.junit.Before
 import org.junit.Test
 
@@ -28,18 +22,12 @@ internal class ConfigSubstitutionTest {
     @Test
     fun `verify that mocked boolean config is used when available`() {
         // Given
-        val feature = Feature(
-            "featureA",
-            false,
-            Boolean::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
-
+        val featureKey = "featureA"
         val expectedValue = true
-        memoryMockConfigStorage.save(feature.key, expectedValue)
+        memoryMockConfigStorage.save(featureKey, expectedValue)
 
         val featureTestGuideA = FeatureTestGuide(
-            feature = feature,
+            featureKey = featureKey,
             mockValue = false,
             remoteValue = false,
             givenSource = FeatureTestGuide.Source.Mock
@@ -51,7 +39,7 @@ internal class ConfigSubstitutionTest {
         )
 
         // When
-        val mockedValueOfFeatureA = configProvider.getBoolean(feature)
+        val mockedValueOfFeatureA = configProvider.getBoolean(featureKey)
 
         // Then
         assert(mockedValueOfFeatureA == expectedValue) {
@@ -63,17 +51,11 @@ internal class ConfigSubstitutionTest {
     @Test
     fun `verify that remote boolean config is used when mocked config is not available`() {
         // Given
-        val feature = Feature(
-            "featureA",
-            false,
-            Boolean::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
-
+        val featureKey = "featureA"
         val expectedValue = true
 
         val featureTestGuideA = FeatureTestGuide(
-            feature = feature,
+            featureKey = featureKey,
             mockValue = false,
             remoteValue = expectedValue,
             givenSource = FeatureTestGuide.Source.Remote
@@ -85,7 +67,7 @@ internal class ConfigSubstitutionTest {
         )
 
         // When
-        val mockedValueOfFeatureA = configProvider.getBoolean(feature)
+        val mockedValueOfFeatureA = configProvider.getBoolean(featureKey)
 
         // Then
         assert(mockedValueOfFeatureA == expectedValue) {
@@ -97,18 +79,12 @@ internal class ConfigSubstitutionTest {
     @Test
     fun `verify that mocked string config is used when available`() {
         // Given
-        val feature = Feature(
-            "featureB",
-            "",
-            String::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
-
+        val featureKey = "featureB"
         val expectedValue = "this is a string"
-        memoryMockConfigStorage.save(feature.key, expectedValue)
+        memoryMockConfigStorage.save(featureKey, expectedValue)
 
         val featureTestGuideB = FeatureTestGuide(
-            feature = feature,
+            featureKey = featureKey,
             mockValue = "",
             remoteValue = "",
             givenSource = FeatureTestGuide.Source.Mock
@@ -120,7 +96,7 @@ internal class ConfigSubstitutionTest {
         )
 
         // When
-        val mockedValueOfFeatureB = configProvider.getString(feature)
+        val mockedValueOfFeatureB = configProvider.getString(featureKey)
 
         // Then
         assert(mockedValueOfFeatureB == expectedValue) {
@@ -132,17 +108,11 @@ internal class ConfigSubstitutionTest {
     @Test
     fun `verify that remote string config is used when mocked config is not available`() {
         // Given
-        val feature = Feature(
-            "featureB",
-            "",
-            String::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
-
+        val featureKey = "featureB"
         val expectedValue = "this is a string"
 
         val featureTestGuideB = FeatureTestGuide(
-            feature = feature,
+            featureKey = featureKey,
             mockValue = "",
             remoteValue = expectedValue,
             givenSource = FeatureTestGuide.Source.Remote
@@ -154,7 +124,7 @@ internal class ConfigSubstitutionTest {
         )
 
         // When
-        val mockedValueOfFeatureB = configProvider.getString(feature)
+        val mockedValueOfFeatureB = configProvider.getString(featureKey)
 
         // Then
         assert(mockedValueOfFeatureB == expectedValue) {
@@ -166,18 +136,12 @@ internal class ConfigSubstitutionTest {
     @Test
     fun `verify that mocked long config is used when available`() {
         // Given
-        val feature = Feature(
-            "featureC",
-            0L,
-            Long::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
-
+        val featureKey = "featureC"
         val expectedValue = 5L
-        memoryMockConfigStorage.save(feature.key, expectedValue)
+        memoryMockConfigStorage.save(featureKey, expectedValue)
 
         val featureTestGuideC = FeatureTestGuide(
-            feature = feature,
+            featureKey = featureKey,
             mockValue = 0L,
             remoteValue = 0L,
             givenSource = FeatureTestGuide.Source.Mock
@@ -189,7 +153,7 @@ internal class ConfigSubstitutionTest {
         )
 
         // When
-        val mockedValueOfFeatureC = configProvider.getLong(feature)
+        val mockedValueOfFeatureC = configProvider.getLong(featureKey)
 
         // Then
         assert(mockedValueOfFeatureC == expectedValue) {
@@ -201,17 +165,11 @@ internal class ConfigSubstitutionTest {
     @Test
     fun `verify that remote long config is used when mocked config is not available`() {
         // Given
-        val feature = Feature(
-            "featureC",
-            0L,
-            Long::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
-
+        val featureKey = "featureC"
         val expectedValue = 5L
 
         val featureTestGuideC = FeatureTestGuide(
-            feature = feature,
+            featureKey = featureKey,
             mockValue = 0L,
             remoteValue = expectedValue,
             givenSource = FeatureTestGuide.Source.Remote
@@ -223,7 +181,7 @@ internal class ConfigSubstitutionTest {
         )
 
         // When
-        val mockedValueOfFeatureC = configProvider.getLong(feature)
+        val mockedValueOfFeatureC = configProvider.getLong(featureKey)
 
         // Then
         assert(mockedValueOfFeatureC == expectedValue) {
@@ -235,18 +193,12 @@ internal class ConfigSubstitutionTest {
     @Test
     fun `verify that mocked double config is used when available`() {
         // Given
-        val feature = Feature(
-            "featureD",
-            0.0,
-            Double::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
-
+        val featureKey = "featureD"
         val expectedValue = 5.0
-        memoryMockConfigStorage.save(feature.key, expectedValue)
+        memoryMockConfigStorage.save(featureKey, expectedValue)
 
         val featureTestGuideD = FeatureTestGuide(
-            feature = feature,
+            featureKey = featureKey,
             mockValue = 0.0,
             remoteValue = 0.0,
             givenSource = FeatureTestGuide.Source.Mock
@@ -258,7 +210,7 @@ internal class ConfigSubstitutionTest {
         )
 
         // When
-        val mockedValueOfFeatureD = configProvider.getDouble(feature)
+        val mockedValueOfFeatureD = configProvider.getDouble(featureKey)
 
         // Then
         assert(mockedValueOfFeatureD == expectedValue) {
@@ -270,17 +222,11 @@ internal class ConfigSubstitutionTest {
     @Test
     fun `verify that remote double config is used when mocked config is not available`() {
         // Given
-        val feature = Feature(
-            "featureD",
-            0.0,
-            Double::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
-
+        val featureKey = "featureD"
         val expectedValue = 5.0
 
         val featureTestGuideD = FeatureTestGuide(
-            feature = feature,
+            featureKey = featureKey,
             mockValue = 0.0,
             remoteValue = expectedValue,
             givenSource = FeatureTestGuide.Source.Remote
@@ -292,7 +238,7 @@ internal class ConfigSubstitutionTest {
         )
 
         // When
-        val mockedValueOfFeatureD = configProvider.getDouble(feature)
+        val mockedValueOfFeatureD = configProvider.getDouble(featureKey)
 
         // Then
         assert(mockedValueOfFeatureD == expectedValue) {
@@ -303,8 +249,12 @@ internal class ConfigSubstitutionTest {
 
     private fun provideMemoryConfigFactory(vararg featuresGuide: FeatureTestGuide<*>): FeatureConfigProviderFactory {
         return object : FeatureConfigProviderFactory {
-            override fun getProvider(owner: String): FeatureConfigProvider {
+            override fun getProvider(featureKey: String): FeatureConfigProvider {
                 return MemoryFeatureConfigProvider(*featuresGuide)
+            }
+
+            override fun getProviderTag(featureKey: String): String {
+                return "MemoryMockConfigProvider"
             }
         }
     }

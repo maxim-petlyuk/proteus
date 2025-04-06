@@ -1,4 +1,4 @@
-package core.mock
+package io.proteus.core.mock
 
 import io.proteus.core.data.MockConfigStorage
 

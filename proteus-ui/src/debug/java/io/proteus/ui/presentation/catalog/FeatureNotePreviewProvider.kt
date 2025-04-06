@@ -13,8 +13,8 @@ internal class StringFeatureNotePreviewProvider : PreviewParameterProvider<Featu
                 key = "primary_server",
                 defaultValue = "http://example.com",
                 valueClass = String::class,
-                owner = "Firebase"
             ),
+            serviceOwner = "firebase",
             remoteConfigValue = "http://google.com"
         )
     )
@@ -28,8 +28,8 @@ internal class LongFeatureNotePreviewProvider : PreviewParameterProvider<Feature
                 key = "max_group_chat_size",
                 defaultValue = 24,
                 valueClass = Long::class,
-                owner = "Firebase"
             ),
+            serviceOwner = "firebase",
             remoteConfigValue = "12"
         )
     )
@@ -44,8 +44,8 @@ internal class FeatureBookPreviewProvider : PreviewParameterProvider<List<Featur
                     key = "primary_server",
                     defaultValue = "http://example.com",
                     valueClass = String::class,
-                    owner = "Firebase"
                 ),
+                serviceOwner = "firebase",
                 remoteConfigValue = "http://google.com",
                 localConfigValue = ConfigValue.Text("http://override.com")
             ),
@@ -54,8 +54,8 @@ internal class FeatureBookPreviewProvider : PreviewParameterProvider<List<Featur
                     key = "max_group_chat_size",
                     defaultValue = 24,
                     valueClass = Long::class,
-                    owner = "Firebase"
                 ),
+                serviceOwner = "firebase",
                 remoteConfigValue = "12"
             ),
             FeatureNote<String>(
@@ -63,8 +63,8 @@ internal class FeatureBookPreviewProvider : PreviewParameterProvider<List<Featur
                     key = "secondary_server",
                     defaultValue = "http://example.com",
                     valueClass = String::class,
-                    owner = "Firebase"
                 ),
+                serviceOwner = "firebase",
                 remoteConfigValue = "http://google.com"
             ),
             FeatureNote<String>(
@@ -72,8 +72,8 @@ internal class FeatureBookPreviewProvider : PreviewParameterProvider<List<Featur
                     key = "primary_domain",
                     defaultValue = "http://example.com",
                     valueClass = String::class,
-                    owner = "Firebase"
                 ),
+                serviceOwner = "firebase",
                 remoteConfigValue = "http://google.com"
             ),
             FeatureNote<String>(
@@ -81,8 +81,8 @@ internal class FeatureBookPreviewProvider : PreviewParameterProvider<List<Featur
                     key = "optional_domain",
                     defaultValue = "http://example.com",
                     valueClass = String::class,
-                    owner = "Firebase"
                 ),
+                serviceOwner = "firebase",
                 remoteConfigValue = "http://google.com"
             ),
             FeatureNote<String>(
@@ -90,8 +90,8 @@ internal class FeatureBookPreviewProvider : PreviewParameterProvider<List<Featur
                     key = "optional_domain",
                     defaultValue = "http://example.com",
                     valueClass = String::class,
-                    owner = "Firebase"
                 ),
+                serviceOwner = "firebase",
                 remoteConfigValue = "http://google.com"
             )
         )

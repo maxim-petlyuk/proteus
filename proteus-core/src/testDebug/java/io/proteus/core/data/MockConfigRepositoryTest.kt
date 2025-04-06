@@ -1,21 +1,16 @@
-package core.data
+package io.proteus.core.data
 
-import core.mock.MemoryMockConfigStorage
-import core.mock.MockFeatureConfigOwner
-import io.proteus.core.data.MockConfigRepository
-import io.proteus.core.data.MockConfigRepositoryImpl
-import io.proteus.core.data.MockConfigStorage
 import io.proteus.core.domain.ConfigValue
-import io.proteus.core.domain.Feature
 import io.proteus.core.exceptions.IllegalConfigDataTypeException
+import io.proteus.core.mock.MemoryMockConfigStorage
+import io.proteus.core.mock.MockFeatureConfigOwner
 import org.junit.Before
 import org.junit.Test
 
 internal class MockConfigRepositoryTest {
 
     private val memoryMockConfigStorage: MockConfigStorage = MemoryMockConfigStorage()
-    private val mockConfigRepository: MockConfigRepository =
-        MockConfigRepositoryImpl(memoryMockConfigStorage)
+    private val mockConfigRepository: MockConfigRepository = MockConfigRepositoryImpl(memoryMockConfigStorage)
 
     @Before
     fun setUp() {
@@ -25,15 +20,10 @@ internal class MockConfigRepositoryTest {
     @Test
     fun `should return null when feature is not found`() {
         // Given
-        val feature = Feature(
-            "feature",
-            false,
-            Boolean::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
+        val featureKey = "feature"
 
         // When
-        val result = mockConfigRepository.getMockedConfigValue(feature)
+        val result = mockConfigRepository.getMockedConfigValue(featureKey, String::class)
 
         // Then
         assert(result == null)
@@ -42,18 +32,13 @@ internal class MockConfigRepositoryTest {
     @Test
     fun `should return correct long value when feature is found`() {
         // Given
-        val feature = Feature(
-            "feature",
-            0L,
-            Long::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
+        val featureKey = "feature"
 
         val expectedValue = 5L
-        memoryMockConfigStorage.save(feature.key, expectedValue)
+        memoryMockConfigStorage.save(featureKey, expectedValue)
 
         // When
-        val result = mockConfigRepository.getMockedConfigValue(feature)
+        val result = mockConfigRepository.getMockedConfigValue(featureKey, Long::class)
 
         // Then
         assert(result is ConfigValue.Long) {
@@ -68,18 +53,13 @@ internal class MockConfigRepositoryTest {
     @Test
     fun `should return correct string value when feature is found`() {
         // Given
-        val feature = Feature(
-            "feature",
-            "",
-            String::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
-
+        val featureKey = "feature"
         val expectedValue = "John Doe"
-        memoryMockConfigStorage.save(feature.key, expectedValue)
+
+        memoryMockConfigStorage.save(featureKey, expectedValue)
 
         // When
-        val result = mockConfigRepository.getMockedConfigValue(feature)
+        val result = mockConfigRepository.getMockedConfigValue(featureKey, String::class)
 
         // Then
         assert(result is ConfigValue.Text) {
@@ -94,18 +74,13 @@ internal class MockConfigRepositoryTest {
     @Test
     fun `should return correct double value when feature is found`() {
         // Given
-        val feature = Feature(
-            "feature",
-            0.0,
-            Double::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
-
+        val featureKey = "feature"
         val expectedValue = 5.7
-        memoryMockConfigStorage.save(feature.key, expectedValue)
+
+        memoryMockConfigStorage.save(featureKey, expectedValue)
 
         // When
-        val result = mockConfigRepository.getMockedConfigValue(feature)
+        val result = mockConfigRepository.getMockedConfigValue(featureKey, Double::class)
 
         // Then
         assert(result is ConfigValue.Double) {
@@ -120,18 +95,13 @@ internal class MockConfigRepositoryTest {
     @Test
     fun `should return correct boolean value when feature is found`() {
         // Given
-        val feature = Feature(
-            "feature",
-            false,
-            Boolean::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
-
+        val featureKey = "feature"
         val expectedValue = true
-        memoryMockConfigStorage.save(feature.key, expectedValue)
+
+        memoryMockConfigStorage.save(featureKey, expectedValue)
 
         // When
-        val result = mockConfigRepository.getMockedConfigValue(feature)
+        val result = mockConfigRepository.getMockedConfigValue(featureKey, Boolean::class)
 
         // Then
         assert(result is ConfigValue.Boolean) {
@@ -146,18 +116,13 @@ internal class MockConfigRepositoryTest {
     @Test(expected = IllegalConfigDataTypeException::class)
     fun `throw exception when feature is found but value is not of correct type`() {
         // Given
-        val feature = Feature(
-            "feature",
-            MockFeatureConfigOwner.Firebase,
-            MockFeatureConfigOwner::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
-
+        val featureKey = "feature"
         val expectedValue = "John Doe"
-        memoryMockConfigStorage.save(feature.key, expectedValue)
+
+        memoryMockConfigStorage.save(featureKey, expectedValue)
 
         // When
-        mockConfigRepository.getMockedConfigValue(feature)
+        mockConfigRepository.getMockedConfigValue(featureKey, MockFeatureConfigOwner::class)
 
         // Then
     }

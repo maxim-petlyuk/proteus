@@ -1,14 +1,10 @@
-package core.provider
+package io.proteus.core.provider
 
-import core.mock.FeatureTestGuide
-import core.mock.MemoryFeatureConfigProvider
-import core.mock.MockFeatureConfigOwner
-import core.mock.MockFeatureConfigProviderFactory
-import io.proteus.core.domain.Feature
 import io.proteus.core.exceptions.IllegalConfigOwnerException
-import io.proteus.core.provider.FeatureConfigProvider
-import io.proteus.core.provider.FeatureConfigProviderImpl
-import io.proteus.core.provider.StubFeatureConfigProvider
+import io.proteus.core.mock.FeatureTestGuide
+import io.proteus.core.mock.MemoryFeatureConfigProvider
+import io.proteus.core.mock.MockFeatureConfigOwner
+import io.proteus.core.mock.MockFeatureConfigProviderFactory
 import org.junit.Test
 
 internal class MultipleConfigOwnerTest {
@@ -21,11 +17,15 @@ internal class MultipleConfigOwnerTest {
 
         val configProviderFactory = MockFeatureConfigProviderFactory(
             firebaseFeatureConfigProvider,
-            cleverTapFeatureConfigProvider
+            cleverTapFeatureConfigProvider,
+            serviceMapping = mapOf(
+                "featureA" to MockFeatureConfigOwner.Firebase,
+                "featureB" to MockFeatureConfigOwner.CleverTap
+            )
         )
 
         // When
-        configProviderFactory.getProvider("unknownProvider")
+        configProviderFactory.getProvider("UnknownFeatureKey")
 
         // Then
         // Expecting IllegalConfigOwnerException
@@ -34,29 +34,17 @@ internal class MultipleConfigOwnerTest {
     @Test
     fun `verify that the provider returns the correct config value of the right owner`() {
         // Given
-        val featureA = Feature(
-            key = "featureA",
-            owner = MockFeatureConfigOwner.Firebase.serviceOwner,
-            defaultValue = false,
-            valueClass = Boolean::class
-        )
-
+        val featureA = "featureA"
         val featureTestGuideA = FeatureTestGuide(
-            feature = featureA,
+            featureKey = featureA,
             mockValue = true,
             remoteValue = false,
             givenSource = FeatureTestGuide.Source.Mock
         )
 
-        val featureB = Feature(
-            key = "featureB",
-            owner = MockFeatureConfigOwner.CleverTap.serviceOwner,
-            defaultValue = "",
-            valueClass = String::class
-        )
-
+        val featureB = "featureB"
         val featureTestGuideB = FeatureTestGuide(
-            feature = featureB,
+            featureKey = featureB,
             mockValue = "this is mocked value",
             remoteValue = "this is remote value",
             givenSource = FeatureTestGuide.Source.Remote
@@ -69,7 +57,11 @@ internal class MultipleConfigOwnerTest {
             StubFeatureConfigProvider,
             MockFeatureConfigProviderFactory(
                 firebaseFeatureConfigProvider,
-                cleverTapFeatureConfigProvider
+                cleverTapFeatureConfigProvider,
+                serviceMapping = mapOf(
+                    featureA to MockFeatureConfigOwner.Firebase,
+                    featureB to MockFeatureConfigOwner.CleverTap
+                )
             )
         )
 

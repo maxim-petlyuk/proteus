@@ -22,8 +22,8 @@ internal class TextFeatureConfiguratorStatePreview : PreviewParameterProvider<Fe
                     key = "optional_domain",
                     defaultValue = "http://example.com",
                     valueClass = String::class,
-                    owner = "Firebase"
                 ),
+                serviceOwner = "firebase",
                 remoteConfigValue = "http://google.com",
                 localConfigValue = ConfigValue.Text("http://override.com")
             ),
@@ -43,8 +43,8 @@ internal class DecimalFeatureConfiguratorStatePreview : PreviewParameterProvider
                     key = "optional_domain",
                     defaultValue = 0.2,
                     valueClass = Double::class,
-                    owner = "Firebase"
                 ),
+                serviceOwner = "firebase",
                 remoteConfigValue = "http://google.com",
                 localConfigValue = ConfigValue.Double(0.9)
             ),
@@ -64,8 +64,8 @@ internal class LongFeatureConfiguratorStatePreview : PreviewParameterProvider<Fe
                     key = "optional_domain",
                     defaultValue = 50,
                     valueClass = Long::class,
-                    owner = "Firebase"
                 ),
+                serviceOwner = "firebase",
                 remoteConfigValue = "100",
                 localConfigValue = ConfigValue.Long(200)
             ),
@@ -85,8 +85,8 @@ internal class BooleanFeatureConfiguratorStatePreview : PreviewParameterProvider
                     key = "optional_domain",
                     defaultValue = false,
                     valueClass = Boolean::class,
-                    owner = "Firebase"
                 ),
+                serviceOwner = "firebase",
                 remoteConfigValue = "true"
             ),
             mockInputType = FeatureConfiguratorState.MockInputType.Toggle(false),

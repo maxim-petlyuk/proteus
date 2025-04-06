@@ -24,7 +24,6 @@ class FeatureMetadataMapper {
                     key = from.featureKey,
                     defaultValue = from.defaultValue,
                     valueClass = String::class,
-                    owner = serviceOwner
                 )
             }
 
@@ -36,7 +35,6 @@ class FeatureMetadataMapper {
                     key = from.featureKey,
                     defaultValue = defaultValue,
                     valueClass = Long::class,
-                    owner = serviceOwner
                 )
             }
 
@@ -48,7 +46,6 @@ class FeatureMetadataMapper {
                     key = from.featureKey,
                     defaultValue = defaultValue,
                     valueClass = Boolean::class,
-                    owner = serviceOwner
                 )
             }
 
@@ -60,7 +57,6 @@ class FeatureMetadataMapper {
                     key = from.featureKey,
                     defaultValue = defaultValue,
                     valueClass = Double::class,
-                    owner = serviceOwner
                 )
             }
 

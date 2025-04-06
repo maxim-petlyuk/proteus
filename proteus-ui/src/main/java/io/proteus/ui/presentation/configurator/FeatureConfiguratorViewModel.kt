@@ -121,11 +121,11 @@ internal class FeatureConfiguratorViewModel(
                 try {
                     if (currentState.isOverrideActivated) {
                         featureBookRepository.saveMockedConfig(
-                            feature = featureNote.feature,
+                            featureKey = featureNote.feature.key,
                             configValue = mockInputType.asConfigValue()
                         )
                     } else {
-                        featureBookRepository.removeMockedConfig(featureNote.feature)
+                        featureBookRepository.removeMockedConfig(featureNote.feature.key)
                     }
 
                     rebuild {

@@ -5,7 +5,13 @@ import io.proteus.core.provider.FeatureConfigProviderFactory
 
 class FirebaseOnlyProviderFactory : FeatureConfigProviderFactory {
 
-    override fun getProvider(owner: String): FeatureConfigProvider {
-        return FirebaseFeatureConfigProvider()
+    private val firebaseFeatureConfigProvider = FirebaseFeatureConfigProvider()
+
+    override fun getProvider(featureKey: String): FeatureConfigProvider {
+        return firebaseFeatureConfigProvider
+    }
+
+    override fun getProviderTag(featureKey: String): String {
+        return "firebase"
     }
 }

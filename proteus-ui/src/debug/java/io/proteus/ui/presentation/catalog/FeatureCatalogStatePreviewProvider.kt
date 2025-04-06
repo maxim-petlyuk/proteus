@@ -24,8 +24,8 @@ internal class LoadedStatePreviewProvider : PreviewParameterProvider<FeatureCata
                         key = "primary_server",
                         defaultValue = "http://example.com",
                         valueClass = String::class,
-                        owner = "Firebase"
                     ),
+                    serviceOwner = "firebase",
                     remoteConfigValue = "http://google.com",
                     localConfigValue = ConfigValue.Text("http://override.com")
                 ),
@@ -34,8 +34,8 @@ internal class LoadedStatePreviewProvider : PreviewParameterProvider<FeatureCata
                         key = "max_group_chat_size",
                         defaultValue = 24,
                         valueClass = Long::class,
-                        owner = "Firebase"
                     ),
+                    serviceOwner = "firebase",
                     remoteConfigValue = "12"
                 ),
                 FeatureNote<String>(
@@ -43,8 +43,8 @@ internal class LoadedStatePreviewProvider : PreviewParameterProvider<FeatureCata
                         key = "secondary_server",
                         defaultValue = "http://example.com",
                         valueClass = String::class,
-                        owner = "Firebase"
                     ),
+                    serviceOwner = "firebase",
                     remoteConfigValue = "http://google.com"
                 ),
                 FeatureNote<String>(
@@ -52,8 +52,8 @@ internal class LoadedStatePreviewProvider : PreviewParameterProvider<FeatureCata
                         key = "primary_domain",
                         defaultValue = "http://example.com",
                         valueClass = String::class,
-                        owner = "Firebase"
                     ),
+                    serviceOwner = "firebase",
                     remoteConfigValue = "http://google.com"
                 ),
                 FeatureNote<String>(
@@ -61,8 +61,8 @@ internal class LoadedStatePreviewProvider : PreviewParameterProvider<FeatureCata
                         key = "optional_domain",
                         defaultValue = "http://example.com",
                         valueClass = String::class,
-                        owner = "Firebase"
                     ),
+                    serviceOwner = "firebase",
                     remoteConfigValue = "http://google.com"
                 ),
                 FeatureNote<String>(
@@ -70,8 +70,8 @@ internal class LoadedStatePreviewProvider : PreviewParameterProvider<FeatureCata
                         key = "optional_domain",
                         defaultValue = "http://example.com",
                         valueClass = String::class,
-                        owner = "Firebase"
                     ),
+                    serviceOwner = "firebase",
                     remoteConfigValue = "http://google.com"
                 )
             )

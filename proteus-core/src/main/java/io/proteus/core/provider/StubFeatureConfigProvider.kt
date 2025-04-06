@@ -1,23 +1,22 @@
 package io.proteus.core.provider
 
-import io.proteus.core.domain.FeatureContext
 import io.proteus.core.exceptions.MockConfigUnavailableException
 
 data object StubFeatureConfigProvider : FeatureConfigProvider {
 
-    override fun getBoolean(feature: FeatureContext<Boolean>): Boolean {
+    override fun getBoolean(featureKey: String): Boolean {
         throw MockConfigUnavailableException("Mock config is not available under StubFeatureConfigProvider")
     }
 
-    override fun getString(feature: FeatureContext<String>): String {
+    override fun getString(featureKey: String): String {
         throw MockConfigUnavailableException("Mock config is not available under StubFeatureConfigProvider")
     }
 
-    override fun getLong(feature: FeatureContext<Long>): Long {
+    override fun getLong(featureKey: String): Long {
         throw MockConfigUnavailableException("Mock config is not available under StubFeatureConfigProvider")
     }
 
-    override fun getDouble(feature: FeatureContext<Double>): Double {
+    override fun getDouble(featureKey: String): Double {
         throw MockConfigUnavailableException("Mock config is not available under StubFeatureConfigProvider")
     }
 }

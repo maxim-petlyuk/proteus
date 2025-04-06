@@ -7,5 +7,4 @@ interface FeatureContext<DataType : Any> {
     val key: String
     val defaultValue: DataType
     val valueClass: KClass<DataType>
-    val owner: String
 }

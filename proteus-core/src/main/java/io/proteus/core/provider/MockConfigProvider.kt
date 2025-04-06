@@ -2,7 +2,6 @@ package io.proteus.core.provider
 
 import io.proteus.core.data.MockConfigRepository
 import io.proteus.core.domain.ConfigValue
-import io.proteus.core.domain.FeatureContext
 import io.proteus.core.exceptions.MockConfigUnavailableException
 
 internal class MockConfigProvider(
@@ -10,8 +9,8 @@ internal class MockConfigProvider(
 ) : FeatureConfigProvider {
 
     @Throws(MockConfigUnavailableException::class)
-    override fun getBoolean(feature: FeatureContext<Boolean>): Boolean {
-        val localConfig = mockConfigRepository.getMockedConfigValue(feature)
+    override fun getBoolean(featureKey: String): Boolean {
+        val localConfig = mockConfigRepository.getMockedConfigValue(featureKey, Boolean::class)
 
         if (localConfig !is ConfigValue.Boolean) {
             throw MockConfigUnavailableException()
@@ -21,8 +20,8 @@ internal class MockConfigProvider(
     }
 
     @Throws(MockConfigUnavailableException::class)
-    override fun getString(feature: FeatureContext<String>): String {
-        val localConfig = mockConfigRepository.getMockedConfigValue(feature)
+    override fun getString(featureKey: String): String {
+        val localConfig = mockConfigRepository.getMockedConfigValue(featureKey, String::class)
 
         if (localConfig !is ConfigValue.Text) {
             throw MockConfigUnavailableException()
@@ -32,8 +31,8 @@ internal class MockConfigProvider(
     }
 
     @Throws(MockConfigUnavailableException::class)
-    override fun getLong(feature: FeatureContext<Long>): Long {
-        val localConfig = mockConfigRepository.getMockedConfigValue(feature)
+    override fun getLong(featureKey: String): Long {
+        val localConfig = mockConfigRepository.getMockedConfigValue(featureKey, Long::class)
 
         if (localConfig !is ConfigValue.Long) {
             throw MockConfigUnavailableException()
@@ -43,8 +42,8 @@ internal class MockConfigProvider(
     }
 
     @Throws(MockConfigUnavailableException::class)
-    override fun getDouble(feature: FeatureContext<Double>): Double {
-        val localConfig = mockConfigRepository.getMockedConfigValue(feature)
+    override fun getDouble(featureKey: String): Double {
+        val localConfig = mockConfigRepository.getMockedConfigValue(featureKey, Double::class)
 
         if (localConfig !is ConfigValue.Double) {
             throw MockConfigUnavailableException()

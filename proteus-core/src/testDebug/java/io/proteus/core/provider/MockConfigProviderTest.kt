@@ -1,12 +1,9 @@
-package core.provider
+package io.proteus.core.provider
 
-import core.mock.MemoryMockConfigStorage
-import core.mock.MockFeatureConfigOwner
 import io.proteus.core.data.MockConfigRepositoryImpl
 import io.proteus.core.data.MockConfigStorage
-import io.proteus.core.domain.Feature
 import io.proteus.core.exceptions.MockConfigUnavailableException
-import io.proteus.core.provider.MockConfigProvider
+import io.proteus.core.mock.MemoryMockConfigStorage
 import org.junit.Before
 import org.junit.Test
 
@@ -24,18 +21,13 @@ internal class MockConfigProviderTest {
     @Test
     fun `should return correct mocked boolean value when feature is found`() {
         // Given
-        val feature = Feature(
-            "featureA",
-            false,
-            Boolean::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
+        val featureA = "featureA"
 
         val expectedValue = true
-        memoryMockConfigStorage.save(feature.key, expectedValue)
+        memoryMockConfigStorage.save(featureA, expectedValue)
 
         // When
-        val result = mockConfigProvider.getBoolean(feature)
+        val result = mockConfigProvider.getBoolean(featureA)
 
         // Then
         assert(result == expectedValue) {
@@ -46,15 +38,10 @@ internal class MockConfigProviderTest {
     @Test(expected = MockConfigUnavailableException::class)
     fun `should throw exception when boolean config value is not found`() {
         // Given
-        val feature = Feature(
-            "featureA",
-            false,
-            Boolean::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
+        val featureA = "featureA"
 
         // When
-        mockConfigProvider.getBoolean(feature)
+        mockConfigProvider.getBoolean(featureA)
 
         // Then
         // Expecting MockConfigUnavailableException
@@ -63,18 +50,13 @@ internal class MockConfigProviderTest {
     @Test
     fun `should return correct mocked string value when feature is found`() {
         // Given
-        val feature = Feature(
-            "featureB",
-            "",
-            String::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
+        val featureB = "featureB"
 
         val expectedValue = "this is a string"
-        memoryMockConfigStorage.save(feature.key, expectedValue)
+        memoryMockConfigStorage.save(featureB, expectedValue)
 
         // When
-        val result = mockConfigProvider.getString(feature)
+        val result = mockConfigProvider.getString(featureB)
 
         // Then
         assert(result == expectedValue) {
@@ -85,15 +67,10 @@ internal class MockConfigProviderTest {
     @Test(expected = MockConfigUnavailableException::class)
     fun `should throw exception when text config value is not found`() {
         // Given
-        val feature = Feature(
-            "featureB",
-            "",
-            String::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
+        val featureB = "featureB"
 
         // When
-        mockConfigProvider.getString(feature)
+        mockConfigProvider.getString(featureB)
 
         // Then
         // Expecting MockConfigUnavailableException
@@ -102,18 +79,13 @@ internal class MockConfigProviderTest {
     @Test
     fun `should return correct mocked long value when feature is found`() {
         // Given
-        val feature = Feature(
-            "featureC",
-            0L,
-            Long::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
-
+        val featureC = "featureC"
         val expectedValue = 100L
-        memoryMockConfigStorage.save(feature.key, expectedValue)
+
+        memoryMockConfigStorage.save(featureC, expectedValue)
 
         // When
-        val result = mockConfigProvider.getLong(feature)
+        val result = mockConfigProvider.getLong(featureC)
 
         // Then
         assert(result == expectedValue) {
@@ -124,15 +96,10 @@ internal class MockConfigProviderTest {
     @Test(expected = MockConfigUnavailableException::class)
     fun `should throw exception when long config value is not found`() {
         // Given
-        val feature = Feature(
-            "featureC",
-            0L,
-            Long::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
+        val featureC = "featureC"
 
         // When
-        mockConfigProvider.getLong(feature)
+        mockConfigProvider.getLong(featureC)
 
         // Then
         // Expecting MockConfigUnavailableException
@@ -141,18 +108,13 @@ internal class MockConfigProviderTest {
     @Test
     fun `should return correct mocked double value when feature is found`() {
         // Given
-        val feature = Feature(
-            "featureD",
-            0.0,
-            Double::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
-
+        val featureD = "featureD"
         val expectedValue = 100.0
-        memoryMockConfigStorage.save(feature.key, expectedValue)
+
+        memoryMockConfigStorage.save(featureD, expectedValue)
 
         // When
-        val result = mockConfigProvider.getDouble(feature)
+        val result = mockConfigProvider.getDouble(featureD)
 
         // Then
         assert(result == expectedValue) {
@@ -163,15 +125,10 @@ internal class MockConfigProviderTest {
     @Test(expected = MockConfigUnavailableException::class)
     fun `should throw exception when double config value is not found`() {
         // Given
-        val feature = Feature(
-            "featureD",
-            0.0,
-            Double::class,
-            MockFeatureConfigOwner.Firebase.serviceOwner
-        )
+        val featureD = "featureD"
 
         // When
-        mockConfigProvider.getDouble(feature)
+        mockConfigProvider.getDouble(featureD)
 
         // Then
         // Expecting MockConfigUnavailableException

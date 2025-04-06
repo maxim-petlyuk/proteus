@@ -15,12 +15,16 @@ internal class FeatureBookRepository(
     private val mockConfigRepository: MockConfigRepository
 ) {
 
-    suspend fun removeMockedConfig(feature: FeatureContext<*>) {
-        mockConfigRepository.remove(feature)
+    suspend fun removeMockedConfig(featureKey: String) {
+        mockConfigRepository.remove(featureKey = featureKey)
     }
 
-    suspend fun saveMockedConfig(feature: FeatureContext<*>, configValue: ConfigValue<*>) {
-        mockConfigRepository.save(feature, configValue)
+    suspend fun saveMockedConfig(featureKey: String, configValue: ConfigValue<*>) {
+        mockConfigRepository.save(
+            featureKey = featureKey,
+            typeClass = getTypeClass(configValue),
+            configValue = configValue
+        )
     }
 
     suspend fun getFeatureNote(featureKey: String): Result<FeatureNote<*>> {
@@ -43,6 +47,7 @@ internal class FeatureBookRepository(
     private fun List<FeatureContext<*>>.aggregateConfig(): List<FeatureNote<*>> {
         return this.map { featureContext ->
             FeatureNote<Any>(
+                serviceOwner = remoteConfigProviderFactory.getProviderTag(featureContext.key),
                 feature = featureContext.buildFeature(),
                 remoteConfigValue = getRemoteConfigValue(featureContext),
                 localConfigValue = getLocalConfigValue(featureContext) as? ConfigValue<Any>
@@ -51,19 +56,22 @@ internal class FeatureBookRepository(
     }
 
     private fun <T : Any> getRemoteConfigValue(featureContext: FeatureContext<T>): String {
-        val remoteConfigProvider = remoteConfigProviderFactory.getProvider(featureContext.owner)
+        val remoteConfigProvider = remoteConfigProviderFactory.getProvider(featureContext.key)
 
         return when (featureContext.valueClass) {
-            Long::class -> remoteConfigProvider.getLong(featureContext as FeatureContext<Long>).toString()
-            String::class -> remoteConfigProvider.getString(featureContext as FeatureContext<String>)
-            Boolean::class -> remoteConfigProvider.getBoolean(featureContext as FeatureContext<Boolean>).toString()
-            Double::class -> remoteConfigProvider.getDouble(featureContext as FeatureContext<Double>).toString()
+            Long::class -> remoteConfigProvider.getLong(featureContext.key).toString()
+            String::class -> remoteConfigProvider.getString(featureContext.key)
+            Boolean::class -> remoteConfigProvider.getBoolean(featureContext.key).toString()
+            Double::class -> remoteConfigProvider.getDouble(featureContext.key).toString()
             else -> throw IllegalArgumentException("Unsupported data type: ${featureContext.valueClass}")
         }
     }
 
     private fun getLocalConfigValue(featureContext: FeatureContext<*>): ConfigValue<*>? {
-        return mockConfigRepository.getMockedConfigValue(featureContext)
+        return mockConfigRepository.getMockedConfigValue(
+            featureKey = featureContext.key,
+            typeClass = featureContext.valueClass
+        )
     }
 
     private fun FeatureContext<*>.buildFeature(): Feature<Any> {
@@ -71,7 +79,15 @@ internal class FeatureBookRepository(
             key = this.key,
             defaultValue = this.defaultValue,
             valueClass = this.valueClass as KClass<Any>,
-            owner = this.owner
         )
+    }
+
+    private fun getTypeClass(configValue: ConfigValue<*>): KClass<*> {
+        return when (configValue) {
+            is ConfigValue.Long -> Long::class
+            is ConfigValue.Text -> String::class
+            is ConfigValue.Boolean -> Boolean::class
+            is ConfigValue.Double -> Double::class
+        }
     }
 }

@@ -1,13 +1,7 @@
-package core.provider
+package io.proteus.core.provider
 
-import core.mock.FeatureTestGuide
-import core.mock.MemoryFeatureConfigProvider
-import core.mock.MockFeatureConfigOwner
-import io.proteus.core.domain.Feature
-import io.proteus.core.provider.FeatureConfigProvider
-import io.proteus.core.provider.FeatureConfigProviderFactory
-import io.proteus.core.provider.FeatureConfigProviderImpl
-import io.proteus.core.provider.StubFeatureConfigProvider
+import io.proteus.core.mock.FeatureTestGuide
+import io.proteus.core.mock.MemoryFeatureConfigProvider
 import org.junit.Test
 
 internal class DataTypesConfigTest {
@@ -15,33 +9,22 @@ internal class DataTypesConfigTest {
     @Test
     fun `verify that boolean type function is giving correct result`() {
         // Given
-        val featureA = Feature(
-            key = "featureA",
-            owner = MockFeatureConfigOwner.Firebase.serviceOwner,
-            defaultValue = false,
-            valueClass = Boolean::class
-        )
+        val featureKey = "featureA"
 
         val featureTestGuideA = FeatureTestGuide(
-            feature = featureA,
+            featureKey = featureKey,
             mockValue = true,
             remoteValue = false,
             givenSource = FeatureTestGuide.Source.Mock
         )
 
-        val configFactory = object : FeatureConfigProviderFactory {
-            override fun getProvider(owner: String): FeatureConfigProvider {
-                return MemoryFeatureConfigProvider(featureTestGuideA)
-            }
-        }
-
         val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
             StubFeatureConfigProvider,
-            configFactory
+            TestFeatureConfigProviderFactory(featureTestGuideA)
         )
 
         // When
-        val mockedValueOfFeatureA = configProvider.getBoolean(featureA)
+        val mockedValueOfFeatureA = configProvider.getBoolean(featureKey)
 
         // Then
         assert(mockedValueOfFeatureA) {
@@ -53,15 +36,10 @@ internal class DataTypesConfigTest {
     @Test
     fun `verify that string type function is giving correct result`() {
         // Given
-        val featureB = Feature(
-            key = "featureB",
-            owner = MockFeatureConfigOwner.CleverTap.serviceOwner,
-            defaultValue = "",
-            valueClass = String::class
-        )
+        val featureB = "featureB"
 
         val featureTestGuideB = FeatureTestGuide(
-            feature = featureB,
+            featureKey = featureB,
             mockValue = "this is mocked value",
             remoteValue = "this is remote value",
             givenSource = FeatureTestGuide.Source.Mock
@@ -69,7 +47,7 @@ internal class DataTypesConfigTest {
 
         val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
             StubFeatureConfigProvider,
-            provideMemoryConfigFactory(featureTestGuideB)
+            TestFeatureConfigProviderFactory(featureTestGuideB)
         )
 
         // When
@@ -85,15 +63,10 @@ internal class DataTypesConfigTest {
     @Test
     fun `verify that long type function is giving correct result`() {
         // Given
-        val featureB = Feature(
-            key = "featureB",
-            owner = MockFeatureConfigOwner.CleverTap.serviceOwner,
-            defaultValue = 5L,
-            valueClass = Long::class
-        )
+        val featureB = "featureB"
 
         val featureTestGuideB = FeatureTestGuide(
-            feature = featureB,
+            featureKey = featureB,
             mockValue = 10L,
             remoteValue = 20L,
             givenSource = FeatureTestGuide.Source.Mock
@@ -101,7 +74,7 @@ internal class DataTypesConfigTest {
 
         val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
             StubFeatureConfigProvider,
-            provideMemoryConfigFactory(featureTestGuideB)
+            TestFeatureConfigProviderFactory(featureTestGuideB)
         )
 
         // When
@@ -117,15 +90,10 @@ internal class DataTypesConfigTest {
     @Test
     fun `verify that double type function is giving correct result`() {
         // Given
-        val featureB = Feature(
-            key = "featureB",
-            owner = MockFeatureConfigOwner.CleverTap.serviceOwner,
-            defaultValue = 5.0,
-            valueClass = Double::class
-        )
+        val featureB = "featureB"
 
         val featureTestGuideB = FeatureTestGuide(
-            feature = featureB,
+            featureKey = featureB,
             mockValue = 10.0,
             remoteValue = 20.0,
             givenSource = FeatureTestGuide.Source.Mock
@@ -133,7 +101,7 @@ internal class DataTypesConfigTest {
 
         val configProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
             StubFeatureConfigProvider,
-            provideMemoryConfigFactory(featureTestGuideB)
+            TestFeatureConfigProviderFactory(featureTestGuideB)
         )
 
         // When
@@ -146,11 +114,16 @@ internal class DataTypesConfigTest {
         }
     }
 
-    private fun provideMemoryConfigFactory(vararg featuresGuide: FeatureTestGuide<*>): FeatureConfigProviderFactory {
-        return object : FeatureConfigProviderFactory {
-            override fun getProvider(owner: String): FeatureConfigProvider {
-                return MemoryFeatureConfigProvider(*featuresGuide)
-            }
+    private class TestFeatureConfigProviderFactory(vararg featuresGuide: FeatureTestGuide<*>) : FeatureConfigProviderFactory {
+
+        private val guide = featuresGuide.toList()
+
+        override fun getProvider(owner: String): FeatureConfigProvider {
+            return MemoryFeatureConfigProvider(guide)
+        }
+
+        override fun getProviderTag(featureKey: String): String {
+            return "TestFeatureConfigProviderFactory"
         }
     }
 }

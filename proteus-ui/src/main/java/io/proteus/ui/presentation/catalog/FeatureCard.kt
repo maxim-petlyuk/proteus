@@ -198,7 +198,7 @@ internal fun FeatureCard(
             )
 
             FeatureAttributeTextValue(
-                text = featureNote.feature.owner.toString(),
+                text = featureNote.serviceOwner,
                 modifier = Modifier.constrainAs(featureOwnerValue) {
                     baseline.linkTo(featureOwnerTitle.baseline)
                     start.linkTo(verticalBarrier, margin = 8.dp)
