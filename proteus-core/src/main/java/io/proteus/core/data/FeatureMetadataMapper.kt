@@ -13,11 +13,6 @@ class FeatureMetadataMapper {
             throw IllegalArgumentException("Feature key must not be empty")
         }
 
-        val serviceOwner = from.serviceOwner
-        if (serviceOwner.isEmpty()) {
-            throw IllegalArgumentException("Feature service owner must not be empty")
-        }
-
         return when (from.valueType) {
             TYPE_TEXT -> {
                 Feature<String>(

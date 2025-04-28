@@ -12,6 +12,9 @@ Proteus simplifies feature flag management in Android applications by providing:
 - A UI for browsing and configuring features
 - Integration with Firebase Remote Config
 
+## Demo
+[Download our demo video (MP4, 4.63MB)](https://github.com/maxim-petlyuk/proteus/releases/download/v0.0.2/video-sample.mp4)
+
 ## Features
 
 - **Type Safety**: Access boolean, string, long, and double configuration values with type checking
@@ -116,7 +119,6 @@ There are 2 ways how you can define information about your feature flags in the 
 **feature_key** -  key in your remote config service (for now only **Firebase Remote Config** is supported)
 **default_value** - here could be some default local value which you may propagate to remote config service to use as default one (library is not using it), but to support strong type-safe access - this value should have the same type as **value_type**
 **value_type** - describe type of the remote config value and could be one of the next types: *text/long/boolean/double*
-**service_owner** - this field describe the name of your remote config service, in case if your application is using 2 providers of the remote config (e.g. CleverTap & Firebase Remote Config), it will help to disctint who should take care about this particular remote config
 
 - #### static collection through kotlin code
  ```
@@ -132,14 +134,12 @@ There are 2 ways how you can define information about your feature flags in the 
             Feature(  
                 key = "primary_server",  
                 defaultValue = "https://google.com",  
-                valueClass = String::class,  
-                owner = "firebase"  
+                valueClass = String::class
             ),  
             Feature(  
                 key = "optional_server",  
                 defaultValue = "https://test.com",  
-                valueClass = String::class,  
-                owner = "firebase"  
+                valueClass = String::class
             )  
         )  
     )  
@@ -182,8 +182,14 @@ dependencies {
 Access feature values through the `FeatureConfigProvider`:
 
 ```kotlin  
-class MyViewModel {  
- 
+class YourViewModel(private val featureConfigProvider: FeatureConfigProvider) : ViewModel() {  
+  
+    fun getFeatureValues() {  
+        val primaryServer = featureConfigProvider.getString("primary_server")  
+        val maxItemsPerPage = featureConfigProvider.getLong("max_items_per_page")  
+        val animationThreshold = featureConfigProvider.getDouble("animation_threshold")  
+        val darkModeEnabled = featureConfigProvider.getBoolean("dark_mode_enabled")  
+    }
 }  
 ```  
 
@@ -222,13 +228,3 @@ Proteus is built with the following architectural components:
 [Include license information here]# Proteus
 
 Proteus is a feature flag and remote configuration management system for Android applications. It provides a flexible framework for defining, accessing, and overriding feature configurations.
-
-
-## Features
-
-- **Type Safety**: Access boolean, string, long, and double configuration values with type checking
-- **Remote Configuration**: Integrate with Firebase Remote Config for cloud-managed feature flags
-- **Mock Config System**: Override remote configurations locally for testing
-- **Feature Catalog UI**: Browse and modify feature configurations during development
-- **JSON-based Feature Definitions**: Define features in a simple JSON format  
-  
