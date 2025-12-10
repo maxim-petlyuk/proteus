@@ -17,7 +17,7 @@ internal class LoadedStatePreviewProvider : PreviewParameterProvider<FeatureCata
     override val values: Sequence<FeatureCatalogState> = sequenceOf(
         FeatureCatalogState(
             isLoading = false,
-            searchQuery = "feed",
+            searchQuery = "",
             originalFeatureBook = listOf(
                 FeatureNote<String>(
                     feature = Feature<String>(

@@ -2,7 +2,11 @@ package io.proteus.core.data
 
 import io.proteus.core.domain.Feature
 import io.proteus.core.domain.FeatureMetadata
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertIs
+import kotlin.test.assertTrue
 
 class FeatureMetadataMapperTest {
 
@@ -13,8 +17,7 @@ class FeatureMetadataMapperTest {
         val metadata = FeatureMetadata(
             featureKey = "test_text",
             defaultValue = "hello",
-            valueType = "text",
-            serviceOwner = "test_team"
+            valueType = "text"
         )
 
         val result = mapper.toFeatureContext(metadata)
@@ -29,8 +32,7 @@ class FeatureMetadataMapperTest {
         val metadata = FeatureMetadata(
             featureKey = "test_long",
             defaultValue = "42",
-            valueType = "long",
-            serviceOwner = "test_team"
+            valueType = "long"
         )
 
         val result = mapper.toFeatureContext(metadata)
@@ -45,8 +47,7 @@ class FeatureMetadataMapperTest {
         val metadata = FeatureMetadata(
             featureKey = "test_boolean",
             defaultValue = "true",
-            valueType = "boolean",
-            serviceOwner = "test_team"
+            valueType = "boolean"
         )
 
         val result = mapper.toFeatureContext(metadata)
@@ -61,8 +62,7 @@ class FeatureMetadataMapperTest {
         val metadata = FeatureMetadata(
             featureKey = "test_double",
             defaultValue = "3.14",
-            valueType = "double",
-            serviceOwner = "test_team"
+            valueType = "double"
         )
 
         val result = mapper.toFeatureContext(metadata)
@@ -77,22 +77,7 @@ class FeatureMetadataMapperTest {
         val metadata = FeatureMetadata(
             featureKey = "",
             defaultValue = "test",
-            valueType = "text",
-            serviceOwner = "test_team"
-        )
-
-        assertFailsWith<IllegalArgumentException> {
-            mapper.toFeatureContext(metadata)
-        }
-    }
-
-    @Test
-    fun `test toFeatureContext throws for empty service owner`() {
-        val metadata = FeatureMetadata(
-            featureKey = "test",
-            defaultValue = "test",
-            valueType = "text",
-            serviceOwner = ""
+            valueType = "text"
         )
 
         assertFailsWith<IllegalArgumentException> {
@@ -105,8 +90,7 @@ class FeatureMetadataMapperTest {
         val metadata = FeatureMetadata(
             featureKey = "test_long",
             defaultValue = "not_a_number",
-            valueType = "long",
-            serviceOwner = "test_team"
+            valueType = "long"
         )
 
         assertFailsWith<IllegalArgumentException> {
@@ -119,8 +103,7 @@ class FeatureMetadataMapperTest {
         val metadata = FeatureMetadata(
             featureKey = "test_boolean",
             defaultValue = "not_boolean",
-            valueType = "boolean",
-            serviceOwner = "test_team"
+            valueType = "boolean"
         )
 
         assertFailsWith<IllegalArgumentException> {
@@ -133,8 +116,7 @@ class FeatureMetadataMapperTest {
         val metadata = FeatureMetadata(
             featureKey = "test_double",
             defaultValue = "not_a_number",
-            valueType = "double",
-            serviceOwner = "test_team"
+            valueType = "double"
         )
 
         assertFailsWith<IllegalArgumentException> {
@@ -147,8 +129,7 @@ class FeatureMetadataMapperTest {
         val metadata = FeatureMetadata(
             featureKey = "test",
             defaultValue = "test",
-            valueType = "invalid_type",
-            serviceOwner = "test_team"
+            valueType = "invalid_type"
         )
 
         assertFailsWith<IllegalArgumentException> {

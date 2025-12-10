@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "io.proteus.sample"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "io.proteus.sample"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -71,8 +71,10 @@ dependencies {
     implementation(libs.firebase.config)
 
     implementation(libs.proteus.core)
-    implementation(libs.proteus.firebase)
-    implementation(libs.proteus.ui)
+//    implementation(libs.proteus.firebase)
+//    implementation(libs.proteus.ui)
+    implementation(project(":proteus-firebase"))
+    implementation(project(":proteus-ui"))
 
     testImplementation(libs.junit)
 

@@ -2,10 +2,257 @@ package io.proteus.ui.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
-internal val Purple80 = Color(0xFFD0BCFF)
-internal val PurpleGrey80 = Color(0xFFCCC2DC)
-internal val Pink80 = Color(0xFFEFB8C8)
+/**
+ * Proteus Material Design Beige Color Palette
+ * Generated from Proteus UI Design System
+ */
 
-internal val Purple40 = Color(0xFF6650a4)
-internal val PurpleGrey40 = Color(0xFF625b71)
-internal val Pink40 = Color(0xFF7D5260)
+// Material Design Beige Colors - Core Palette
+val MdBeige50 = Color(0xFFFBF8F3)
+val MdBeige100 = Color(0xFFF5EFE6)
+val MdBeige200 = Color(0xFFEBE0D0)
+val MdBeige300 = Color(0xFFD9C8B0)
+val MdBeige400 = Color(0xFFC7B299)
+val MdBeige500 = Color(0xFFB59D82)
+val MdBeige600 = Color(0xFF9D8468)
+val MdBeige700 = Color(0xFF7A6650)
+val MdBeige800 = Color(0xFF5C4D3D)
+val MdBeige900 = Color(0xFF3E342A)
+
+// Status Colors
+val Success = Color(0xFF7A9D54)
+val SuccessContainer = Color(0x267A9D54)
+val OnSuccess = Color(0xFFFFFFFF)
+val OnSuccessContainer = Color(0xFF4A5D34)
+
+val Error = Color(0xFFC77F6A)
+val ErrorContainer = Color(0x26C77F6A)
+val OnError = Color(0xFFFFFFFF)
+val OnErrorContainer = Color(0xFF874F3A)
+
+val Warning = Color(0xFFD9A762)
+val WarningContainer = Color(0x26D9A762)
+val OnWarning = Color(0xFFFFFFFF)
+val OnWarningContainer = Color(0xFF997442)
+
+// Light Theme Colors
+val primaryLight = MdBeige500
+val onPrimaryLight = Color(0xFFFFFFFF)
+val primaryContainerLight = MdBeige200
+val onPrimaryContainerLight = MdBeige900
+val secondaryLight = MdBeige300
+val onSecondaryLight = MdBeige900
+val secondaryContainerLight = MdBeige100
+val onSecondaryContainerLight = MdBeige900
+val tertiaryLight = MdBeige600
+val onTertiaryLight = Color(0xFFFFFFFF)
+val tertiaryContainerLight = MdBeige300
+val onTertiaryContainerLight = MdBeige900
+val errorLight = Error
+val onErrorLight = OnError
+val errorContainerLight = ErrorContainer
+val onErrorContainerLight = OnErrorContainer
+val backgroundLight = MdBeige50
+val onBackgroundLight = MdBeige900
+val surfaceLight = Color(0xFFFFFFFF)
+val onSurfaceLight = MdBeige900
+val surfaceVariantLight = MdBeige100
+val onSurfaceVariantLight = MdBeige800
+val outlineLight = MdBeige300
+val outlineVariantLight = MdBeige200
+val scrimLight = Color(0x80000000)
+val inverseSurfaceLight = MdBeige800
+val inverseOnSurfaceLight = MdBeige100
+val inversePrimaryLight = MdBeige300
+val surfaceDimLight = MdBeige100
+val surfaceBrightLight = Color(0xFFFFFFFF)
+val surfaceContainerLowestLight = Color(0xFFFFFFFF)
+val surfaceContainerLowLight = MdBeige50
+val surfaceContainerLight = MdBeige100
+val surfaceContainerHighLight = MdBeige200
+val surfaceContainerHighestLight = MdBeige300
+
+// Light Medium Contrast
+val primaryLightMediumContrast = MdBeige600
+val onPrimaryLightMediumContrast = Color(0xFFFFFFFF)
+val primaryContainerLightMediumContrast = MdBeige400
+val onPrimaryContainerLightMediumContrast = Color(0xFFFFFFFF)
+val secondaryLightMediumContrast = MdBeige400
+val onSecondaryLightMediumContrast = MdBeige900
+val secondaryContainerLightMediumContrast = MdBeige200
+val onSecondaryContainerLightMediumContrast = MdBeige900
+val tertiaryLightMediumContrast = MdBeige700
+val onTertiaryLightMediumContrast = Color(0xFFFFFFFF)
+val tertiaryContainerLightMediumContrast = MdBeige400
+val onTertiaryContainerLightMediumContrast = Color(0xFFFFFFFF)
+val errorLightMediumContrast = Color(0xFFA66A57)
+val onErrorLightMediumContrast = Color(0xFFFFFFFF)
+val errorContainerLightMediumContrast = Color(0xFFD18F7A)
+val onErrorContainerLightMediumContrast = Color(0xFFFFFFFF)
+val backgroundLightMediumContrast = MdBeige50
+val onBackgroundLightMediumContrast = MdBeige900
+val surfaceLightMediumContrast = Color(0xFFFFFFFF)
+val onSurfaceLightMediumContrast = MdBeige900
+val surfaceVariantLightMediumContrast = MdBeige100
+val onSurfaceVariantLightMediumContrast = MdBeige800
+val outlineLightMediumContrast = MdBeige400
+val outlineVariantLightMediumContrast = MdBeige300
+val scrimLightMediumContrast = Color(0x80000000)
+val inverseSurfaceLightMediumContrast = MdBeige800
+val inverseOnSurfaceLightMediumContrast = MdBeige100
+val inversePrimaryLightMediumContrast = MdBeige300
+val surfaceDimLightMediumContrast = MdBeige100
+val surfaceBrightLightMediumContrast = Color(0xFFFFFFFF)
+val surfaceContainerLowestLightMediumContrast = Color(0xFFFFFFFF)
+val surfaceContainerLowLightMediumContrast = MdBeige50
+val surfaceContainerLightMediumContrast = MdBeige100
+val surfaceContainerHighLightMediumContrast = MdBeige200
+val surfaceContainerHighestLightMediumContrast = MdBeige300
+
+// Light High Contrast
+val primaryLightHighContrast = MdBeige800
+val onPrimaryLightHighContrast = Color(0xFFFFFFFF)
+val primaryContainerLightHighContrast = MdBeige700
+val onPrimaryContainerLightHighContrast = Color(0xFFFFFFFF)
+val secondaryLightHighContrast = MdBeige700
+val onSecondaryLightHighContrast = Color(0xFFFFFFFF)
+val secondaryContainerLightHighContrast = MdBeige600
+val onSecondaryContainerLightHighContrast = Color(0xFFFFFFFF)
+val tertiaryLightHighContrast = MdBeige900
+val onTertiaryLightHighContrast = Color(0xFFFFFFFF)
+val tertiaryContainerLightHighContrast = MdBeige800
+val onTertiaryContainerLightHighContrast = Color(0xFFFFFFFF)
+val errorLightHighContrast = Color(0xFF6A3F32)
+val onErrorLightHighContrast = Color(0xFFFFFFFF)
+val errorContainerLightHighContrast = Color(0xFF9A5C48)
+val onErrorContainerLightHighContrast = Color(0xFFFFFFFF)
+val backgroundLightHighContrast = MdBeige50
+val onBackgroundLightHighContrast = MdBeige900
+val surfaceLightHighContrast = Color(0xFFFFFFFF)
+val onSurfaceLightHighContrast = Color(0xFF000000)
+val surfaceVariantLightHighContrast = MdBeige100
+val onSurfaceVariantLightHighContrast = Color(0xFF000000)
+val outlineLightHighContrast = MdBeige700
+val outlineVariantLightHighContrast = MdBeige600
+val scrimLightHighContrast = Color(0xFF000000)
+val inverseSurfaceLightHighContrast = MdBeige800
+val inverseOnSurfaceLightHighContrast = Color(0xFFFFFFFF)
+val inversePrimaryLightHighContrast = MdBeige200
+val surfaceDimLightHighContrast = MdBeige200
+val surfaceBrightLightHighContrast = Color(0xFFFFFFFF)
+val surfaceContainerLowestLightHighContrast = Color(0xFFFFFFFF)
+val surfaceContainerLowLightHighContrast = MdBeige50
+val surfaceContainerLightHighContrast = MdBeige100
+val surfaceContainerHighLightHighContrast = MdBeige200
+val surfaceContainerHighestLightHighContrast = MdBeige300
+
+// Dark Theme Colors
+val primaryDark = MdBeige300
+val onPrimaryDark = MdBeige900
+val primaryContainerDark = MdBeige700
+val onPrimaryContainerDark = MdBeige100
+val secondaryDark = MdBeige400
+val onSecondaryDark = MdBeige900
+val secondaryContainerDark = MdBeige800
+val onSecondaryContainerDark = MdBeige100
+val tertiaryDark = MdBeige400
+val onTertiaryDark = MdBeige900
+val tertiaryContainerDark = MdBeige700
+val onTertiaryContainerDark = MdBeige100
+val errorDark = Color(0xFFE89B85)
+val onErrorDark = Color(0xFF5A2F22)
+val errorContainerDark = Color(0xFF8A4A38)
+val onErrorContainerDark = Color(0xFFFFDAD6)
+val backgroundDark = MdBeige900
+val onBackgroundDark = MdBeige100
+val surfaceDark = MdBeige900
+val onSurfaceDark = MdBeige100
+val surfaceVariantDark = MdBeige800
+val onSurfaceVariantDark = MdBeige200
+val outlineDark = MdBeige600
+val outlineVariantDark = MdBeige700
+val scrimDark = Color(0xFF000000)
+val inverseSurfaceDark = MdBeige100
+val inverseOnSurfaceDark = MdBeige900
+val inversePrimaryDark = MdBeige600
+val surfaceDimDark = MdBeige900
+val surfaceBrightDark = MdBeige700
+val surfaceContainerLowestDark = Color(0xFF2A2218)
+val surfaceContainerLowDark = MdBeige900
+val surfaceContainerDark = MdBeige800
+val surfaceContainerHighDark = MdBeige700
+val surfaceContainerHighestDark = MdBeige600
+
+// Dark Medium Contrast
+val primaryDarkMediumContrast = MdBeige200
+val onPrimaryDarkMediumContrast = MdBeige900
+val primaryContainerDarkMediumContrast = MdBeige500
+val onPrimaryContainerDarkMediumContrast = Color(0xFF000000)
+val secondaryDarkMediumContrast = MdBeige300
+val onSecondaryDarkMediumContrast = MdBeige900
+val secondaryContainerDarkMediumContrast = MdBeige600
+val onSecondaryContainerDarkMediumContrast = Color(0xFF000000)
+val tertiaryDarkMediumContrast = MdBeige300
+val onTertiaryDarkMediumContrast = MdBeige900
+val tertiaryContainerDarkMediumContrast = MdBeige600
+val onTertiaryContainerDarkMediumContrast = Color(0xFF000000)
+val errorDarkMediumContrast = Color(0xFFEFAF99)
+val onErrorDarkMediumContrast = Color(0xFF3D1D14)
+val errorContainerDarkMediumContrast = Color(0xFFB87664)
+val onErrorContainerDarkMediumContrast = Color(0xFF000000)
+val backgroundDarkMediumContrast = MdBeige900
+val onBackgroundDarkMediumContrast = MdBeige100
+val surfaceDarkMediumContrast = MdBeige900
+val onSurfaceDarkMediumContrast = Color(0xFFFFFFFF)
+val surfaceVariantDarkMediumContrast = MdBeige800
+val onSurfaceVariantDarkMediumContrast = MdBeige100
+val outlineDarkMediumContrast = MdBeige500
+val outlineVariantDarkMediumContrast = MdBeige600
+val scrimDarkMediumContrast = Color(0xFF000000)
+val inverseSurfaceDarkMediumContrast = MdBeige100
+val inverseOnSurfaceDarkMediumContrast = MdBeige800
+val inversePrimaryDarkMediumContrast = MdBeige700
+val surfaceDimDarkMediumContrast = MdBeige900
+val surfaceBrightDarkMediumContrast = MdBeige600
+val surfaceContainerLowestDarkMediumContrast = Color(0xFF1F1812)
+val surfaceContainerLowDarkMediumContrast = MdBeige900
+val surfaceContainerDarkMediumContrast = MdBeige800
+val surfaceContainerHighDarkMediumContrast = MdBeige700
+val surfaceContainerHighestDarkMediumContrast = MdBeige600
+
+// Dark High Contrast
+val primaryDarkHighContrast = MdBeige50
+val onPrimaryDarkHighContrast = Color(0xFF000000)
+val primaryContainerDarkHighContrast = MdBeige300
+val onPrimaryContainerDarkHighContrast = Color(0xFF000000)
+val secondaryDarkHighContrast = MdBeige50
+val onSecondaryDarkHighContrast = Color(0xFF000000)
+val secondaryContainerDarkHighContrast = MdBeige300
+val onSecondaryContainerDarkHighContrast = Color(0xFF000000)
+val tertiaryDarkHighContrast = MdBeige50
+val onTertiaryDarkHighContrast = Color(0xFF000000)
+val tertiaryContainerDarkHighContrast = MdBeige300
+val onTertiaryContainerDarkHighContrast = Color(0xFF000000)
+val errorDarkHighContrast = Color(0xFFFFF4F2)
+val onErrorDarkHighContrast = Color(0xFF000000)
+val errorContainerDarkHighContrast = Color(0xFFEFAF99)
+val onErrorContainerDarkHighContrast = Color(0xFF000000)
+val backgroundDarkHighContrast = MdBeige900
+val onBackgroundDarkHighContrast = MdBeige50
+val surfaceDarkHighContrast = MdBeige900
+val onSurfaceDarkHighContrast = Color(0xFFFFFFFF)
+val surfaceVariantDarkHighContrast = MdBeige800
+val onSurfaceVariantDarkHighContrast = Color(0xFFFFFFFF)
+val outlineDarkHighContrast = MdBeige300
+val outlineVariantDarkHighContrast = MdBeige400
+val scrimDarkHighContrast = Color(0xFF000000)
+val inverseSurfaceDarkHighContrast = MdBeige100
+val inverseOnSurfaceDarkHighContrast = Color(0xFF000000)
+val inversePrimaryDarkHighContrast = MdBeige800
+val surfaceDimDarkHighContrast = MdBeige900
+val surfaceBrightDarkHighContrast = MdBeige500
+val surfaceContainerLowestDarkHighContrast = Color(0xFF000000)
+val surfaceContainerLowDarkHighContrast = MdBeige900
+val surfaceContainerDarkHighContrast = MdBeige800
+val surfaceContainerHighDarkHighContrast = MdBeige700
+val surfaceContainerHighestDarkHighContrast = MdBeige600

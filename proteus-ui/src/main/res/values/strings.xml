@@ -6,7 +6,7 @@
     <string name="feature_book_overridden_title" translatable="false">Overridden:</string>
     <string name="feature_book_default_value_title" translatable="false">Default value:</string>
     <string name="feature_book_remote_value_title" translatable="false">Remote value:</string>
-    <string name="feature_book_local_value_title" translatable="false">Local value:</string>
+    <string name="feature_book_local_value_title" translatable="false">Mock value:</string>
     <string name="feature_book_owner_title" translatable="false">Feature owner:</string>
 
     <string name="feature_editor_activate_mock_label" translatable="false">Override remote config?</string>

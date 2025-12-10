@@ -8,10 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -27,8 +23,10 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import io.proteus.ui.R
 
 @Composable
 internal fun SearchActionBar(
@@ -76,10 +74,10 @@ private fun SearchField(
     onBack: () -> Unit = {},
     onClearSearch: () -> Unit = {},
 ) {
-    val trailingIcon = if (searchQuery.isEmpty()) {
-        Icons.Default.Search
+    val trailingIconRes = if (searchQuery.isEmpty()) {
+        R.drawable.ic_search
     } else {
-        Icons.Default.Clear
+        R.drawable.ic_close
     }
 
     val focusRequester = remember { FocusRequester() }
@@ -96,7 +94,7 @@ private fun SearchField(
         },
         leadingIcon = {
             Icon(
-                imageVector = Icons.Default.ArrowBack,
+                painter = painterResource(R.drawable.ic_arrow_back),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.clickable {
@@ -106,7 +104,7 @@ private fun SearchField(
         },
         trailingIcon = {
             Icon(
-                imageVector = trailingIcon,
+                painter = painterResource(trailingIconRes),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.clickable {

@@ -11,14 +11,12 @@ class FeatureMetadataTest {
         val metadata = FeatureMetadata(
             featureKey = "test_feature",
             defaultValue = "default_value",
-            valueType = "String",
-            serviceOwner = "test_team"
+            valueType = "String"
         )
 
         assertEquals("test_feature", metadata.featureKey)
         assertEquals("default_value", metadata.defaultValue)
         assertEquals("String", metadata.valueType)
-        assertEquals("test_team", metadata.serviceOwner)
     }
 
     @Test
@@ -26,22 +24,19 @@ class FeatureMetadataTest {
         val metadata1 = FeatureMetadata(
             featureKey = "test_feature",
             defaultValue = "default_value",
-            valueType = "String",
-            serviceOwner = "test_team"
+            valueType = "String"
         )
 
         val metadata2 = FeatureMetadata(
             featureKey = "test_feature",
             defaultValue = "default_value",
-            valueType = "String",
-            serviceOwner = "test_team"
+            valueType = "String"
         )
 
         val metadata3 = FeatureMetadata(
             featureKey = "different_feature",
             defaultValue = "default_value",
-            valueType = "String",
-            serviceOwner = "test_team"
+            valueType = "String"
         )
 
         assertEquals(metadata1, metadata2)
@@ -53,22 +48,19 @@ class FeatureMetadataTest {
         val metadata1 = FeatureMetadata(
             featureKey = "test_feature",
             defaultValue = "default_value",
-            valueType = "String",
-            serviceOwner = "test_team"
+            valueType = "String"
         )
 
         val metadata2 = FeatureMetadata(
             featureKey = "test_feature",
             defaultValue = "default_value",
-            valueType = "String",
-            serviceOwner = "test_team"
+            valueType = "String"
         )
 
         val metadata3 = FeatureMetadata(
             featureKey = "different_feature",
             defaultValue = "default_value",
-            valueType = "String",
-            serviceOwner = "test_team"
+            valueType = "String"
         )
 
         assertEquals(metadata1.hashCode(), metadata2.hashCode())

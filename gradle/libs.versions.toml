@@ -1,25 +1,25 @@
 [versions]
-agp = "8.9.2"
-kotlin = "2.1.0"
-coreKtx = "1.16.0"
+agp = "8.13.1"
+kotlin = "2.2.21"
+coreKtx = "1.17.0"
 junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.10.1"
-composeBom = "2025.04.01"
-appcompat = "1.7.0"
-material = "1.12.0"
-kotlinxSerialization = "1.7.2"
-kotlinxCoroutines = "1.10.1"
-kotlinTest = "2.1.0"
-navigation = "2.8.9"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+lifecycleRuntimeKtx = "2.10.0"
+activityCompose = "1.12.1"
+composeBom = "2025.12.00"
+appcompat = "1.7.1"
+material = "1.13.0"
+kotlinxSerialization = "1.9.0"
+kotlinxCoroutines = "1.10.2"
+kotlinTest = "2.2.21"
+navigation = "2.9.6"
 constraintLayoutCompose = "1.1.1"
-robolectric = "4.14.1"
-testCore = "1.6.1"
-firebaseBom = "33.13.0"
-googleGmsGoogleServices = "4.4.2"
-jreleaser = "1.16.0"
+robolectric = "4.16"
+testCore = "1.7.0"
+firebaseBom = "34.6.0"
+googleGmsGoogleServices = "4.4.4"
+jreleaser = "1.21.0"
 proteus = "0.0.3"
 
 [libraries]
@@ -52,7 +52,7 @@ kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 kotlinx-test = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlinTest" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
-firebase-config = { module = "com.google.firebase:firebase-config-ktx" }
+firebase-config = { module = "com.google.firebase:firebase-config" }
 proteus-core = { group = "io.github.maxim-petlyuk", name = "proteus-core", version.ref = "proteus" }
 proteus-firebase = { group = "io.github.maxim-petlyuk", name = "proteus-firebase", version.ref = "proteus" }
 proteus-ui = { group = "io.github.maxim-petlyuk", name = "proteus-ui", version.ref = "proteus" }

@@ -12,8 +12,5 @@ internal data class FeatureMetadata(
     val defaultValue: String,
 
     @SerialName("value_type")
-    val valueType: String,
-
-    @SerialName("service_owner")
-    val serviceOwner: String,
+    val valueType: String
 )

@@ -14,7 +14,7 @@ plugins {
 
 android {
     namespace = "io.proteus.ui"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 23
