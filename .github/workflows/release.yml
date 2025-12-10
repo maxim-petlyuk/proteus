@@ -44,6 +44,12 @@ jobs:
       - name: Publish proteus-ui into maven local
         run: ./gradlew proteus-ui:publishToMavenLocal --no-daemon
 
+      # Decode firebase google-services.json
+      - name: Load Google Service file
+        env:
+          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo $DATA | base64 -di > sample-firebase/google-services.json
+
       - name: Build project
         run: ./gradlew build --no-daemon
 
