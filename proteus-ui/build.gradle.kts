@@ -152,16 +152,6 @@ jreleaser {
         armored = true
         verify = true
     }
-    release {
-        github {
-            name = "proteus"
-            skipTag = true
-            sign = true
-            branch = "main"
-            branchPush = "main"
-            overwrite = true
-        }
-    }
     deploy {
         maven {
             mavenCentral.create("sonatype") {
