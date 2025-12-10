@@ -20,7 +20,7 @@ testCore = "1.7.0"
 firebaseBom = "34.6.0"
 googleGmsGoogleServices = "4.4.4"
 jreleaser = "1.21.0"
-proteus = "0.0.3"
+proteus = "0.0.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
