@@ -1,0 +1,72 @@
+name: Release Dry Run
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  dry-run:
+    name: Dry Run Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build project
+        run: ./gradlew build --no-daemon
+
+      # Dry run for proteus-core
+      - name: Publish proteus-core (dry-run)
+        run: ./gradlew :proteus-core:publishAllPublicationsToMavenRepository --no-daemon
+        env:
+          GRADLE_OPTS: -Dorg.gradle.daemon=false
+
+      - name: JReleaser config proteus-core (dry-run)
+        run: ./gradlew :proteus-core:jreleaserConfig --no-daemon -Djreleaser.dry.run=true
+
+      # Dry run for proteus-firebase
+      - name: Publish proteus-firebase (dry-run)
+        run: ./gradlew :proteus-firebase:publishAllPublicationsToMavenRepository --no-daemon
+        env:
+          GRADLE_OPTS: -Dorg.gradle.daemon=false
+
+      - name: JReleaser config proteus-firebase (dry-run)
+        run: ./gradlew :proteus-firebase:jreleaserConfig --no-daemon -Djreleaser.dry.run=true
+
+      # Dry run for proteus-ui
+      - name: Publish proteus-ui (dry-run)
+        run: ./gradlew :proteus-ui:publishAllPublicationsToMavenRepository --no-daemon
+        env:
+          GRADLE_OPTS: -Dorg.gradle.daemon=false
+
+      - name: JReleaser config proteus-ui (dry-run)
+        run: ./gradlew :proteus-ui:jreleaserConfig --no-daemon -Djreleaser.dry.run=true
+
+      # Upload JReleaser output logs
+      - name: JReleaser output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jreleaser-dry-run-logs
+          path: |
+            proteus-core/build/jreleaser/trace.log
+            proteus-core/build/jreleaser/output.properties
+            proteus-firebase/build/jreleaser/trace.log
+            proteus-firebase/build/jreleaser/output.properties
+            proteus-ui/build/jreleaser/trace.log
+            proteus-ui/build/jreleaser/output.properties
