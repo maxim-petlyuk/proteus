@@ -1,4 +1,4 @@
-name: Release
+name: Release Proteus Firebase
 
 on:
   workflow_dispatch:
