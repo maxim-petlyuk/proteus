@@ -12,6 +12,11 @@ on:
           - UPLOAD
           - PUBLISH
           - FULL
+      namespace:
+        description: 'Namespace is usually the same (required when stage is PUBLISH)'
+        required: false
+        type: string
+        default: 'ProteusConfig'
       deployment_id:
         description: 'Deployment ID (required when stage is PUBLISH)'
         required: false
@@ -88,7 +93,7 @@ jobs:
       - name: Build BOM
         run: ./gradlew :proteus-bom:build --no-daemon
 
-      - name: Validate deployment_id for PUBLISH stage
+      - name: Validate deployment id for PUBLISH stage
         if: inputs.stage == 'PUBLISH'
         run: |
           if [ -z "${{ inputs.deployment_id }}" ]; then
@@ -109,6 +114,7 @@ jobs:
           JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
           JRELEASER_MAVENCENTRAL_STAGE: ${{ inputs.stage }}
           JRELEASER_MAVENCENTRAL_DEPLOYMENT_ID: ${{ inputs.deployment_id }}
+          JRELEASER_MAVENCENTRAL_NAMESPACE: ${{ inputs.namespace }}
 
       - name: Summary
         run: |

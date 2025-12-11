@@ -20,6 +20,11 @@ on:
           - UPLOAD
           - PUBLISH
           - FULL
+      namespace:
+        description: 'Namespace is usually the same (required when stage is PUBLISH)'
+        required: false
+        type: string
+        default: 'ProteusConfig'
       deployment_id:
         description: 'Deployment ID (required when stage is PUBLISH)'
         required: false
@@ -124,6 +129,7 @@ jobs:
           JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
           JRELEASER_MAVENCENTRAL_STAGE: ${{ inputs.stage }}
           JRELEASER_MAVENCENTRAL_DEPLOYMENT_ID: ${{ inputs.deployment_id }}
+          JRELEASER_MAVENCENTRAL_NAMESPACE: ${{ inputs.namespace }}
 
       - name: Publish proteus-firebase
         run: ./gradlew :proteus-firebase:publishAllPublicationsToMavenRepository --no-daemon
@@ -143,6 +149,7 @@ jobs:
           JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
           JRELEASER_MAVENCENTRAL_STAGE: ${{ inputs.stage }}
           JRELEASER_MAVENCENTRAL_DEPLOYMENT_ID: ${{ inputs.deployment_id }}
+          JRELEASER_MAVENCENTRAL_NAMESPACE: ${{ inputs.namespace }}
 
       - name: Publish proteus-ui
         run: ./gradlew :proteus-ui:publishAllPublicationsToMavenRepository --no-daemon
@@ -162,6 +169,7 @@ jobs:
           JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
           JRELEASER_MAVENCENTRAL_STAGE: ${{ inputs.stage }}
           JRELEASER_MAVENCENTRAL_DEPLOYMENT_ID: ${{ inputs.deployment_id }}
+          JRELEASER_MAVENCENTRAL_NAMESPACE: ${{ inputs.namespace }}
 
       - name: JReleaser output
         if: always()
@@ -171,3 +179,11 @@ jobs:
           path: |
             **/build/jreleaser/trace.log
             **/build/jreleaser/output.properties
+            proteus-core/build/jreleaser/trace.log
+            proteus-core/build/jreleaser/output.properties
+            proteus-firebase/build/jreleaser/trace.log
+            proteus-firebase/build/jreleaser/output.properties
+            proteus-ui/build/jreleaser/trace.log
+            proteus-ui/build/jreleaser/output.properties
+            proteus-bom/build/jreleaser/trace.log
+            proteus-bom/build/jreleaser/output.properties
