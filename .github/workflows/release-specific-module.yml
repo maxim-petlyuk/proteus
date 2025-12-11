@@ -74,7 +74,7 @@ jobs:
         run: |
           echo "🔄 Updating versions in publish.properties..."
           
-          sed -i "s/^proteus.core.version=.*/proteus.core.version=${{ inputs.core_version }}/" publish.properties
+          sed -i "s/^proteus.core.version=.*/proteus.core.version=${{ inputs.version }}/" publish.properties
           
           echo "✅ Versions updated"
           echo ""
@@ -86,7 +86,7 @@ jobs:
         run: |
           echo "🔄 Updating versions in publish.properties..."
           
-          sed -i "s/^proteus.firebase.version=.*/proteus.firebase.version=${{ inputs.firebase_version }}/" publish.properties
+          sed -i "s/^proteus.firebase.version=.*/proteus.firebase.version=${{ inputs.version }}/" publish.properties
           
           echo "✅ Versions updated"
           echo ""
@@ -98,7 +98,7 @@ jobs:
         run: |
           echo "🔄 Updating versions in publish.properties..."
           
-          sed -i "s/^proteus.ui.version=.*/proteus.ui.version=${{ inputs.ui_version }}/" publish.properties
+          sed -i "s/^proteus.ui.version=.*/proteus.ui.version=${{ inputs.version }}/" publish.properties
           
           echo "✅ Versions updated"
           echo ""
