@@ -1,0 +1,131 @@
+name: Release Specific Module
+
+on:
+  workflow_dispatch:
+    inputs:
+      module:
+        description: 'Module to release'
+        required: true
+        type: choice
+        options:
+          - proteus-core
+          - proteus-firebase
+          - proteus-ui
+          - all
+      version:
+        description: 'Version to release (e.g., 1.0.0)'
+        required: true
+        type: string
+      create_tag:
+        description: 'Create git tag for this release?'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Release ${{ inputs.module }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Create Git tag
+        if: inputs.create_tag
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          TAG_NAME="v${{ inputs.version }}"
+          if [ "${{ inputs.module }}" != "all" ]; then
+            TAG_NAME="${{ inputs.module }}-v${{ inputs.version }}"
+          fi
+          git tag -a "$TAG_NAME" -m "Release ${{ inputs.module }} v${{ inputs.version }}"
+          git push origin "$TAG_NAME"
+
+      # Decode firebase google-services.json
+      - name: Load Google Service file
+        env:
+          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo $DATA | base64 -di > sample-firebase/google-services.json
+
+      # Publish into maven local proteus-core
+      - name: Publish proteus-core into maven local
+        if: inputs.module == 'proteus-core' || inputs.module == 'all'
+        run: ./gradlew proteus-core:publishToMavenLocal --no-daemon
+
+      # Publish into maven local proteus-firebase
+      - name: Publish proteus-firebase into maven local
+        if: inputs.module == 'proteus-firebase' || inputs.module == 'all'
+        run: ./gradlew proteus-firebase:publishToMavenLocal --no-daemon
+
+      # Publish into maven local proteus-ui
+      - name: Publish proteus-ui into maven local
+        if: inputs.module == 'proteus-ui' || inputs.module == 'all'
+        run: ./gradlew proteus-ui:publishToMavenLocal --no-daemon
+
+      - name: Build all modules
+        run: ./gradlew clean build --no-daemon
+
+      - name: Run tests
+        run: ./gradlew test
+
+      - name: Release proteus-core
+        if: inputs.module == 'proteus-core' || inputs.module == 'all'
+        run: ./gradlew :proteus-core:jreleaserFullRelease --no-daemon
+        env:
+          JRELEASER_PROJECT_VERSION: ${{ inputs.version }}
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
+          JRELEASER_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.GPG_PUBLIC_KEY }}
+          JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
+
+      - name: Release proteus-firebase
+        if: inputs.module == 'proteus-firebase' || inputs.module == 'all'
+        run: ./gradlew :proteus-firebase:jreleaserFullRelease --no-daemon
+        env:
+          JRELEASER_PROJECT_VERSION: ${{ inputs.version }}
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
+          JRELEASER_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.GPG_PUBLIC_KEY }}
+          JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
+
+      - name: Release proteus-ui
+        if: inputs.module == 'proteus-ui' || inputs.module == 'all'
+        run: ./gradlew :proteus-ui:jreleaserFullRelease --no-daemon
+        env:
+          JRELEASER_PROJECT_VERSION: ${{ inputs.version }}
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
+          JRELEASER_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.GPG_PUBLIC_KEY }}
+          JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
+
+      - name: JReleaser output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jreleaser-logs-${{ inputs.module }}
+          path: |
+            **/build/jreleaser/trace.log
+            **/build/jreleaser/output.properties

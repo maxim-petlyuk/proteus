@@ -33,11 +33,11 @@ jobs:
       - name: Publish proteus-core into maven local
         run: ./gradlew proteus-core:publishToMavenLocal --no-daemon
 
-      # Publish into maven local proteus-core
+      # Publish into maven local proteus-firebase
       - name: Publish proteus-firebase into maven local
         run: ./gradlew proteus-firebase:publishToMavenLocal --no-daemon
 
-      # Publish into maven local proteus-core
+      # Publish into maven local proteus-ui
       - name: Publish proteus-ui into maven local
         run: ./gradlew proteus-ui:publishToMavenLocal --no-daemon
 
