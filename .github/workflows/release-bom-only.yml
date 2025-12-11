@@ -67,13 +67,17 @@ jobs:
 
       - name: Update BOM publish.properties
         run: |
-          cat > publish.properties << EOF
-          proteus.bom.version=${{ inputs.bom_version }}
-          proteus.core.version=${{ inputs.core_version }}
-          proteus.firebase.version=${{ inputs.firebase_version }}
-          proteus.ui.version=${{ inputs.ui_version }}
-          EOF
-          cat publish.properties
+          echo "🔄 Updating versions in publish.properties..."
+          
+          sed -i "s/^proteus.bom.version=.*/proteus.bom.version=${{ inputs.bom_version }}/" publish.properties
+          sed -i "s/^proteus.core.version=.*/proteus.core.version=${{ inputs.core_version }}/" publish.properties
+          sed -i "s/^proteus.firebase.version=.*/proteus.firebase.version=${{ inputs.firebase_version }}/" publish.properties
+          sed -i "s/^proteus.ui.version=.*/proteus.ui.version=${{ inputs.ui_version }}/" publish.properties
+          
+          echo "✅ Versions updated"
+          echo ""
+          echo "📄 Current version properties:"
+          grep "\.version=" publish.properties
 
       # Decode firebase google-services.json
       - name: Load Google Service file

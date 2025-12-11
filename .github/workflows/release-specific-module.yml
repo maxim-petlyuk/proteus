@@ -72,26 +72,38 @@ jobs:
       - name: Update core version in publish.properties
         if: inputs.module == 'proteus-core' || inputs.module == 'all'
         run: |
-          cat > publish.properties << EOF
-          proteus.core.version=${{ inputs.version }}
-          EOF
-          cat publish.properties
+          echo "🔄 Updating versions in publish.properties..."
+          
+          sed -i "s/^proteus.core.version=.*/proteus.core.version=${{ inputs.core_version }}/" publish.properties
+          
+          echo "✅ Versions updated"
+          echo ""
+          echo "📄 Current version properties:"
+          grep "\.version=" publish.properties
 
       - name: Update firebase version in publish.properties
         if: inputs.module == 'proteus-firebase' || inputs.module == 'all'
         run: |
-          cat > publish.properties << EOF
-          proteus.firebase.version=${{ inputs.version }}
-          EOF
-          cat publish.properties
+          echo "🔄 Updating versions in publish.properties..."
+          
+          sed -i "s/^proteus.firebase.version=.*/proteus.firebase.version=${{ inputs.firebase_version }}/" publish.properties
+          
+          echo "✅ Versions updated"
+          echo ""
+          echo "📄 Current version properties:"
+          grep "\.version=" publish.properties
 
       - name: Update ui version in publish.properties
         if: inputs.module == 'proteus-ui' || inputs.module == 'all'
         run: |
-          cat > publish.properties << EOF
-          proteus.ui.version=${{ inputs.version }}
-          EOF
-          cat publish.properties
+          echo "🔄 Updating versions in publish.properties..."
+          
+          sed -i "s/^proteus.ui.version=.*/proteus.ui.version=${{ inputs.ui_version }}/" publish.properties
+          
+          echo "✅ Versions updated"
+          echo ""
+          echo "📄 Current version properties:"
+          grep "\.version=" publish.properties
 
       - name: Build all modules
         run: ./gradlew clean build --no-daemon
