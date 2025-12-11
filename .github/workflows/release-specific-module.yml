@@ -85,6 +85,11 @@ jobs:
       - name: Run tests
         run: ./gradlew test
 
+      - name: Publish proteus-core
+        run: ./gradlew :proteus-core:publishAllPublicationsToMavenRepository --no-daemon
+        env:
+          GRADLE_OPTS: -Dorg.gradle.daemon=false
+
       - name: Release proteus-core
         if: inputs.module == 'proteus-core' || inputs.module == 'all'
         run: ./gradlew :proteus-core:jreleaserFullRelease --no-daemon
@@ -97,6 +102,11 @@ jobs:
           JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
 
+      - name: Publish proteus-firebase
+        run: ./gradlew :proteus-firebase:publishAllPublicationsToMavenRepository --no-daemon
+        env:
+          GRADLE_OPTS: -Dorg.gradle.daemon=false
+
       - name: Release proteus-firebase
         if: inputs.module == 'proteus-firebase' || inputs.module == 'all'
         run: ./gradlew :proteus-firebase:jreleaserFullRelease --no-daemon
@@ -108,6 +118,11 @@ jobs:
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
           JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
+
+      - name: Publish proteus-ui
+        run: ./gradlew :proteus-ui:publishAllPublicationsToMavenRepository --no-daemon
+        env:
+          GRADLE_OPTS: -Dorg.gradle.daemon=false
 
       - name: Release proteus-ui
         if: inputs.module == 'proteus-ui' || inputs.module == 'all'
