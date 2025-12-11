@@ -57,7 +57,7 @@ jobs:
         run: echo $DATA | base64 -di > sample-firebase/google-services.json
 
       - name: Build project
-        run: ./gradlew build --no-daemon
+        run: ./gradlew clean build --no-daemon
 
       # Unit tests
       - name: Run unit tests
@@ -116,8 +116,11 @@ jobs:
           echo "Waiting 2 minutes for modules to sync to Maven Central..."
           sleep 120
 
+      - name: Publish BOM into maven local
+        run: ./gradlew proteus-bom:publishToMavenLocal --no-daemon
+
       - name: Release proteus-bom
-        run: ./gradlew :proteus-bom:jreleaserFullRelease
+        run: ./gradlew :proteus-bom:jreleaserFullRelease --no-daemon
         env:
           JRELEASER_PROJECT_VERSION: ${{ steps.version.outputs.VERSION }}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}

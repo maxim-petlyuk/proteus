@@ -72,8 +72,11 @@ jobs:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo $DATA | base64 -di > sample-firebase/google-services.json
 
-      - name: Build BOM
-        run: ./gradlew :proteus-bom:build --no-daemon
+      - name: Build project
+        run: ./gradlew clean build --no-daemon
+
+      - name: Publish BOM into maven local
+        run: ./gradlew proteus-bom:publishToMavenLocal --no-daemon
 
       - name: Release BOM
         run: ./gradlew :proteus-bom:jreleaserFullRelease --no-daemon

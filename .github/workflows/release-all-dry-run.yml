@@ -46,7 +46,7 @@ jobs:
         run: echo $DATA | base64 -di > sample-firebase/google-services.json
 
       - name: Build project
-        run: ./gradlew build --no-daemon
+        run: ./gradlew clean build --no-daemon
 
       # Unit tests
       - name: Run unit tests
