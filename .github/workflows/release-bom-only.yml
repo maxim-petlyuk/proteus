@@ -75,14 +75,6 @@ jobs:
           EOF
           cat publish.properties
 
-      - name: Create Git tag
-        if: inputs.create_tag
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git tag -a "bom-v${{ inputs.bom_version }}" -m "Release BOM v${{ inputs.bom_version }}"
-          git push origin "bom-v${{ inputs.bom_version }}"
-
       # Decode firebase google-services.json
       - name: Load Google Service file
         env:
@@ -117,6 +109,14 @@ jobs:
           JRELEASER_MAVENCENTRAL_STAGE: ${{ inputs.stage }}
           JRELEASER_MAVENCENTRAL_DEPLOYMENT_ID: ${{ inputs.deployment_id }}
           JRELEASER_MAVENCENTRAL_NAMESPACE: ${{ inputs.namespace }}
+
+      - name: Create Git tag
+        if: inputs.create_tag
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git tag -a "bom-v${{ inputs.bom_version }}" -m "Release BOM v${{ inputs.bom_version }}"
+          git push origin "bom-v${{ inputs.bom_version }}"
 
       - name: Summary
         run: |
