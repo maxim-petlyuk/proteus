@@ -143,7 +143,10 @@ publishing {
 
 jreleaser {
     project {
+        name = publishProperties["proteus.ui.artifact"].toString()
+        version = publishProperties["proteus.ui.version"].toString()
         inceptionYear = "2025"
+        license.set("Apache-2.0")
         author("@maxim-petlyuk")
     }
 

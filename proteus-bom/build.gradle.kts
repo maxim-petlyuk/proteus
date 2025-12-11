@@ -83,9 +83,10 @@ publishing {
 
 jreleaser {
     project {
-        name.set(publishProperties["proteus.bom"].toString())
-        description.set(publishProperties["proteus.bom.description"].toString())
-        longDescription.set(publishProperties["proteus.bom.description.long"].toString())
+        name = publishProperties["proteus.bom"].toString()
+        version = publishProperties["proteus.bom.version"].toString()
+        description = publishProperties["proteus.bom.description"].toString()
+        longDescription = publishProperties["proteus.bom.description.long"].toString()
         author("@maxim-petlyuk")
         license.set("Apache-2.0")
         inceptionYear.set("2025")

@@ -120,7 +120,10 @@ publishing {
 
 jreleaser {
     project {
+        name = publishProperties["proteus.firebase.artifact"].toString()
+        version = publishProperties["proteus.firebase.version"].toString()
         author("@maxim-petlyuk")
+        license.set("Apache-2.0")
         inceptionYear = "2025"
     }
 
