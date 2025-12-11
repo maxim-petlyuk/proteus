@@ -154,24 +154,6 @@ jreleaser {
         author("@maxim-petlyuk")
     }
 
-    release {
-        github {
-            enabled.set(true)
-
-            // Release name: "proteus-core v1.0.0"
-            releaseName.set("$artifactName v${artifactVersion}")
-
-            // Tag name: "proteus-core-v1.0.0"
-            tagName.set("$artifactName-v${artifactVersion}")
-
-            overwrite.set(true)
-
-            update {
-                enabled.set(true)
-            }
-        }
-    }
-
     gitRootSearch = true
 
     signing {

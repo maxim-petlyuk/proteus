@@ -81,10 +81,14 @@ publishing {
     }
 }
 
+
+val artifactName = publishProperties["proteus.bom"].toString()
+val artifactVersion = publishProperties["proteus.bom.version"].toString()
+
 jreleaser {
     project {
-        name = publishProperties["proteus.bom"].toString()
-        version = publishProperties["proteus.bom.version"].toString()
+        name = artifactName
+        version = artifactVersion
         description = publishProperties["proteus.bom.description"].toString()
         longDescription = publishProperties["proteus.bom.description.long"].toString()
         author("@maxim-petlyuk")

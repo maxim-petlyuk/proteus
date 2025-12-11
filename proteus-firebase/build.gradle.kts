@@ -130,24 +130,6 @@ jreleaser {
         inceptionYear = "2025"
     }
 
-    release {
-        github {
-            enabled.set(true)
-
-            // Release name: "proteus-firebase v1.0.0"
-            releaseName.set("$artifactName v${artifactVersion}")
-
-            // Tag name: "proteus-firebase-v1.0.0"
-            tagName.set("$artifactName-v${artifactVersion}")
-
-            overwrite.set(true)
-
-            update {
-                enabled.set(true)
-            }
-        }
-    }
-
     gitRootSearch = true
 
     signing {
