@@ -60,7 +60,7 @@ jobs:
         run: ./gradlew build --no-daemon
 
       # Unit tests
-      - name: Run tests
+      - name: Run unit tests
         run: ./gradlew test --no-daemon
 
       - name: Release proteus-core

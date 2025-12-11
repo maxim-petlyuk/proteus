@@ -48,9 +48,9 @@ jobs:
       - name: Build project
         run: ./gradlew build --no-daemon
 
-      # Run unit tests
-      - name: Run unit tests for proteus-core
-        run: ./gradlew :proteus-core:testDebugUnitTest
+      # Unit tests
+      - name: Run unit tests
+        run: ./gradlew test --no-daemon
 
       # Dry run for proteus-core
       - name: Publish proteus-core (dry-run)
