@@ -69,6 +69,30 @@ jobs:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo $DATA | base64 -di > sample-firebase/google-services.json
 
+      - name: Update core version in publish.properties
+        if: inputs.module == 'proteus-core' || inputs.module == 'all'
+        run: |
+          cat > publish.properties << EOF
+          proteus.core.version=${{ inputs.version }}
+          EOF
+          cat publish.properties
+
+      - name: Update firebase version in publish.properties
+        if: inputs.module == 'proteus-firebase' || inputs.module == 'all'
+        run: |
+          cat > publish.properties << EOF
+          proteus.firebase.version=${{ inputs.version }}
+          EOF
+          cat publish.properties
+
+      - name: Update ui version in publish.properties
+        if: inputs.module == 'proteus-ui' || inputs.module == 'all'
+        run: |
+          cat > publish.properties << EOF
+          proteus.ui.version=${{ inputs.version }}
+          EOF
+          cat publish.properties
+
       - name: Build all modules
         run: ./gradlew clean build --no-daemon
 
@@ -84,7 +108,6 @@ jobs:
           fi
           echo "✓ Deployment ID provided: ${{ inputs.deployment_id }}"
 
-      # Publish into maven local proteus-core
       - name: Publish proteus-core into maven local
         if: inputs.module == 'proteus-core' || inputs.module == 'all'
         run: ./gradlew proteus-core:publishToMavenLocal --no-daemon
