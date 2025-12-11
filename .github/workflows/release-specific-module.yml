@@ -12,6 +12,18 @@ on:
           - proteus-firebase
           - proteus-ui
           - all
+      stage:
+        description: 'The MavenCentral Maven deployer allows executing deployments in stages that is, you may set the stage property to UPLOAD, PUBLISH, and/or FULL. You may define any of the following system properties or environment variables to set the given stage'
+        required: true
+        type: choice
+        options:
+          - UPLOAD
+          - PUBLISH
+          - FULL
+      deployment_id:
+        description: 'Deployment ID (required when stage is PUBLISH)'
+        required: false
+        type: string
       version:
         description: 'Version to release (e.g., 1.0.0)'
         required: true
@@ -85,6 +97,15 @@ jobs:
       - name: Run tests
         run: ./gradlew test
 
+      - name: Validate deployment_id for PUBLISH stage
+        if: inputs.stage == 'PUBLISH'
+        run: |
+          if [ -z "${{ inputs.deployment_id }}" ]; then
+            echo "Error: deployment_id is required when stage is PUBLISH"
+            exit 1
+          fi
+          echo "✓ Deployment ID provided: ${{ inputs.deployment_id }}"
+
       - name: Publish proteus-core
         run: ./gradlew :proteus-core:publishAllPublicationsToMavenRepository --no-daemon
         env:
@@ -101,6 +122,8 @@ jobs:
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
           JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
+          JRELEASER_MAVENCENTRAL_STAGE: ${{ inputs.stage }}
+          JRELEASER_MAVENCENTRAL_DEPLOYMENT_ID: ${{ inputs.deployment_id }}
 
       - name: Publish proteus-firebase
         run: ./gradlew :proteus-firebase:publishAllPublicationsToMavenRepository --no-daemon
@@ -118,6 +141,8 @@ jobs:
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
           JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
+          JRELEASER_MAVENCENTRAL_STAGE: ${{ inputs.stage }}
+          JRELEASER_MAVENCENTRAL_DEPLOYMENT_ID: ${{ inputs.deployment_id }}
 
       - name: Publish proteus-ui
         run: ./gradlew :proteus-ui:publishAllPublicationsToMavenRepository --no-daemon
@@ -135,6 +160,8 @@ jobs:
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
           JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
+          JRELEASER_MAVENCENTRAL_STAGE: ${{ inputs.stage }}
+          JRELEASER_MAVENCENTRAL_DEPLOYMENT_ID: ${{ inputs.deployment_id }}
 
       - name: JReleaser output
         if: always()
