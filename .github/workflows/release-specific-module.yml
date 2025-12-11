@@ -68,7 +68,7 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          TAG_NAME="v${{ inputs.version }}"
+          TAG_NAME="all v${{ inputs.version }}"
           if [ "${{ inputs.module }}" != "all" ]; then
             TAG_NAME="${{ inputs.module }}-v${{ inputs.version }}"
           fi

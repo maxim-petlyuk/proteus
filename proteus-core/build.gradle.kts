@@ -125,13 +125,35 @@ publishing {
     }
 }
 
+
+val artifactName = publishProperties["proteus.core.artifact"].toString()
+val artifactVersion = publishProperties["proteus.core.version"].toString()
+
 jreleaser {
     project {
-        name = publishProperties["proteus.core.artifact"].toString()
-        version = publishProperties["proteus.core.version"].toString()
+        name = artifactName
+        version = artifactVersion
         author("@maxim-petlyuk")
         license.set("Apache-2.0")
         inceptionYear = "2025"
+    }
+
+    release {
+        github {
+            enabled.set(true)
+
+            // Release name: "proteus-core v1.0.0"
+            releaseName.set("$artifactName v${artifactVersion}")
+
+            // Tag name: "proteus-core-v1.0.0"
+            tagName.set("$artifactName-v${artifactVersion}")
+
+            overwrite.set(true)
+
+            update {
+                enabled.set(true)
+            }
+        }
     }
 
     gitRootSearch = true
