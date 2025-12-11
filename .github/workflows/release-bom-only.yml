@@ -3,6 +3,19 @@ name: Release BOM Only
 on:
   workflow_dispatch:
     inputs:
+      stage:
+        description: 'The MavenCentral Maven deployer allows executing deployments in stages that is, you may set the stage property to UPLOAD, PUBLISH, and/or FULL. You may define any of the following system properties or environment variables to set the given stage'
+        required: true
+        type: choice
+        default: FULL
+        options:
+          - UPLOAD
+          - PUBLISH
+          - FULL
+      deployment_id:
+        description: 'Deployment ID (required when stage is PUBLISH)'
+        required: false
+        type: string
       bom_version:
         description: 'BOM version (e.g., 1.0.0)'
         required: true
@@ -48,7 +61,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Update BOM gradle.properties
+      - name: Update BOM publish.properties
         run: |
           cat > publish.properties << EOF
           proteus.bom.version=${{ inputs.bom_version }}
@@ -75,6 +88,15 @@ jobs:
       - name: Build BOM
         run: ./gradlew :proteus-bom:build --no-daemon
 
+      - name: Validate deployment_id for PUBLISH stage
+        if: inputs.stage == 'PUBLISH'
+        run: |
+          if [ -z "${{ inputs.deployment_id }}" ]; then
+            echo "Error: deployment_id is required when stage is PUBLISH"
+            exit 1
+          fi
+          echo "✓ Deployment ID provided: ${{ inputs.deployment_id }}"
+
       - name: Release BOM
         run: ./gradlew :proteus-bom:jreleaserFullRelease --no-daemon
         env:
@@ -85,6 +107,8 @@ jobs:
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
           JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
+          JRELEASER_MAVENCENTRAL_STAGE: ${{ inputs.stage }}
+          JRELEASER_MAVENCENTRAL_DEPLOYMENT_ID: ${{ inputs.deployment_id }}
 
       - name: Summary
         run: |
