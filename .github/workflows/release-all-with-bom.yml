@@ -38,9 +38,6 @@ jobs:
         id: version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
 
-      - name: Build all modules
-        run: ./gradlew clean build -x test
-
       # Publish into maven local proteus-core
       - name: Publish proteus-core into maven local
         run: ./gradlew proteus-core:publishToMavenLocal --no-daemon
@@ -64,7 +61,7 @@ jobs:
 
       # Run unit tests
       - name: Run unit tests for proteus-core
-        run: ./gradlew :proteus-core:testDebugUnitTest
+        run: ./gradlew :proteus-core:testDebugUnitTest --no-daemon
 
       - name: Release proteus-core
         run: ./gradlew :proteus-core:jreleaserFullRelease --no-daemon

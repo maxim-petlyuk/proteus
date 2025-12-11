@@ -1,0 +1,117 @@
+name: Release BOM Only
+
+on:
+  workflow_dispatch:
+    inputs:
+      bom_version:
+        description: 'BOM version (e.g., 1.0.0)'
+        required: true
+        type: string
+      core_version:
+        description: 'proteus-core version'
+        required: true
+        type: string
+      firebase_version:
+        description: 'proteus-firebase version'
+        required: true
+        type: string
+      ui_version:
+        description: 'proteus-ui version'
+        required: true
+        type: string
+      create_tag:
+        description: 'Create git tag for this BOM release?'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  release-bom:
+    name: Release BOM Only
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Update BOM gradle.properties
+        run: |
+          cat > publish.properties << EOF
+          proteus.bom.version=${{ inputs.bom_version }}
+          proteus.core.version=${{ inputs.core_version }}
+          proteus.firebase.version=${{ inputs.firebase_version }}
+          proteus.ui.version=${{ inputs.ui_version }}
+          EOF
+          cat publish.properties
+
+      - name: Create Git tag
+        if: inputs.create_tag
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git tag -a "bom-v${{ inputs.bom_version }}" -m "Release BOM v${{ inputs.bom_version }}"
+          git push origin "bom-v${{ inputs.bom_version }}"
+
+      # Decode firebase google-services.json
+      - name: Load Google Service file
+        env:
+          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo $DATA | base64 -di > sample-firebase/google-services.json
+
+      - name: Build BOM
+        run: ./gradlew :proteus-bom:build --no-daemon
+
+      - name: Release BOM
+        run: ./gradlew :proteus-bom:jreleaserFullRelease --no-daemon
+        env:
+          JRELEASER_PROJECT_VERSION: ${{ inputs.bom_version }}
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
+          JRELEASER_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.GPG_PUBLIC_KEY }}
+          JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
+
+      - name: Summary
+        run: |
+          echo "## BOM Released" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**BOM Version:** ${{ inputs.bom_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Module Versions" >> $GITHUB_STEP_SUMMARY
+          echo "- proteus-core: ${{ inputs.core_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- proteus-firebase: ${{ inputs.firebase_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- proteus-ui: ${{ inputs.ui_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Users can now use:" >> $GITHUB_STEP_SUMMARY
+          echo '```kotlin' >> $GITHUB_STEP_SUMMARY
+          echo 'dependencies {' >> $GITHUB_STEP_SUMMARY
+          echo '    implementation(platform("io.github.maxim-petlyuk:proteus-bom:${{ inputs.bom_version }}"))' >> $GITHUB_STEP_SUMMARY
+          echo '    implementation("io.github.maxim-petlyuk:proteus-core")' >> $GITHUB_STEP_SUMMARY
+          echo '    implementation("io.github.maxim-petlyuk:proteus-firebase")' >> $GITHUB_STEP_SUMMARY
+          echo '    implementation("io.github.maxim-petlyuk:proteus-ui")' >> $GITHUB_STEP_SUMMARY
+          echo '}' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: JReleaser output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jreleaser-bom-logs
+          path: |
+            proteus-bom/build/jreleaser/trace.log
+            proteus-bom/build/jreleaser/output.properties
