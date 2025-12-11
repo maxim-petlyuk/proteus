@@ -20,7 +20,9 @@ testCore = "1.7.0"
 firebaseBom = "34.6.0"
 googleGmsGoogleServices = "4.4.4"
 jreleaser = "1.21.0"
-proteus = "0.0.3"
+proteusCore = "0.0.3"
+proteusUi = "0.0.3"
+proteusFirebase = "0.0.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -53,9 +55,9 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 kotlinx-test = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlinTest" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-config = { module = "com.google.firebase:firebase-config" }
-proteus-core = { group = "io.github.maxim-petlyuk", name = "proteus-core", version.ref = "proteus" }
-proteus-firebase = { group = "io.github.maxim-petlyuk", name = "proteus-firebase", version.ref = "proteus" }
-proteus-ui = { group = "io.github.maxim-petlyuk", name = "proteus-ui", version.ref = "proteus" }
+proteus-core = { group = "io.github.maxim-petlyuk", name = "proteus-core", version.ref = "proteusCore" }
+proteus-firebase = { group = "io.github.maxim-petlyuk", name = "proteus-firebase", version.ref = "proteusFirebase" }
+proteus-ui = { group = "io.github.maxim-petlyuk", name = "proteus-ui", version.ref = "proteusUi" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
