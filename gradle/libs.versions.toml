@@ -23,6 +23,8 @@ jreleaser = "1.21.0"
 proteusCore = "0.0.3"
 proteusUi = "0.0.3"
 proteusFirebase = "0.0.3"
+proteusBom = "0.0.4"
+jetbrainsKotlinJvm = "2.2.21"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -55,6 +57,7 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 kotlinx-test = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlinTest" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-config = { module = "com.google.firebase:firebase-config" }
+proteus-bom = { group = "io.github.maxim-petlyuk", name = "proteus-bom", version.ref = "proteusBom" }
 proteus-core = { group = "io.github.maxim-petlyuk", name = "proteus-core", version.ref = "proteusCore" }
 proteus-firebase = { group = "io.github.maxim-petlyuk", name = "proteus-firebase", version.ref = "proteusFirebase" }
 proteus-ui = { group = "io.github.maxim-petlyuk", name = "proteus-ui", version.ref = "proteusUi" }
@@ -67,3 +70,4 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
 jreleaser = { id = "org.jreleaser", version.ref = "jreleaser" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }

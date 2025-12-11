@@ -63,18 +63,18 @@ val publishProperties = Properties().apply {
     load(FileInputStream(File(rootProject.rootDir, "publish.properties")))
 }
 
-version = publishProperties["FB_VERSION_NAME"].toString()
-description = publishProperties["FB_VERSION_DESCRIPTION"].toString()
+version = publishProperties["proteus.firebase.version"].toString()
+description = publishProperties["proteus.firebase.description"].toString()
 
 publishing {
     publications {
         create<MavenPublication>("release") {
-            groupId = publishProperties["GROUP"].toString()
-            artifactId = publishProperties["FB_ARTIFACT_ID"].toString()
+            groupId = publishProperties["proteus.group"].toString()
+            artifactId = publishProperties["proteus.firebase.artifact"].toString()
 
             pom {
-                name.set(publishProperties["FB_VERSION_NAME"].toString())
-                description.set(publishProperties["FB_VERSION_DESCRIPTION"].toString())
+                name.set(publishProperties["proteus.firebase.version"].toString())
+                description.set(publishProperties["proteus.firebase.description"].toString())
                 url.set("https://github.com/maxim-petlyuk/proteus")
 
                 issueManagement {
@@ -120,15 +120,18 @@ publishing {
 
 jreleaser {
     project {
-        inceptionYear = "2025"
         author("@maxim-petlyuk")
+        inceptionYear = "2025"
     }
+
     gitRootSearch = true
+
     signing {
         active = Active.ALWAYS
         armored = true
         verify = true
     }
+
     deploy {
         maven {
             mavenCentral.create("sonatype") {

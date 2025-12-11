@@ -70,18 +70,18 @@ val publishProperties = Properties().apply {
     load(FileInputStream(File(rootProject.rootDir, "publish.properties")))
 }
 
-version = publishProperties["CORE_VERSION_NAME"].toString()
-description = publishProperties["CORE_VERSION_DESCRIPTION"].toString()
+version = publishProperties["proteus.core.version"].toString()
+description = publishProperties["proteus.core.description"].toString()
 
 publishing {
     publications {
         create<MavenPublication>("release") {
-            groupId = publishProperties["GROUP"].toString()
-            artifactId = publishProperties["CORE_ARTIFACT_ID"].toString()
+            groupId = publishProperties["proteus.group"].toString()
+            artifactId = publishProperties["proteus.core.artifact"].toString()
 
             pom {
-                name.set(publishProperties["CORE_VERSION_NAME"].toString())
-                description.set(publishProperties["CORE_VERSION_DESCRIPTION"].toString())
+                name.set(publishProperties["proteus.core.version"].toString())
+                description.set(publishProperties["proteus.core.description"].toString())
                 url.set("https://github.com/maxim-petlyuk/proteus")
 
                 issueManagement {
@@ -127,17 +127,21 @@ publishing {
 
 jreleaser {
     project {
-        inceptionYear = "2025"
+        name = publishProperties["proteus.core.artifact"].toString()
+        version = publishProperties["proteus.core.version"].toString()
         author("@maxim-petlyuk")
-        name = publishProperties["CORE_ARTIFACT_ID"].toString()
-        version = publishProperties["CORE_VERSION_NAME"].toString()
+        license.set("Apache-2.0")
+        inceptionYear = "2025"
     }
+
     gitRootSearch = true
+
     signing {
         active = Active.ALWAYS
         armored = true
         verify = true
     }
+
     deploy {
         maven {
             mavenCentral.create("sonatype") {

@@ -1,6 +1,9 @@
-name: Release All
+name: Release All Modules + BOM
 
 on:
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
     inputs:
       version:
@@ -8,9 +11,12 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: write
+
 jobs:
   release:
-    name: Release Libraries
+    name: Release All Modules + BOM
     runs-on: ubuntu-latest
 
     steps:
@@ -19,25 +25,31 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
           distribution: 'temurin'
-          cache: 'gradle'
+          java-version: 17
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Build all modules
+        run: ./gradlew clean build -x test
 
       # Publish into maven local proteus-core
       - name: Publish proteus-core into maven local
         run: ./gradlew proteus-core:publishToMavenLocal --no-daemon
 
-      # Publish into maven local proteus-core
+      # Publish into maven local proteus-firebase
       - name: Publish proteus-firebase into maven local
         run: ./gradlew proteus-firebase:publishToMavenLocal --no-daemon
 
-      # Publish into maven local proteus-core
+      # Publish into maven local proteus-ui
       - name: Publish proteus-ui into maven local
         run: ./gradlew proteus-ui:publishToMavenLocal --no-daemon
 
@@ -54,55 +66,55 @@ jobs:
       - name: Run unit tests for proteus-core
         run: ./gradlew :proteus-core:testDebugUnitTest
 
-      # Release proteus-core
-      - name: Publish proteus-core
-        run: ./gradlew :proteus-core:publishAllPublicationsToMavenRepository --no-daemon
-        env:
-          GRADLE_OPTS: -Dorg.gradle.daemon=false
-
-      - name: Release proteus-core with JReleaser
+      - name: Release proteus-core
         run: ./gradlew :proteus-core:jreleaserFullRelease --no-daemon
         env:
-          JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JRELEASER_PROJECT_VERSION: ${{ steps.version.outputs.VERSION }}
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
           JRELEASER_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.GPG_PUBLIC_KEY }}
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
-          JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-          JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
 
-      # Release proteus-firebase
-      - name: Publish proteus-firebase
-        run: ./gradlew :proteus-firebase:publishAllPublicationsToMavenRepository --no-daemon
-        env:
-          GRADLE_OPTS: -Dorg.gradle.daemon=false
-
-      - name: Release proteus-firebase with JReleaser
+      - name: Release proteus-firebase
         run: ./gradlew :proteus-firebase:jreleaserFullRelease --no-daemon
         env:
-          JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JRELEASER_PROJECT_VERSION: ${{ steps.version.outputs.VERSION }}
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
           JRELEASER_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.GPG_PUBLIC_KEY }}
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
-          JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-          JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
 
-      # Release proteus-ui
-      - name: Publish proteus-ui
-        run: ./gradlew :proteus-ui:publishAllPublicationsToMavenRepository --no-daemon
-        env:
-          GRADLE_OPTS: -Dorg.gradle.daemon=false
-
-      - name: Release proteus-ui with JReleaser
+      - name: Release proteus-ui
         run: ./gradlew :proteus-ui:jreleaserFullRelease --no-daemon
         env:
+          JRELEASER_PROJECT_VERSION: ${{ steps.version.outputs.VERSION }}
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
+          JRELEASER_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.GPG_PUBLIC_KEY }}
+          JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
+
+      - name: Wait for Maven Central sync
+        run: |
+          echo "Waiting 2 minutes for modules to sync to Maven Central..."
+          sleep 120
+
+      - name: Release proteus-bom
+        run: ./gradlew :proteus-bom:jreleaserFullRelease
+        env:
+          JRELEASER_PROJECT_VERSION: ${{ steps.version.outputs.VERSION }}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JRELEASER_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.GPG_PUBLIC_KEY }}
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
-          JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-          JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          JRELEASER_MAVENCENTRAL_SONATYPE_TOKEN: ${{ secrets.SONATYPE_TOKEN }}
 
-      # Upload JReleaser output logs
       - name: JReleaser output
         if: always()
         uses: actions/upload-artifact@v4
@@ -115,3 +127,5 @@ jobs:
             proteus-firebase/build/jreleaser/output.properties
             proteus-ui/build/jreleaser/trace.log
             proteus-ui/build/jreleaser/output.properties
+            proteus-bom/build/jreleaser/trace.log
+            proteus-bom/build/jreleaser/output.properties

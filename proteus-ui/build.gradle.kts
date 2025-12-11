@@ -86,18 +86,18 @@ val publishProperties = Properties().apply {
     load(FileInputStream(File(rootProject.rootDir, "publish.properties")))
 }
 
-version = publishProperties["UI_VERSION_NAME"].toString()
-description = publishProperties["UI_VERSION_DESCRIPTION"].toString()
+version = publishProperties["proteus.ui.version"].toString()
+description = publishProperties["proteus.ui.description"].toString()
 
 publishing {
     publications {
         create<MavenPublication>("release") {
-            groupId = publishProperties["GROUP"].toString()
-            artifactId = publishProperties["UI_ARTIFACT_ID"].toString()
+            groupId = publishProperties["proteus.group"].toString()
+            artifactId = publishProperties["proteus.ui.artifact"].toString()
 
             pom {
-                name.set(publishProperties["UI_VERSION_NAME"].toString())
-                description.set(publishProperties["UI_VERSION_DESCRIPTION"].toString())
+                name.set(publishProperties["proteus.ui.version"].toString())
+                description.set(publishProperties["proteus.ui.description"].toString())
                 url.set("https://github.com/maxim-petlyuk/proteus")
 
                 issueManagement {
@@ -146,12 +146,15 @@ jreleaser {
         inceptionYear = "2025"
         author("@maxim-petlyuk")
     }
+
     gitRootSearch = true
+
     signing {
         active = Active.ALWAYS
         armored = true
         verify = true
     }
+
     deploy {
         maven {
             mavenCentral.create("sonatype") {
