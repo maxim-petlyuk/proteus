@@ -120,10 +120,6 @@ jobs:
           fi
           echo "✓ Deployment ID provided: ${{ inputs.deployment_id }}"
 
-      - name: Publish proteus-core into maven local
-        if: inputs.module == 'proteus-core' || inputs.module == 'all'
-        run: ./gradlew proteus-core:publishToMavenLocal --no-daemon
-
       - name: Publish proteus-core
         if: inputs.module == 'proteus-core' || inputs.module == 'all'
         run: ./gradlew :proteus-core:publishAllPublicationsToMavenRepository --no-daemon
@@ -145,11 +141,6 @@ jobs:
           JRELEASER_MAVENCENTRAL_DEPLOYMENT_ID: ${{ inputs.deployment_id }}
           JRELEASER_MAVENCENTRAL_NAMESPACE: ${{ inputs.namespace }}
 
-      # Publish into maven local proteus-firebase
-      - name: Publish proteus-firebase into maven local
-        if: inputs.module == 'proteus-firebase' || inputs.module == 'all'
-        run: ./gradlew proteus-firebase:publishToMavenLocal --no-daemon
-
       - name: Publish proteus-firebase
         if: inputs.module == 'proteus-firebase' || inputs.module == 'all'
         run: ./gradlew :proteus-firebase:publishAllPublicationsToMavenRepository --no-daemon
@@ -170,11 +161,6 @@ jobs:
           JRELEASER_MAVENCENTRAL_STAGE: ${{ inputs.stage }}
           JRELEASER_MAVENCENTRAL_DEPLOYMENT_ID: ${{ inputs.deployment_id }}
           JRELEASER_MAVENCENTRAL_NAMESPACE: ${{ inputs.namespace }}
-
-      # Publish into maven local proteus-ui
-      - name: Publish proteus-ui into maven local
-        if: inputs.module == 'proteus-ui' || inputs.module == 'all'
-        run: ./gradlew proteus-ui:publishToMavenLocal --no-daemon
 
       - name: Publish proteus-ui
         if: inputs.module == 'proteus-ui' || inputs.module == 'all'

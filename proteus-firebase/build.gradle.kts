@@ -138,6 +138,18 @@ jreleaser {
         verify = true
     }
 
+    release {
+        github {
+            enabled = true
+            tagName = "${artifactName}-v${artifactVersion}"
+            releaseName = "Release ${artifactName} v${artifactVersion}"
+            overwrite.set(true)
+            update {
+                enabled.set(true)
+            }
+        }
+    }
+
     deploy {
         maven {
             mavenCentral.create("sonatype") {

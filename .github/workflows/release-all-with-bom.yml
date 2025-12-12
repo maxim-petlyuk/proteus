@@ -38,18 +38,6 @@ jobs:
         id: version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
 
-      # Publish into maven local proteus-core
-      - name: Publish proteus-core into maven local
-        run: ./gradlew proteus-core:publishToMavenLocal --no-daemon
-
-      # Publish into maven local proteus-firebase
-      - name: Publish proteus-firebase into maven local
-        run: ./gradlew proteus-firebase:publishToMavenLocal --no-daemon
-
-      # Publish into maven local proteus-ui
-      - name: Publish proteus-ui into maven local
-        run: ./gradlew proteus-ui:publishToMavenLocal --no-daemon
-
       # Decode firebase google-services.json
       - name: Load Google Service file
         env:
@@ -63,6 +51,7 @@ jobs:
       - name: Run unit tests
         run: ./gradlew test --no-daemon
 
+      # Proteus core release
       - name: Publish proteus-core
         run: ./gradlew :proteus-core:publishAllPublicationsToMavenRepository --no-daemon
         env:
@@ -79,6 +68,7 @@ jobs:
           JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
 
+      # Proteus firebase release
       - name: Publish proteus-firebase
         run: ./gradlew :proteus-firebase:publishAllPublicationsToMavenRepository --no-daemon
         env:
@@ -95,6 +85,7 @@ jobs:
           JRELEASER_MAVENCENTRAL_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           JRELEASER_MAVENCENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
 
+      # Proteus ui release
       - name: Publish proteus-ui
         run: ./gradlew :proteus-ui:publishAllPublicationsToMavenRepository --no-daemon
         env:
@@ -115,9 +106,6 @@ jobs:
         run: |
           echo "Waiting 2 minutes for modules to sync to Maven Central..."
           sleep 120
-
-      - name: Publish BOM into maven local
-        run: ./gradlew proteus-bom:publishToMavenLocal --no-daemon
 
       - name: Release proteus-bom
         run: ./gradlew :proteus-bom:jreleaserFullRelease --no-daemon

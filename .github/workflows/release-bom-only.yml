@@ -97,9 +97,6 @@ jobs:
           fi
           echo "✓ Deployment ID provided: ${{ inputs.deployment_id }}"
 
-      - name: Publish BOM into maven local
-        run: ./gradlew proteus-bom:publishToMavenLocal --no-daemon
-
       - name: Release BOM
         run: ./gradlew :proteus-bom:jreleaserFullRelease --no-daemon
         env:
