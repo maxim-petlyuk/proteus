@@ -33,11 +33,6 @@ on:
         description: 'Version to release (e.g., 1.0.0)'
         required: true
         type: string
-      create_tag:
-        description: 'Create git tag for this release?'
-        required: false
-        type: boolean
-        default: true
 
 permissions:
   contents: write
@@ -182,18 +177,6 @@ jobs:
           JRELEASER_MAVENCENTRAL_STAGE: ${{ inputs.stage }}
           JRELEASER_MAVENCENTRAL_DEPLOYMENT_ID: ${{ inputs.deployment_id }}
           JRELEASER_MAVENCENTRAL_NAMESPACE: ${{ inputs.namespace }}
-
-      - name: Create Git tag
-        if: inputs.create_tag
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          TAG_NAME="all v${{ inputs.version }}"
-          if [ "${{ inputs.module }}" != "all" ]; then
-            TAG_NAME="${{ inputs.module }}-v${{ inputs.version }}"
-          fi
-          git tag -a "$TAG_NAME" -m "Release ${{ inputs.module }} v${{ inputs.version }}"
-          git push origin "$TAG_NAME"
 
       - name: JReleaser output
         if: always()
