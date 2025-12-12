@@ -172,6 +172,7 @@ private fun ContentSwitcher(
                     featureNote = state.featureNote!!,
                     mockInputType = state.mockInputType!!,
                     isOverrideActivated = state.isOverrideActivated,
+                    isSaveButtonEnabled = state.isSaveButtonEnabled,
                     onToggleMockConfig = onToggleMockConfig,
                     onChangeBooleanMockedValue = onChangeBooleanMockedValue,
                     onChangeTextMockedValue = onChangeTextMockedValue,
@@ -210,6 +211,7 @@ private fun LoadedContent(
     featureNote: FeatureNote<*>,
     mockInputType: MockInputType,
     isOverrideActivated: Boolean = true,
+    isSaveButtonEnabled: Boolean = false,
     onToggleMockConfig: (Boolean) -> Unit = {},
     onChangeBooleanMockedValue: (Boolean) -> Unit = {},
     onChangeTextMockedValue: (String) -> Unit = {},
@@ -257,6 +259,7 @@ private fun LoadedContent(
 
         FilledTonalButton(
             onClick = onSaveChanges,
+            enabled = isSaveButtonEnabled,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp, vertical = 16.dp)

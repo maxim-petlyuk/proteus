@@ -7,8 +7,10 @@ internal data class FeatureConfiguratorState(
     val isLoading: Boolean = false,
     val featureNote: FeatureNote<*>? = null,
     val mockInputType: MockInputType? = null,
+    val originalMockInputType: MockInputType? = null,
     val errorMessage: String? = null,
     val isOverrideActivated: Boolean = false,
+    val originalIsOverrideActivated: Boolean = false,
     val operationState: OperationState = OperationState.Idle
 ) {
 
@@ -18,6 +20,19 @@ internal data class FeatureConfiguratorState(
             errorMessage != null || featureNote == null -> UiState.Error
             else -> UiState.Loaded
         }
+
+    val hasUnsavedChanges: Boolean
+        get() {
+            if (isLoading || featureNote == null || mockInputType == null || originalMockInputType == null) {
+                return false
+            }
+
+            return isOverrideActivated != originalIsOverrideActivated ||
+                   (isOverrideActivated && mockInputType != originalMockInputType)
+        }
+
+    val isSaveButtonEnabled: Boolean
+        get() = hasUnsavedChanges && operationState !is OperationState.ProcessingChanges
 
     sealed class OperationState {
 

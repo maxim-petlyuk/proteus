@@ -154,12 +154,15 @@ internal class FeatureConfiguratorViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             featureBookRepository.getFeatureNote(featureKey)
                 .onSuccess {
+                    val mockInputType = determineMockSetupType(it)
                     rebuild {
                         copy(
                             featureNote = it,
-                            mockInputType = determineMockSetupType(it),
+                            mockInputType = mockInputType,
+                            originalMockInputType = mockInputType,
                             isLoading = false,
-                            isOverrideActivated = it.isOverrideActivated
+                            isOverrideActivated = it.isOverrideActivated,
+                            originalIsOverrideActivated = it.isOverrideActivated
                         )
                     }
                 }.onFailure {
