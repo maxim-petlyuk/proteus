@@ -15,5 +15,7 @@
     <string name="feature_editor_activated_label" translatable="false">Feature activated</string>
     <string name="feature_editor_btn_save" translatable="false">Save</string>
     <string name="feature_editor_btn_reset" translatable="false">Reset</string>
+    <string name="feature_editor_btn_cancel" translatable="false">Cancel</string>
+    <string name="feature_editor_reset_confirmation_msg" translatable="false">Are you sure you want to reset this feature override? This will remove all local overrides and revert to the remote configuration.</string>
 
 </resources>

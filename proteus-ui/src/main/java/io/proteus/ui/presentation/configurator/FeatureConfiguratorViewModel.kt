@@ -46,6 +46,10 @@ internal class FeatureConfiguratorViewModel(
                 processSaveChangesAction()
             }
 
+            is FeatureConfiguratorAction.ResetOverrides -> {
+                processResetOverridesAction()
+            }
+
             is FeatureConfiguratorAction.ConsumeFailureMessage -> {
                 processConsumeFailureMessage()
             }
@@ -137,6 +141,36 @@ internal class FeatureConfiguratorViewModel(
                     rebuild {
                         copy(
                             operationState = FeatureConfiguratorState.OperationState.Failure(e.message)
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun processResetOverridesAction() {
+        viewModelScope.launch(Dispatchers.Default) {
+            currentState.featureNote?.let { featureNote ->
+                rebuild {
+                    copy(
+                        operationState = FeatureConfiguratorState.OperationState.ProcessingChanges
+                    )
+                }
+
+                try {
+                    featureBookRepository.removeMockedConfig(featureNote.feature.key)
+
+                    rebuild {
+                        copy(
+                            operationState = FeatureConfiguratorState.OperationState.Ready
+                        )
+                    }
+                } catch (e: Exception) {
+                    rebuild {
+                        copy(
+                            operationState = FeatureConfiguratorState.OperationState.Failure(
+                                e.message ?: "Failed to reset overrides"
+                            )
                         )
                     }
                 }

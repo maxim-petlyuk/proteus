@@ -28,11 +28,14 @@ internal data class FeatureConfiguratorState(
             }
 
             return isOverrideActivated != originalIsOverrideActivated ||
-                   (isOverrideActivated && mockInputType != originalMockInputType)
+                (isOverrideActivated && mockInputType != originalMockInputType)
         }
 
     val isSaveButtonEnabled: Boolean
         get() = hasUnsavedChanges && operationState !is OperationState.ProcessingChanges
+
+    val isResetButtonEnabled: Boolean
+        get() = isOverrideActivated && operationState !is OperationState.ProcessingChanges
 
     sealed class OperationState {
 

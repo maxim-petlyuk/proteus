@@ -10,5 +10,7 @@ internal sealed class FeatureConfiguratorAction {
 
     data object SaveChanges : FeatureConfiguratorAction()
 
+    data object ResetOverrides : FeatureConfiguratorAction()
+
     data object ConsumeFailureMessage : FeatureConfiguratorAction()
 }

@@ -6,6 +6,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -21,10 +23,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -32,10 +36,13 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -77,7 +84,8 @@ internal fun FeatureConfiguratorScreen(
         onChangeBooleanMockedValue = { viewModel.onAction(FeatureConfiguratorAction.ChangeBooleanFeatureValue(it)) },
         onChangeTextMockedValue = { viewModel.onAction(FeatureConfiguratorAction.ChangeTextFeatureValue(it)) },
         onToggleMockConfig = { viewModel.onAction(FeatureConfiguratorAction.ToggleMockConfiguration(it)) },
-        onSaveChanges = { viewModel.onAction(FeatureConfiguratorAction.SaveChanges) }
+        onSaveChanges = { viewModel.onAction(FeatureConfiguratorAction.SaveChanges) },
+        onResetOverrides = { viewModel.onAction(FeatureConfiguratorAction.ResetOverrides) }
     )
 }
 
@@ -115,6 +123,7 @@ internal fun FeatureConfiguratorScreen(
     onChangeBooleanMockedValue: (Boolean) -> Unit = {},
     onChangeTextMockedValue: (String) -> Unit = {},
     onSaveChanges: () -> Unit = {},
+    onResetOverrides: () -> Unit = {},
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -138,6 +147,7 @@ internal fun FeatureConfiguratorScreen(
             onChangeTextMockedValue = onChangeTextMockedValue,
             onToggleMockConfig = onToggleMockConfig,
             onSaveChanges = onSaveChanges,
+            onResetOverrides = onResetOverrides,
         )
     }
 }
@@ -150,6 +160,7 @@ private fun ContentSwitcher(
     onChangeBooleanMockedValue: (Boolean) -> Unit = {},
     onChangeTextMockedValue: (String) -> Unit = {},
     onSaveChanges: () -> Unit = {},
+    onResetOverrides: () -> Unit = {},
 ) {
     AnimatedContent(
         targetState = state.uiState,
@@ -173,10 +184,12 @@ private fun ContentSwitcher(
                     mockInputType = state.mockInputType!!,
                     isOverrideActivated = state.isOverrideActivated,
                     isSaveButtonEnabled = state.isSaveButtonEnabled,
+                    isResetButtonEnabled = state.isResetButtonEnabled,
                     onToggleMockConfig = onToggleMockConfig,
                     onChangeBooleanMockedValue = onChangeBooleanMockedValue,
                     onChangeTextMockedValue = onChangeTextMockedValue,
                     onSaveChanges = onSaveChanges,
+                    onResetOverrides = onResetOverrides,
                 )
             }
 
@@ -212,10 +225,12 @@ private fun LoadedContent(
     mockInputType: MockInputType,
     isOverrideActivated: Boolean = true,
     isSaveButtonEnabled: Boolean = false,
+    isResetButtonEnabled: Boolean = false,
     onToggleMockConfig: (Boolean) -> Unit = {},
     onChangeBooleanMockedValue: (Boolean) -> Unit = {},
     onChangeTextMockedValue: (String) -> Unit = {},
     onSaveChanges: () -> Unit = {},
+    onResetOverrides: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -257,30 +272,102 @@ private fun LoadedContent(
             }
         }
 
-        FilledTonalButton(
-            onClick = onSaveChanges,
-            enabled = isSaveButtonEnabled,
+        var showResetDialog by remember { mutableStateOf(false) }
+
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 16.dp)
-                .height(48.dp),
-            shape = RoundedCornerShape(50),
-            colors = ButtonDefaults.filledTonalButtonColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-            ),
-            elevation = ButtonDefaults.filledTonalButtonElevation(
-                defaultElevation = 2.dp,
-                pressedElevation = 4.dp,
-                disabledElevation = 0.dp
-            )
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(
-                text = stringResource(id = R.string.feature_editor_btn_save),
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.Medium
+            OutlinedButton(
+                onClick = { showResetDialog = true },
+                enabled = isResetButtonEnabled,
+                modifier = Modifier
+                    .weight(1f)
+                    .height(48.dp),
+                shape = RoundedCornerShape(50),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.error,
+                    disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                ),
+                border = BorderStroke(
+                    1.dp,
+                    if (isResetButtonEnabled) MaterialTheme.colorScheme.error
+                    else MaterialTheme.colorScheme.outline
+                )
+            ) {
+                Text(
+                    text = "Reset",
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
+            FilledTonalButton(
+                onClick = onSaveChanges,
+                enabled = isSaveButtonEnabled,
+                modifier = Modifier
+                    .weight(1f)
+                    .height(48.dp),
+                shape = RoundedCornerShape(50),
+                colors = ButtonDefaults.filledTonalButtonColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                ),
+                elevation = ButtonDefaults.filledTonalButtonElevation(
+                    defaultElevation = 2.dp,
+                    pressedElevation = 4.dp,
+                    disabledElevation = 0.dp
+                )
+            ) {
+                Text(
+                    text = stringResource(id = R.string.feature_editor_btn_save),
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        }
+
+        if (showResetDialog) {
+            AlertDialog(
+                onDismissRequest = { showResetDialog = false },
+                title = {
+                    Text(
+                        text = "Reset Override",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Medium
+                    )
+                },
+                text = {
+                    Text(
+                        text = stringResource(R.string.feature_editor_reset_confirmation_msg),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showResetDialog = false
+                            onResetOverrides()
+                        }
+                    ) {
+                        Text(
+                            text = stringResource(R.string.feature_editor_btn_reset),
+                            color = MaterialTheme.colorScheme.error,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = { showResetDialog = false }
+                    ) {
+                        Text(stringResource(R.string.feature_editor_btn_cancel))
+                    }
+                }
             )
         }
     }
