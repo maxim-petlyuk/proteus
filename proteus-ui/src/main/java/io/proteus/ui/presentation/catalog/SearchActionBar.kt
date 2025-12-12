@@ -70,6 +70,7 @@ internal fun SearchActionBar(
 private fun SearchField(
     modifier: Modifier = Modifier,
     searchQuery: String,
+    placeholder: String = "Search",
     onQueryChanged: (String) -> Unit = {},
     onBack: () -> Unit = {},
     onClearSearch: () -> Unit = {},
@@ -125,11 +126,14 @@ private fun SearchField(
             focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground
                 .copy(ALPHA_FOCUSED_PLACEHOLDER),
             unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground
-                .copy(ALPHA_UNFOCUSED_PLACEHOLDER)
+                .copy(ALPHA_UNFOCUSED_PLACEHOLDER),
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent
         ),
         placeholder = {
             Text(
-                text = "Search",
+                text = placeholder,
                 textAlign = TextAlign.Center
             )
         }

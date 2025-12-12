@@ -13,5 +13,7 @@
     <string name="feature_editor_activate_mock_status" translatable="false">Use mocked value</string>
     <string name="feature_editor_replace_label" translatable="false">Replace with?</string>
     <string name="feature_editor_activated_label" translatable="false">Feature activated</string>
+    <string name="feature_editor_btn_save" translatable="false">Save</string>
+    <string name="feature_editor_btn_reset" translatable="false">Reset</string>
 
 </resources>

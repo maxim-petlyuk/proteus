@@ -27,6 +27,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -113,11 +115,13 @@ internal fun FeatureConfiguratorScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets.statusBars,
+        containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState)
         },
         topBar = {
             FeatureConfiguratorActionBar(
+                modifier = Modifier.shadow(4.dp),
                 isLoading = state.isLoading,
                 onBack = onBack
             )
@@ -253,7 +257,9 @@ private fun LoadedContent(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Text("Save")
+            Text(
+                text = stringResource(id = R.string.feature_editor_btn_save)
+            )
         }
     }
 }
@@ -356,26 +362,31 @@ private fun ToggleInput(
     text: String = ""
 ) {
     Row(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Start,
-            modifier = Modifier
-                .weight(1f)
-                .align(Alignment.CenterVertically),
+            modifier = Modifier.weight(1f),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
 
         Switch(
-            modifier = Modifier.align(Alignment.CenterVertically),
             checked = isActivated,
-            onCheckedChange = {
-                onToggle.invoke(it)
-            }
+            onCheckedChange = onToggle,
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = MaterialTheme.colorScheme.primary,
+                checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                uncheckedThumbColor = MaterialTheme.colorScheme.outline,
+                uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant,
+                checkedBorderColor = MaterialTheme.colorScheme.primary,
+                uncheckedBorderColor = MaterialTheme.colorScheme.outline
+            )
         )
     }
 }

@@ -28,12 +28,13 @@ import io.proteus.ui.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun FeatureConfiguratorActionBar(
+    modifier: Modifier = Modifier,
     title: String = "Feature Editor",
     onBack: () -> Unit = {},
     isLoading: Boolean = false
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight(),
         contentAlignment = Alignment.BottomEnd
@@ -59,6 +60,7 @@ internal fun FeatureConfiguratorActionBar(
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.background,
                 navigationIconContentColor = MaterialTheme.colorScheme.onBackground,
                 titleContentColor = MaterialTheme.colorScheme.onBackground,
                 actionIconContentColor = MaterialTheme.colorScheme.onBackground
