@@ -34,7 +34,7 @@ internal fun FeatureCatalogScreen(
     viewModel: FeatureCatalogViewModel,
     onBack: () -> Unit = {},
     openFeatureConfigurator: (String) -> Unit = {},
-    forceRefresh: Boolean = false
+    forceRefresh: Boolean = false,
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     val state: FeatureCatalogState by viewModel.screenState.collectAsStateWithLifecycle()

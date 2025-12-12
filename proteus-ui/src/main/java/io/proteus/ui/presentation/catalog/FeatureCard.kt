@@ -36,6 +36,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.atLeastWrapContent
 import io.proteus.ui.R
 import io.proteus.ui.domain.entity.FeatureNote
+import io.proteus.ui.utils.safeSharedTransition
 
 internal fun LazyListScope.featureCatalog(
     featureBook: List<FeatureNote<*>>,
@@ -46,6 +47,7 @@ internal fun LazyListScope.featureCatalog(
         key = { it.feature.key }
     ) {
         FeatureCard(
+            modifier = Modifier.safeSharedTransition(key = "feature-${it.feature.key}"),
             featureNote = it,
             onFeatureNoteClick = onFeatureNoteClick
         )

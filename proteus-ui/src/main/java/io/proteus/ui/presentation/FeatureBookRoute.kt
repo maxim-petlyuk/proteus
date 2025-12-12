@@ -1,5 +1,6 @@
 package io.proteus.ui.presentation
 
+import androidx.compose.animation.SharedTransitionScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -29,7 +30,8 @@ private fun NavController.backToCatalog() {
 
 internal fun NavGraphBuilder.featureBookRoute(
     navController: NavHostController,
-    onBack: () -> Unit = {}
+    onBack: () -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope
 ) {
     composable<FeatureBookPage> { navBackStackEntry ->
         val viewModel: FeatureCatalogViewModel = viewModel(
@@ -40,14 +42,19 @@ internal fun NavGraphBuilder.featureBookRoute(
         val forceRefresh = navBackStackEntry.savedStateHandle.get<Boolean>(FORCE_REFRESH_CATALOG)
             ?.also { navBackStackEntry.savedStateHandle.remove<Boolean>(FORCE_REFRESH_CATALOG) } == true
 
-        FeatureCatalogScreen(
-            viewModel = viewModel,
-            onBack = onBack,
-            forceRefresh = forceRefresh,
-            openFeatureConfigurator = { featureKey ->
-                navController.navigateToFeatureConfigurator(featureKey)
-            }
-        )
+        SharedTransitionProvider(
+            sharedTransitionScope = sharedTransitionScope,
+            animatedContentScope = this@composable
+        ) {
+            FeatureCatalogScreen(
+                viewModel = viewModel,
+                onBack = onBack,
+                forceRefresh = forceRefresh,
+                openFeatureConfigurator = { featureKey ->
+                    navController.navigateToFeatureConfigurator(featureKey)
+                }
+            )
+        }
     }
 
     composable<FeatureConfiguratorPage> { navBackStackEntry ->
@@ -58,12 +65,17 @@ internal fun NavGraphBuilder.featureBookRoute(
             factory = FeatureConfiguratorViewModel.Factory(featureDescriptor.featureKey)
         )
 
-        FeatureConfiguratorScreen(
-            viewModel = viewModel,
-            onBack = {
-                navController.backToCatalog()
-            }
-        )
+        SharedTransitionProvider(
+            sharedTransitionScope = sharedTransitionScope,
+            animatedContentScope = this@composable
+        ) {
+            FeatureConfiguratorScreen(
+                viewModel = viewModel,
+                onBack = {
+                    navController.backToCatalog()
+                }
+            )
+        }
     }
 }
 

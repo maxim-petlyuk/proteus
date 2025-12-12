@@ -47,11 +47,12 @@ import io.proteus.ui.domain.entity.FeatureNote
 import io.proteus.ui.presentation.catalog.FeatureCard
 import io.proteus.ui.presentation.catalog.UiState
 import io.proteus.ui.presentation.configurator.FeatureConfiguratorState.MockInputType
+import io.proteus.ui.utils.safeSharedTransition
 
 @Composable
 internal fun FeatureConfiguratorScreen(
     viewModel: FeatureConfiguratorViewModel,
-    onBack: () -> Unit = {}
+    onBack: () -> Unit = {},
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     val state: FeatureConfiguratorState by viewModel.screenState.collectAsStateWithLifecycle()
@@ -223,7 +224,12 @@ private fun LoadedContent(
                     .wrapContentHeight()
                     .animateContentSize()
             ) {
-                FeatureCard(featureNote = featureNote)
+                FeatureCard(
+                    featureNote = featureNote,
+                    modifier = Modifier
+                        .padding(top = 16.dp, start = 12.dp, end = 12.dp)
+                        .safeSharedTransition(key = "feature-${featureNote.feature.key}")
+                )
 
                 MockFeatureActivationToggle(
                     isOverrideActivated = isOverrideActivated,
