@@ -159,7 +159,7 @@ internal class FeatureConfiguratorViewModel(
                             featureNote = it,
                             mockInputType = determineMockSetupType(it),
                             isLoading = false,
-                            isOverrideActivated = it.isOverrideActivated == true
+                            isOverrideActivated = it.isOverrideActivated
                         )
                     }
                 }.onFailure {
