@@ -32,8 +32,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.proteus.ui.R
 import io.proteus.ui.domain.entity.FeatureNote
 
 @Composable
@@ -142,9 +144,20 @@ private fun ContentSwitcher(
             }
 
             UiState.Error -> {
-                ErrorContent(
+                EmptyContent(
                     modifier = Modifier,
-                    message = state.errorMessage!!
+                    searchQuery = state.searchQuery,
+                    message = state.errorMessage!!,
+                    onPullToRefresh = onPullToRefresh,
+                )
+            }
+
+            UiState.Empty -> {
+                EmptyContent(
+                    modifier = Modifier,
+                    searchQuery = state.searchQuery,
+                    onPullToRefresh = onPullToRefresh,
+                    message = stringResource(R.string.feature_book_placeholder_msg)
                 )
             }
         }
@@ -152,18 +165,39 @@ private fun ContentSwitcher(
 }
 
 @Composable
-private fun ErrorContent(
-    modifier: Modifier = Modifier,
-    message: String
-) {
-
-}
-
-@Composable
 private fun LoadingContent(
     modifier: Modifier = Modifier
 ) {
+    /* here might be shimmer impl */
+}
 
+@Composable
+private fun EmptyContent(
+    modifier: Modifier = Modifier,
+    searchQuery: String,
+    message: String,
+    onPullToRefresh: () -> Unit = {}
+) {
+    val pullToRefreshState = rememberPullToRefreshState()
+
+    PullToRefreshBox(
+        modifier = modifier.fillMaxSize(),
+        isRefreshing = false,
+        onRefresh = onPullToRefresh,
+        state = pullToRefreshState
+    ) {
+        if (searchQuery.isNotEmpty()) {
+            EmptySearchState(
+                query = searchQuery,
+                modifier = Modifier.fillMaxSize()
+            )
+        } else {
+            EmptyFeatureListState(
+                modifier = Modifier.fillMaxSize(),
+                message = message
+            )
+        }
+    }
 }
 
 @Composable

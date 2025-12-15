@@ -57,6 +57,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.proteus.ui.R
 import io.proteus.ui.domain.entity.FeatureNote
+import io.proteus.ui.presentation.catalog.EmptyFeatureState
 import io.proteus.ui.presentation.catalog.FeatureCard
 import io.proteus.ui.presentation.catalog.UiState
 import io.proteus.ui.presentation.configurator.FeatureConfiguratorState.MockInputType
@@ -194,10 +195,17 @@ private fun ContentSwitcher(
                 )
             }
 
-            UiState.Error -> {
-                ErrorContent(
+            UiState.Empty -> {
+                EmptyFeatureState(
                     modifier = Modifier,
-                    message = state.errorMessage
+                    message = stringResource(R.string.feature_editor_placeholder_msg)
+                )
+            }
+
+            UiState.Error -> {
+                EmptyFeatureState(
+                    modifier = Modifier,
+                    message = state.errorMessage ?: stringResource(R.string.feature_editor_placeholder_msg)
                 )
             }
         }
@@ -205,18 +213,10 @@ private fun ContentSwitcher(
 }
 
 @Composable
-private fun ErrorContent(
-    modifier: Modifier = Modifier,
-    message: String?
-) {
-
-}
-
-@Composable
 private fun LoadingContent(
     modifier: Modifier = Modifier
 ) {
-
+    /* here might be shimmer */
 }
 
 @Composable

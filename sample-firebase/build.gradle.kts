@@ -1,8 +1,15 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.google.gms.google.services)
+}
+
+val keyProperties = Properties().apply {
+    load(FileInputStream(File(rootProject.rootDir, "keystore.properties")))
 }
 
 android {
@@ -22,9 +29,19 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = File(rootDir, keyProperties["STORE_FILE"].toString())
+            storePassword = keyProperties["STORE_PASSWORD"].toString()
+            keyPassword = keyProperties["KEY_PASSWORD"].toString()
+            keyAlias = keyProperties["KEY_ALIAS"].toString()
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -54,6 +71,12 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    androidComponents {
+        beforeVariants { variantBuilder ->
+            variantBuilder.enableAndroidTest = false
+        }
+    }
 }
 
 dependencies {
@@ -70,14 +93,10 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)
 
-//    implementation(platform(libs.proteus.bom))
-//    implementation(libs.proteus.core)
-//    implementation(libs.proteus.firebase)
-//    implementation(libs.proteus.ui)
-
-    implementation(project(":proteus-core"))
-    implementation(project(":proteus-firebase"))
-    implementation(project(":proteus-ui"))
+    implementation(platform(libs.proteus.bom))
+    implementation(libs.proteus.core)
+    implementation(libs.proteus.firebase)
+    implementation(libs.proteus.ui)
 
     testImplementation(libs.junit)
 

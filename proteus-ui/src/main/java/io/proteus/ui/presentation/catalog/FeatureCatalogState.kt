@@ -27,6 +27,7 @@ internal data class FeatureCatalogState(
         get() = when {
             isLoading -> UiState.Loading
             errorMessage != null -> UiState.Error
+            featureBook.isEmpty() -> UiState.Empty
             else -> UiState.Loaded
         }
 
