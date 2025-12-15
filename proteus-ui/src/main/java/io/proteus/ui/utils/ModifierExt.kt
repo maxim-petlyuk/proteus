@@ -1,5 +1,6 @@
 package io.proteus.ui.utils
 
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.proteus.ui.presentation.LocalAnimatedContentScope
@@ -15,7 +16,10 @@ internal fun Modifier.safeSharedTransition(key: String): Modifier {
             this@safeSharedTransition.then(
                 Modifier.sharedElement(
                     sharedContentState = rememberSharedContentState(key = key),
-                    animatedVisibilityScope = animatedContentScope
+                    animatedVisibilityScope = animatedContentScope,
+                    boundsTransform = { _, _ ->
+                        tween(durationMillis = 600)
+                    }
                 )
             )
         }
