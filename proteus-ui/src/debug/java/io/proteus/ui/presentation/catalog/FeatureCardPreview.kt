@@ -48,8 +48,8 @@ private fun LongFeatureNotePreview(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun FeatureBookPreview(
-    @PreviewParameter(FeatureBookPreviewProvider::class)
-    featureBook: List<FeatureNote<*>>
+    @PreviewParameter(LoadedStatePreviewProvider::class)
+    state: FeatureCatalogState
 ) {
     PreviewContainer {
         LazyColumn(
@@ -57,7 +57,9 @@ private fun FeatureBookPreview(
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            featureCatalog(featureBook = featureBook)
+            featureCatalog(
+                state = state
+            )
         }
     }
 }

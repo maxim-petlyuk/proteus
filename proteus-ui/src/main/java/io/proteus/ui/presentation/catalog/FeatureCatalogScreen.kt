@@ -177,7 +177,7 @@ private fun LoadedContent(
         )
     ) {
         featureCatalog(
-            featureBook = state.featureBook,
+            state = state,
             onFeatureNoteClick = onFeatureNoteClick
         )
     }

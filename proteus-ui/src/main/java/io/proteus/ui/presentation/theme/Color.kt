@@ -256,3 +256,9 @@ val surfaceContainerLowDarkHighContrast = MdBeige900
 val surfaceContainerDarkHighContrast = MdBeige800
 val surfaceContainerHighDarkHighContrast = MdBeige700
 val surfaceContainerHighestDarkHighContrast = MdBeige600
+
+// Search highlighting colors
+val HighlightLight = Color(0xFFFFEB3B)      // Material Yellow 500
+val HighlightDark = Color(0xFF9C8400)       // Darker yellow for dark mode
+val OnHighlightLight = Color(0xFF000000)    // Black text on light highlight
+val OnHighlightDark = Color(0xFFFFFFFF)     // White text on dark highlight

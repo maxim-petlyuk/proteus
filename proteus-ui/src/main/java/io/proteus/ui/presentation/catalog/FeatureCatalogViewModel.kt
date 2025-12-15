@@ -6,12 +6,14 @@ import androidx.lifecycle.viewModelScope
 import io.proteus.core.provider.Proteus
 import io.proteus.ui.data.FeatureBookRepository
 import io.proteus.ui.di.ProteusPresentationInjection
+import io.proteus.ui.domain.SearchHighlighter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 internal class FeatureCatalogViewModel(
-    private val featureBookRepository: FeatureBookRepository
+    private val featureBookRepository: FeatureBookRepository,
+    private val searchHighlighter: SearchHighlighter
 ) : ViewModel() {
 
     val screenState = MutableStateFlow(FeatureCatalogState.idle())
@@ -47,8 +49,18 @@ internal class FeatureCatalogViewModel(
         }
 
         viewModelScope.launch(Dispatchers.Default) {
+            val highlightData = if (query.length > 2) {
+                currentState.originalFeatureBook.associate { featureNote ->
+                    featureNote.feature.key to searchHighlighter.findHighlightRanges(
+                        text = featureNote.feature.key,
+                        query = query
+                    )
+                }
+            } else emptyMap()
+
             rebuild {
                 copy(
+                    highlightRanges = highlightData,
                     filteredFeatureBook = currentState.originalFeatureBook.filter {
                         it.feature.key.contains(query, ignoreCase = true)
                     }
@@ -56,6 +68,7 @@ internal class FeatureCatalogViewModel(
             }
         }
     }
+
 
     private fun loadState() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -119,6 +132,7 @@ internal class FeatureCatalogViewModel(
                         remoteConfigProviderFactory = Proteus.getInstance().getRemoteConfigProviderFactory(),
                         mockConfigRepository = Proteus.getInstance().getMockConfigRepository()
                     ),
+                    searchHighlighter = ProteusPresentationInjection.provideSearchHighlighter()
                 ) as T
             }
         }

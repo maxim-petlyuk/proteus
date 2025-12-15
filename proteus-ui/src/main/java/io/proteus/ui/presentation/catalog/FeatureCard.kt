@@ -39,16 +39,17 @@ import io.proteus.ui.domain.entity.FeatureNote
 import io.proteus.ui.utils.safeSharedTransition
 
 internal fun LazyListScope.featureCatalog(
-    featureBook: List<FeatureNote<*>>,
+    state: FeatureCatalogState,
     onFeatureNoteClick: (FeatureNote<*>) -> Unit = {},
 ) {
     items(
-        items = featureBook,
+        items = state.featureBook,
         key = { it.feature.key }
-    ) {
+    ) { featureNote ->
         FeatureCard(
-            modifier = Modifier.safeSharedTransition(key = "feature-${it.feature.key}"),
-            featureNote = it,
+            modifier = Modifier.safeSharedTransition(key = "feature-${featureNote.feature.key}"),
+            featureNote = featureNote,
+            highlightRanges = state.getHighlightRanges(featureNote.feature.key),
             onFeatureNoteClick = onFeatureNoteClick
         )
     }
@@ -58,6 +59,7 @@ internal fun LazyListScope.featureCatalog(
 internal fun FeatureCard(
     modifier: Modifier = Modifier,
     featureNote: FeatureNote<*>,
+    highlightRanges: List<IntRange> = emptyList(),
     onFeatureNoteClick: ((FeatureNote<*>) -> Unit)? = null,
     horizontalPadding: Dp = 16.dp,
     verticalPadding: Dp = 12.dp,
@@ -169,8 +171,9 @@ internal fun FeatureCard(
                     }
             )
 
-            FeatureAttributeTextValue(
+            HighlightedText(
                 text = featureNote.feature.key,
+                highlightRanges = highlightRanges,
                 modifier = Modifier.constrainAs(keyValue) {
                     baseline.linkTo(keyTitle.baseline)
                     start.linkTo(titlesVerticalDivider.end, margin = columnPaddingHorizontal)
