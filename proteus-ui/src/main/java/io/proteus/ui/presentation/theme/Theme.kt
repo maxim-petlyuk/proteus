@@ -1,12 +1,14 @@
 package io.proteus.ui.presentation.theme
 
 import android.os.Build
+import androidx.compose.foundation.Indication
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
@@ -276,3 +278,29 @@ fun ProteusTheme(
     )
 }
 
+object ProteusRipples {
+    @Composable
+    fun primary(): Indication = ripple(
+        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
+    )
+
+    @Composable
+    fun surface(): Indication = ripple(
+        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)
+    )
+
+    @Composable
+    fun tertiary(): Indication = ripple(
+        color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.10f)
+    )
+
+    @Composable
+    fun error(): Indication = ripple(
+        color = MaterialTheme.colorScheme.error.copy(alpha = 0.12f)
+    )
+
+    @Composable
+    fun success(): Indication = ripple(
+        color = Success.copy(alpha = 0.12f)
+    )
+}

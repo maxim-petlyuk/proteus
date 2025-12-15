@@ -1,10 +1,14 @@
 package io.proteus.ui.presentation.catalog
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,13 +20,14 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,6 +41,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.atLeastWrapContent
 import io.proteus.ui.R
 import io.proteus.ui.domain.entity.FeatureNote
+import io.proteus.ui.presentation.theme.ProteusRipples
 import io.proteus.ui.utils.rememberHapticFeedback
 import io.proteus.ui.utils.safeSharedTransition
 
@@ -70,11 +76,26 @@ internal fun FeatureCard(
     titleBackgroundColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
 ) {
     val haptic = rememberHapticFeedback()
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
+
+    val scale by animateFloatAsState(
+        targetValue = if (pressed) 0.97f else 1f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        ),
+        label = "cardPressScale"
+    )
 
     Box(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
             .dropShadow(
                 shape = MaterialTheme.shapes.small,
                 shadow = Shadow(
@@ -89,8 +110,8 @@ internal fun FeatureCard(
                 shape = MaterialTheme.shapes.small
             )
             .clickable(
-                indication = ripple(color = Color.Gray),
-                interactionSource = remember { MutableInteractionSource() },
+                indication = ProteusRipples.surface(),
+                interactionSource = interactionSource,
                 onClick = {
                     haptic.cardTap()
                     onFeatureNoteClick?.invoke(featureNote)
