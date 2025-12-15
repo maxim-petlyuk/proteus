@@ -60,6 +60,7 @@ import io.proteus.ui.domain.entity.FeatureNote
 import io.proteus.ui.presentation.catalog.FeatureCard
 import io.proteus.ui.presentation.catalog.UiState
 import io.proteus.ui.presentation.configurator.FeatureConfiguratorState.MockInputType
+import io.proteus.ui.utils.rememberHapticFeedback
 import io.proteus.ui.utils.safeSharedTransition
 
 @Composable
@@ -232,6 +233,7 @@ private fun LoadedContent(
     onSaveChanges: () -> Unit = {},
     onResetOverrides: () -> Unit = {},
 ) {
+    val haptic = rememberHapticFeedback()
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -305,7 +307,10 @@ private fun LoadedContent(
             }
 
             FilledTonalButton(
-                onClick = onSaveChanges,
+                onClick = {
+                    haptic.success()
+                    onSaveChanges()
+                },
                 enabled = isSaveButtonEnabled,
                 modifier = Modifier
                     .weight(1f)
@@ -351,6 +356,7 @@ private fun LoadedContent(
                     TextButton(
                         onClick = {
                             showResetDialog = false
+                            haptic.success()
                             onResetOverrides()
                         }
                     ) {

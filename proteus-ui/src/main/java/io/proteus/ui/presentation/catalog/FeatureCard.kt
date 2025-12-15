@@ -36,6 +36,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.atLeastWrapContent
 import io.proteus.ui.R
 import io.proteus.ui.domain.entity.FeatureNote
+import io.proteus.ui.utils.rememberHapticFeedback
 import io.proteus.ui.utils.safeSharedTransition
 
 internal fun LazyListScope.featureCatalog(
@@ -68,6 +69,8 @@ internal fun FeatureCard(
     dividerColor: Color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.8f),
     titleBackgroundColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
 ) {
+    val haptic = rememberHapticFeedback()
+
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -88,7 +91,10 @@ internal fun FeatureCard(
             .clickable(
                 indication = ripple(color = Color.Gray),
                 interactionSource = remember { MutableInteractionSource() },
-                onClick = { onFeatureNoteClick?.invoke(featureNote) },
+                onClick = {
+                    haptic.cardTap()
+                    onFeatureNoteClick?.invoke(featureNote)
+                },
                 enabled = onFeatureNoteClick != null
             )
             .clip(MaterialTheme.shapes.small)
