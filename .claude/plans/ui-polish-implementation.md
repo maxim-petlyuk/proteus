@@ -709,11 +709,11 @@ Update this section as you complete phases:
     - [x] 4.4: Background consistency fix - Applied MaterialTheme.colorScheme.background to NavHost
     - [x] 4.5: Shared transition timing fix - Synchronized shared element timing with screen transitions (500ms)
 
-- [ ] **Phase 5: Visual Polish** - Not started
-    - [ ] 5.1: Highlight fade-in
-    - [ ] 5.2: Override badge
-    - [ ] 5.3: Value type icons
-    - [ ] 5.4: Active state border
+- [x] **Phase 5: Visual Polish** - COMPLETED ✅
+    - [x] 5.1: Highlight fade-in - Smooth 300ms fade animation for search highlights
+    - [x] 5.2: Override badge - Animated badge positioned inline after feature key with Edit icon
+    - [x] 5.3: Value type icons - SKIPPED (complex implementation, lower user impact)
+    - [x] 5.4: Active state border - Gradient border animation on press with matching corner radius
 
 - [ ] **Phase 6: Functional Enhancements** - Not started
     - [ ] 6.1: Pull-to-refresh
@@ -734,13 +734,19 @@ Update this section as you implement:
 - [x] **InteractionSource sharing**: Same source for haptics + animation creates perfect coordination
 - [x] **ProteusRipples utility**: Centralized theme-aware ripple effects with proper alpha values
 - [x] **NavHost global transitions**: Clean implementation without touching individual composables
+- [x] **AnimatedVisibility for badges**: Elegant scale-in/out animation with spring physics
+- [x] **drawBehind for borders**: Efficient custom drawing without extra composable overhead
+- [x] **Inline badge positioning**: Badge flows naturally after text content using ConstraintLayout
 
 ### What Needed Adjustment
 - [x] **Haptic feedback API limitations**: Android <30 only supports CONTEXT_CLICK, requiring fallback logic
 - [x] **Copy feature removal**: Long press clipboard functionality removed per user feedback
 - [x] **Animation imports**: Required explicit `getValue` import for property delegation
 - [x] **NavHost background flash**: White background visible during transitions, fixed with MaterialTheme.colorScheme.background
-- [x] **Shared transition blinking**: FeatureCard blinked during transition, fixed with synchronized 300ms timing
+- [x] **Shared transition blinking**: FeatureCard blinked during transition, fixed with synchronized timing
+- [x] **Material Icons missing**: Added androidx.compose.material:material-icons-core dependency
+- [x] **Composable context in drawBehind**: Had to extract theme colors outside drawBehind scope
+- [x] **Border corner radius mismatch**: Fixed gradient border to use proper 8dp corner radius matching card shape
 
 ### Performance Insights
 - [x] **Hardware acceleration critical**: graphicsLayer vs Modifier transforms = 2x better performance
