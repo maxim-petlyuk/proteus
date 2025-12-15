@@ -8,6 +8,7 @@ import io.proteus.ui.data.FeatureBookRepository
 import io.proteus.ui.di.ProteusPresentationInjection
 import io.proteus.ui.domain.SearchHighlighter
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -37,6 +38,10 @@ internal class FeatureCatalogViewModel(
 
             is FeatureCatalogAction.RefreshCatalog -> {
                 processRefreshSilently()
+            }
+
+            is FeatureCatalogAction.PullToRefresh -> {
+                processPullToRefresh()
             }
         }
     }
@@ -108,6 +113,43 @@ internal class FeatureCatalogViewModel(
                                 it.feature.key.contains(currentState.searchQuery, ignoreCase = true)
                             }
                         )
+                    }
+                }
+        }
+    }
+
+    private fun processPullToRefresh() {
+        viewModelScope.launch(Dispatchers.IO) {
+            rebuild {
+                copy(isRefreshing = true)
+            }
+
+            delay(1000L) // Simulate network delay
+
+            featureBookRepository.getFeatureBook()
+                .onSuccess { featureBook ->
+                    val updatedHighlightData = if (currentState.searchQuery.length > 2) {
+                        featureBook.associate { featureNote ->
+                            featureNote.feature.key to searchHighlighter.findHighlightRanges(
+                                text = featureNote.feature.key,
+                                query = currentState.searchQuery
+                            )
+                        }
+                    } else emptyMap()
+
+                    rebuild {
+                        copy(
+                            originalFeatureBook = featureBook,
+                            filteredFeatureBook = featureBook.filter {
+                                it.feature.key.contains(currentState.searchQuery, ignoreCase = true)
+                            },
+                            highlightRanges = updatedHighlightData,
+                            isRefreshing = false
+                        )
+                    }
+                }.onFailure {
+                    rebuild {
+                        copy(isRefreshing = false)
                     }
                 }
         }

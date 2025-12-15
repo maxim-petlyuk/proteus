@@ -23,6 +23,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -57,6 +59,7 @@ internal fun FeatureCatalogScreen(
         openFeatureConfigurator = openFeatureConfigurator,
         onQueryChanged = { viewModel.onAction(FeatureCatalogAction.QueryChanged(it)) },
         onClearSearch = { viewModel.onAction(FeatureCatalogAction.QueryChanged("")) },
+        onPullToRefresh = { viewModel.onAction(FeatureCatalogAction.PullToRefresh) },
     )
 }
 
@@ -67,6 +70,7 @@ internal fun FeatureCatalogScreen(
     onBack: () -> Unit = {},
     onQueryChanged: (String) -> Unit = {},
     onClearSearch: () -> Unit = {},
+    onPullToRefresh: () -> Unit = {},
     openFeatureConfigurator: (String) -> Unit = {},
 ) {
     Scaffold(
@@ -100,7 +104,8 @@ internal fun FeatureCatalogScreen(
         ContentSwitcher(
             modifier = Modifier.padding(it),
             state = state,
-            openFeatureConfigurator = openFeatureConfigurator
+            openFeatureConfigurator = openFeatureConfigurator,
+            onPullToRefresh = onPullToRefresh
         )
     }
 }
@@ -110,6 +115,7 @@ private fun ContentSwitcher(
     modifier: Modifier = Modifier,
     state: FeatureCatalogState,
     openFeatureConfigurator: (String) -> Unit = {},
+    onPullToRefresh: () -> Unit = {},
 ) {
     AnimatedContent(
         targetState = state.uiState,
@@ -130,7 +136,8 @@ private fun ContentSwitcher(
                 LoadedContent(
                     modifier = Modifier,
                     state = state,
-                    onFeatureNoteClick = { openFeatureConfigurator(it.feature.key) }
+                    onFeatureNoteClick = { openFeatureConfigurator(it.feature.key) },
+                    onPullToRefresh = onPullToRefresh
                 )
             }
 
@@ -164,21 +171,30 @@ private fun LoadedContent(
     modifier: Modifier = Modifier,
     state: FeatureCatalogState,
     onFeatureNoteClick: (FeatureNote<*>) -> Unit = {},
+    onPullToRefresh: () -> Unit = {},
 ) {
-    LazyColumn(
-        modifier = modifier
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(
-            start = 12.dp,
-            end = 12.dp,
-            top = 16.dp,
-            bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-        )
+    val pullToRefreshState = rememberPullToRefreshState()
+
+    PullToRefreshBox(
+        modifier = modifier.fillMaxSize(),
+        isRefreshing = state.isRefreshing,
+        onRefresh = onPullToRefresh,
+        state = pullToRefreshState
     ) {
-        featureCatalog(
-            state = state,
-            onFeatureNoteClick = onFeatureNoteClick
-        )
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(
+                start = 12.dp,
+                end = 12.dp,
+                top = 16.dp,
+                bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+            )
+        ) {
+            featureCatalog(
+                state = state,
+                onFeatureNoteClick = onFeatureNoteClick
+            )
+        }
     }
 }

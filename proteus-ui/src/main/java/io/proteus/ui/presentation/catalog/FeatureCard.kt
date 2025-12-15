@@ -4,9 +4,10 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
@@ -38,8 +39,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.shadow.Shadow
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -72,6 +75,7 @@ internal fun LazyListScope.featureCatalog(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun FeatureCard(
     modifier: Modifier = Modifier,
@@ -86,6 +90,7 @@ internal fun FeatureCard(
     titleBackgroundColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
 ) {
     val haptic = rememberHapticFeedback()
+    val clipboardManager = LocalClipboardManager.current
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
 
@@ -149,12 +154,16 @@ internal fun FeatureCard(
                 color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = MaterialTheme.shapes.small
             )
-            .clickable(
+            .combinedClickable(
                 indication = ProteusRipples.surface(),
                 interactionSource = interactionSource,
                 onClick = {
                     haptic.cardTap()
                     onFeatureNoteClick?.invoke(featureNote)
+                },
+                onLongClick = {
+                    clipboardManager.setText(AnnotatedString(featureNote.feature.key))
+                    haptic.success()
                 },
                 enabled = onFeatureNoteClick != null
             )

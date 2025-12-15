@@ -7,4 +7,6 @@ internal sealed class FeatureCatalogAction {
     data object ResetSearch : FeatureCatalogAction()
 
     data object RefreshCatalog : FeatureCatalogAction()
+
+    data object PullToRefresh : FeatureCatalogAction()
 }

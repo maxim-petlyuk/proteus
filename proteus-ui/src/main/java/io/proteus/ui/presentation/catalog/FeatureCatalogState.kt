@@ -10,6 +10,7 @@ internal data class FeatureCatalogState(
     val filteredFeatureBook: List<FeatureNote<*>> = emptyList(),
     val highlightRanges: Map<String, List<IntRange>> = emptyMap(),
     val isLoading: Boolean = false,
+    val isRefreshing: Boolean = false,
     val errorMessage: String? = null
 ) {
 
