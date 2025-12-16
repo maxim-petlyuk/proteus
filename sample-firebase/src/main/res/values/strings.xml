@@ -2,4 +2,16 @@
 
     <string name="app_name">Proteus</string>
 
+    <!-- Feature Flag Card -->
+    <string name="feature_flag_live_badge">LIVE</string>
+    <string name="feature_flag_configuration_value_label">Configuration Value</string>
+    <string name="feature_flag_verified_label">Verified</string>
+
+    <!-- Demo Feature Flag -->
+    <string name="demo_feature_name">AI Assistant Mode</string>
+    <string name="demo_feature_key">ai_assistant_enabled</string>
+    <string name="demo_feature_value_advanced">ADVANCED</string>
+    <string name="demo_feature_value_basic">BASIC</string>
+    <string name="demo_feature_description">Controls the behavior and capabilities of the AI assistant feature in the application.</string>
+
 </resources>

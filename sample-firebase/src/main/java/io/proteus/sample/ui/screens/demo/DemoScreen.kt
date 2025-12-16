@@ -1,16 +1,22 @@
 package io.proteus.sample.ui.screens.demo
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.proteus.sample.R
+import io.proteus.sample.data.FeatureFlagState
+import io.proteus.sample.data.FeatureSource
 import io.proteus.sample.ui.screens.demo.components.AnimatedBackground
+import io.proteus.sample.ui.screens.demo.components.FeatureFlagCard
 import io.proteus.sample.ui.theme.SampleConfigTheme
 
 /**
@@ -42,16 +48,25 @@ fun DemoScreen(
             modifier = Modifier.fillMaxSize()
         )
 
-        // Layer 2: Main content (placeholder for now)
-        // TODO: Phase 3 - Add FeatureFlagCard here
-        Box(
+        // Layer 2: Main content with FeatureFlagCard
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(24.dp),
-            contentAlignment = Alignment.Center
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Placeholder content - will be replaced with FeatureFlagCard in Phase 3
-            // This helps visualize the layout structure
+            FeatureFlagCard(
+                state = FeatureFlagState(
+                    name = stringResource(R.string.demo_feature_name),
+                    key = stringResource(R.string.demo_feature_key),
+                    value = stringResource(R.string.demo_feature_value_advanced),
+                    type = "String",
+                    source = FeatureSource.REMOTE,
+                    lastUpdated = System.currentTimeMillis(),
+                    description = stringResource(R.string.demo_feature_description)
+                )
+            )
         }
 
         // Layer 3: Bottom action button (placeholder for now)
@@ -73,7 +88,7 @@ fun DemoScreen(
 )
 @Composable
 private fun DemoScreenPreview() {
-    SampleConfigTheme(darkTheme = true) {
+    SampleConfigTheme {
         DemoScreen(
             onOpenConfigurator = { }
         )
@@ -87,7 +102,7 @@ private fun DemoScreenPreview() {
 )
 @Composable
 private fun DemoScreenLightPreview() {
-    SampleConfigTheme(darkTheme = false) {
+    SampleConfigTheme {
         DemoScreen(
             onOpenConfigurator = { }
         )

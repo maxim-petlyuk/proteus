@@ -22,12 +22,7 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.proteus.sample.ui.theme.DemoGray950
-import io.proteus.sample.ui.theme.DemoGray900
-import io.proteus.sample.ui.theme.DemoBeige400
 import io.proteus.sample.ui.theme.SampleConfigTheme
-import kotlin.math.cos
-import kotlin.math.sin
 
 /**
  * Animated background component for the demo screen.
@@ -44,7 +39,6 @@ fun AnimatedBackground(
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "background_animation")
 
-    // 20-second rotation animation
     val rotationAngle by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 360f,
@@ -58,7 +52,6 @@ fun AnimatedBackground(
         label = "rotation"
     )
 
-    // Counter-rotation for second shape
     val counterRotationAngle by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = -360f,
@@ -73,33 +66,29 @@ fun AnimatedBackground(
     )
 
     val density = LocalDensity.current
+    val backgroundGradientStart = MaterialTheme.colorScheme.surface
+    val backgroundGradientEnd = MaterialTheme.colorScheme.surfaceVariant
+    val accentColor = MaterialTheme.colorScheme.primary
+    val overlayColor = MaterialTheme.colorScheme.onSurface
 
     Canvas(
         modifier = modifier
             .fillMaxSize()
             .clip(RectangleShape)
     ) {
-        // Base gradient background
-        drawBaseGradient()
-
-        // Floating circular gradients
-        drawFloatingShape1(rotationAngle, density)
-        drawFloatingShape2(counterRotationAngle, density)
-
-        // Subtle pattern overlay
-        drawPatternOverlay()
+        drawBaseGradient(backgroundGradientStart, backgroundGradientEnd)
+        drawFloatingShapeFirst(rotationAngle, density, accentColor)
+        drawFloatingShapeSecond(counterRotationAngle, density, accentColor)
+        drawPatternOverlay(overlayColor)
     }
 }
 
-/**
- * Draw the base dark gradient background
- */
-private fun DrawScope.drawBaseGradient() {
+private fun DrawScope.drawBaseGradient(
+    startColor: Color,
+    endColor: Color
+) {
     val gradient = Brush.verticalGradient(
-        colors = listOf(
-            DemoGray950, // #1A1611
-            DemoGray900  // #2A231D
-        ),
+        colors = listOf(startColor, endColor),
         startY = 0f,
         endY = size.height
     )
@@ -110,12 +99,10 @@ private fun DrawScope.drawBaseGradient() {
     )
 }
 
-/**
- * Draw the first floating circular gradient shape
- */
-private fun DrawScope.drawFloatingShape1(
+private fun DrawScope.drawFloatingShapeFirst(
     rotationAngle: Float,
-    density: androidx.compose.ui.unit.Density
+    density: androidx.compose.ui.unit.Density,
+    accentColor: Color
 ) {
     rotate(rotationAngle) {
         val centerX = size.width * 0.25f
@@ -124,8 +111,8 @@ private fun DrawScope.drawFloatingShape1(
 
         val gradient = Brush.radialGradient(
             colors = listOf(
-                DemoBeige400.copy(alpha = 0.08f),
-                DemoBeige400.copy(alpha = 0.04f),
+                accentColor.copy(alpha = 0.08f),
+                accentColor.copy(alpha = 0.04f),
                 Color.Transparent
             ),
             center = Offset(centerX, centerY),
@@ -140,12 +127,10 @@ private fun DrawScope.drawFloatingShape1(
     }
 }
 
-/**
- * Draw the second floating circular gradient shape
- */
-private fun DrawScope.drawFloatingShape2(
+private fun DrawScope.drawFloatingShapeSecond(
     counterRotationAngle: Float,
-    density: androidx.compose.ui.unit.Density
+    density: androidx.compose.ui.unit.Density,
+    accentColor: Color
 ) {
     rotate(counterRotationAngle) {
         val centerX = size.width * 0.75f
@@ -154,8 +139,8 @@ private fun DrawScope.drawFloatingShape2(
 
         val gradient = Brush.radialGradient(
             colors = listOf(
-                DemoBeige400.copy(alpha = 0.06f),
-                DemoBeige400.copy(alpha = 0.03f),
+                accentColor.copy(alpha = 0.06f),
+                accentColor.copy(alpha = 0.03f),
                 Color.Transparent
             ),
             center = Offset(centerX, centerY),
@@ -170,14 +155,10 @@ private fun DrawScope.drawFloatingShape2(
     }
 }
 
-/**
- * Draw subtle pattern overlay for depth
- */
-private fun DrawScope.drawPatternOverlay() {
-    val patternColor = Color.White.copy(alpha = 0.02f)
+private fun DrawScope.drawPatternOverlay(overlayColor: Color) {
+    val patternColor = overlayColor.copy(alpha = 0.02f)
     val spacing = 60f
 
-    // Diagonal lines pattern
     var x = 0f
     while (x < size.width + spacing) {
         drawLine(

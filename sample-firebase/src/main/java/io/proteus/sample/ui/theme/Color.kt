@@ -50,19 +50,9 @@ val DemoAccent700 = Color(0xFFF57C00)
 val DemoAccent800 = Color(0xFFEF6C00)
 val DemoAccent900 = Color(0xFFE65100)
 
-// === Semantic Colors ===
-val DemoSuccess = Color(0xFF4CAF50)
-val DemoSuccessContainer = Color(0x1A4CAF50)
-val DemoSuccessOnContainer = Color(0xFF1B5E20)
-
-val DemoError = Color(0xFFF44336)
-val DemoErrorContainer = Color(0x1AF44336)
-val DemoErrorOnContainer = Color(0xFFB71C1C)
-
-val DemoRemote = DemoSuccess
-val DemoRemoteContainer = DemoSuccessContainer
-val DemoMock = DemoError
-val DemoMockContainer = DemoErrorContainer
+// === Semantic Colors for MaterialTheme integration ===
+// These will be accessed via MaterialTheme.colorScheme.primary (for REMOTE)
+// and MaterialTheme.colorScheme.error (for MOCK)
 
 // === DARK THEME (Primary Theme for Demo Screen) ===
 val primaryDemoDark = DemoBeige300
