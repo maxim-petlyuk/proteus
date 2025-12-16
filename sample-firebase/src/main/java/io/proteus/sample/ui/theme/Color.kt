@@ -50,6 +50,18 @@ val DemoAccent700 = Color(0xFFF57C00)
 val DemoAccent800 = Color(0xFFEF6C00)
 val DemoAccent900 = Color(0xFFE65100)
 
+// === Green Colors for REMOTE badge ===
+val DemoGreen50 = Color(0xFFE8F5E8)
+val DemoGreen100 = Color(0xFFC8E6C8)
+val DemoGreen200 = Color(0xFFA5D6A5)
+val DemoGreen300 = Color(0xFF81C784)
+val DemoGreen400 = Color(0xFF66BB6A)
+val DemoGreen500 = Color(0xFF4CAF50)
+val DemoGreen600 = Color(0xFF43A047)
+val DemoGreen700 = Color(0xFF388E3C)
+val DemoGreen800 = Color(0xFF2E7D32)
+val DemoGreen900 = Color(0xFF1B5E20)
+
 // === Semantic Colors for MaterialTheme integration ===
 // These will be accessed via MaterialTheme.colorScheme.primary (for REMOTE)
 // and MaterialTheme.colorScheme.error (for MOCK)

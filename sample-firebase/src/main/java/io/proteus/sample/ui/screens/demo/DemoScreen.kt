@@ -3,9 +3,12 @@ package io.proteus.sample.ui.screens.demo
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,20 +42,19 @@ fun DemoScreen(
     onOpenConfigurator: () -> Unit = { }
 ) {
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .systemBarsPadding()
+        modifier = modifier.fillMaxSize()
     ) {
-        // Layer 1: Animated background
+        // Layer 1: Animated background (covers entire screen including status bars)
         AnimatedBackground(
             modifier = Modifier.fillMaxSize()
         )
 
-        // Layer 2: Main content with FeatureFlagCard
+        // Layer 2: Main content with proper insets handling
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp),
+                .windowInsetsPadding(WindowInsets.statusBars)
+                .padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -69,11 +71,12 @@ fun DemoScreen(
             )
         }
 
-        // Layer 3: Bottom action button (placeholder for now)
+        // Layer 3: Bottom action button with navigation bar insets
         // TODO: Phase 6 - Add ConfiguratorButton here
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
+                .windowInsetsPadding(WindowInsets.navigationBars)
                 .padding(24.dp)
         ) {
             // Placeholder for ConfiguratorButton - will be added in Phase 6

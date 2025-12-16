@@ -46,8 +46,8 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import io.proteus.sample.R
-import io.proteus.sample.data.FeatureSource
 import io.proteus.sample.data.FeatureFlagState
+import io.proteus.sample.data.FeatureSource
 import io.proteus.sample.ui.theme.SampleConfigTheme
 
 /**
@@ -220,39 +220,6 @@ fun FeatureFlagCard(
     }
 }
 
-/**
- * Source badge showing REMOTE or MOCK with appropriate styling
- */
-@Composable
-private fun SourceBadge(
-    source: FeatureSource,
-    modifier: Modifier = Modifier
-) {
-    val backgroundColor = when (source) {
-        FeatureSource.REMOTE -> MaterialTheme.colorScheme.primaryContainer
-        FeatureSource.MOCK -> MaterialTheme.colorScheme.errorContainer
-    }
-
-    val textColor = when (source) {
-        FeatureSource.REMOTE -> MaterialTheme.colorScheme.onPrimaryContainer
-        FeatureSource.MOCK -> MaterialTheme.colorScheme.onErrorContainer
-    }
-
-    Surface(
-        modifier = modifier,
-        shape = RoundedCornerShape(50),
-        color = backgroundColor
-    ) {
-        Text(
-            text = source.name,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            style = MaterialTheme.typography.bodySmall,
-            fontWeight = FontWeight.Medium,
-            color = textColor,
-            letterSpacing = 0.5.sp
-        )
-    }
-}
 
 /**
  * Metadata item with icon and label
