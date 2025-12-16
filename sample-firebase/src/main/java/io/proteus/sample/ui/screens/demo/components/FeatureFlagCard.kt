@@ -82,7 +82,7 @@ fun FeatureFlagCard(
     )
 
     val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(R.raw.config_animation)
+        LottieCompositionSpec.RawRes(R.raw.lottie_robot)
     )
 
     Surface(
@@ -160,8 +160,11 @@ fun FeatureFlagCard(
 
                     LottieAnimation(
                         composition = composition,
-                        iterations = LottieConstants.IterateForever,
-                        modifier = Modifier.size(180.dp)
+                        modifier = Modifier
+                            .size(130.dp)
+                            .align(Alignment.Center),
+                        speed = 1f,
+                        iterations = LottieConstants.IterateForever
                     )
                 }
 
