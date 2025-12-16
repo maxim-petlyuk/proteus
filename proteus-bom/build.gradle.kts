@@ -107,8 +107,7 @@ jreleaser {
     release {
         github {
             enabled = true
-            tagName = "${artifactName}-v${artifactVersion}"
-            skipTag = true
+            tagName = "v${artifactVersion}"
             releaseName = "v${artifactVersion}"
             overwrite.set(true)
             update {
