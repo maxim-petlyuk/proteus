@@ -34,6 +34,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Install git-cliff
+        uses: taiki-e/install-action@v2
+        with:
+          tool: git-cliff
+
       - name: Extract version from tag
         id: version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
@@ -50,6 +55,38 @@ jobs:
       # Unit tests
       - name: Run unit tests
         run: ./gradlew test --no-daemon
+
+      # Generate changelogs for all modules
+      - name: Generate all module changelogs
+        run: |
+          # Generate individual module changelogs
+          git cliff \
+            --config cliff.toml \
+            --include-path "proteus-core/**" \
+            --tag-pattern "proteus-core-v.*" \
+            --output proteus-core/CHANGELOG.md
+          echo "✅ Generated proteus-core CHANGELOG.md"
+
+          git cliff \
+            --config cliff.toml \
+            --include-path "proteus-firebase/**" \
+            --tag-pattern "proteus-firebase-v.*" \
+            --output proteus-firebase/CHANGELOG.md
+          echo "✅ Generated proteus-firebase CHANGELOG.md"
+
+          git cliff \
+            --config cliff.toml \
+            --include-path "proteus-ui/**" \
+            --tag-pattern "proteus-ui-v.*" \
+            --output proteus-ui/CHANGELOG.md
+          echo "✅ Generated proteus-ui CHANGELOG.md"
+
+          # Generate BOM changelog (aggregated)
+          git cliff \
+            --config cliff.toml \
+            --tag-pattern "^v[0-9]" \
+            --output CHANGELOG.md
+          echo "✅ Generated BOM CHANGELOG.md"
 
       # Proteus core release
       - name: Publish proteus-core

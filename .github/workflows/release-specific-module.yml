@@ -58,6 +58,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Install git-cliff
+        uses: taiki-e/install-action@v2
+        with:
+          tool: git-cliff
+
       # Decode firebase google-services.json
       - name: Load Google Service file
         env:
@@ -114,6 +119,39 @@ jobs:
             exit 1
           fi
           echo "✓ Deployment ID provided: ${{ inputs.deployment_id }}"
+
+      - name: Generate proteus-core changelog
+        if: inputs.module == 'proteus-core' || inputs.module == 'all'
+        run: |
+          git cliff \
+            --config cliff.toml \
+            --include-path "proteus-core/**" \
+            --tag-pattern "proteus-core-v.*" \
+            --output proteus-core/CHANGELOG.md
+
+          echo "✅ Generated proteus-core CHANGELOG.md"
+
+      - name: Generate proteus-firebase changelog
+        if: inputs.module == 'proteus-firebase' || inputs.module == 'all'
+        run: |
+          git cliff \
+            --config cliff.toml \
+            --include-path "proteus-firebase/**" \
+            --tag-pattern "proteus-firebase-v.*" \
+            --output proteus-firebase/CHANGELOG.md
+
+          echo "✅ Generated proteus-firebase CHANGELOG.md"
+
+      - name: Generate proteus-ui changelog
+        if: inputs.module == 'proteus-ui' || inputs.module == 'all'
+        run: |
+          git cliff \
+            --config cliff.toml \
+            --include-path "proteus-ui/**" \
+            --tag-pattern "proteus-ui-v.*" \
+            --output proteus-ui/CHANGELOG.md
+
+          echo "✅ Generated proteus-ui CHANGELOG.md"
 
       - name: Publish proteus-core
         if: inputs.module == 'proteus-core' || inputs.module == 'all'

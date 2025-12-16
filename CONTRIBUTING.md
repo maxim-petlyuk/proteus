@@ -55,3 +55,59 @@ refactor: migrate all modules to Kotlin 2.0
 docs: update README with new installation instructions
 chore(deps): bump Kotlin to 1.9.22
 ```
+
+## Multi-Module Changes
+
+When a commit affects multiple modules, **omit the scope**:
+
+```bash
+# Good - affects multiple modules
+refactor: migrate all modules to Kotlin 2.0
+feat: add logging support across all providers
+fix: resolve version compatibility issues across modules
+
+# Avoid - this approach creates separate commits
+# refactor(core): migrate to Kotlin 2.0
+# refactor(firebase): migrate to Kotlin 2.0
+# refactor(ui): migrate to Kotlin 2.0
+```
+
+Multi-module commits (no scope) will appear in:
+- BOM changelog (aggregated view)
+- Individual module changelogs (if files in that module were modified)
+
+## Breaking Changes
+
+Always use `!` indicator and provide migration guidance:
+
+```bash
+feat(core)!: remove deprecated ConfigProvider interface
+
+BREAKING CHANGE: ConfigProvider has been removed.
+Use the new Provider interface instead.
+See docs/migration-guide.md for detailed migration steps.
+```
+
+## Local Development Setup
+
+### Git Hooks
+
+To enable commit message validation, set up the git hook:
+
+```bash
+# Make the hook executable
+chmod +x .githooks/commit-msg
+
+# Configure git to use the hooks directory
+git config core.hooksPath .githooks
+```
+
+This will validate your commit messages locally before they're committed.
+
+### IDE Integration
+
+For **IntelliJ IDEA / Android Studio**:
+
+1. Install the "Conventional Commit" plugin from the Marketplace
+2. Use the plugin UI when creating commits for guided type/scope selection
+3. The plugin provides dropdowns and validation for proper commit formatting

@@ -60,6 +60,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Install git-cliff
+        uses: taiki-e/install-action@v2
+        with:
+          tool: git-cliff
+
       - name: Update BOM publish.properties
         run: |
           echo "🔄 Updating versions in publish.properties..."
@@ -82,6 +87,25 @@ jobs:
 
       - name: Build project
         run: ./gradlew clean build --no-daemon
+
+      - name: Generate BOM changelog
+        run: |
+          git cliff \
+            --config cliff.toml \
+            --tag-pattern "^v[0-9]" \
+            --output CHANGELOG.md
+
+          echo "Generated BOM CHANGELOG.md:"
+          if [ -f CHANGELOG.md ]; then
+            echo "✅ BOM changelog generated successfully"
+          else
+            echo "⚠️ Creating minimal changelog"
+            echo "# Changelog" > CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            echo "## [${{ inputs.bom_version }}] - $(date '+%Y-%m-%d')" >> CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            echo "Release notes will be generated automatically in future releases." >> CHANGELOG.md
+          fi
 
       - name: Validate deployment_id for PUBLISH stage
         if: inputs.stage == 'PUBLISH'
