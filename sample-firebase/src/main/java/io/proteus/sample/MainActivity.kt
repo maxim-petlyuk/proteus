@@ -25,6 +25,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import io.proteus.sample.ui.screens.demo.DemoScreen
 import io.proteus.sample.ui.theme.SampleConfigTheme
 import io.proteus.ui.presentation.FeatureBookActivity
 
@@ -40,29 +41,35 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SampleConfigTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                ) { innerPadding ->
-                    val featureName = "optional_server"
-
-                    var featureConfigValue by remember {
-                        mutableStateOf(featureConfigProvider.getString("optional_server"))
-                    }
-
-                    LifecycleResumeEffect(Unit) {
-                        featureConfigValue = featureConfigProvider.getString(featureName)
-
-                        onPauseOrDispose { }
-                    }
-
-                    ScreenContent(
-                        modifier = Modifier.padding(innerPadding),
-                        featureName = featureName,
-                        featureConfigValue = featureConfigValue,
-                        onOpenFeatureCatalog = ::onOpenFeatureCatalog
-                    )
-                }
+                DemoScreen(
+                    onOpenConfigurator = { }
+                )
             }
+
+//            SampleConfigTheme {
+//                Scaffold(
+//                    modifier = Modifier.fillMaxSize(),
+//                ) { innerPadding ->
+//                    val featureName = "optional_server"
+//
+//                    var featureConfigValue by remember {
+//                        mutableStateOf(featureConfigProvider.getString("optional_server"))
+//                    }
+//
+//                    LifecycleResumeEffect(Unit) {
+//                        featureConfigValue = featureConfigProvider.getString(featureName)
+//
+//                        onPauseOrDispose { }
+//                    }
+//
+//                    ScreenContent(
+//                        modifier = Modifier.padding(innerPadding),
+//                        featureName = featureName,
+//                        featureConfigValue = featureConfigValue,
+//                        onOpenFeatureCatalog = ::onOpenFeatureCatalog
+//                    )
+//                }
+//            }
         }
     }
 

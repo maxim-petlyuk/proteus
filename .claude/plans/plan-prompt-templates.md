@@ -1,6 +1,6 @@
 ### Template #1 — Phase Implementation
 
-Let's implement Phase %PHASE_NUMBER% from the --plan @.claude/plans/release-notes-generator.md
+Let's implement Phase %PHASE_NUMBER% from the --plan @.claude/plans/sample-dark-mode-implementation.md
 
 Before making any changes:
 
@@ -12,7 +12,7 @@ Wait for my explicit approval before creating or modifying any files.
 
 ### Template #2 — Progress Tracking & Transition
 
-Review Phase %COMPLETED_PHASE% implementation against --plan @.claude/plans/release-notes-generator.md:
+Review Phase %COMPLETED_PHASE% implementation against --plan @.claude/plans/sample-dark-mode-implementation.md:
 
 1. List all checkpoint items for Phase %COMPLETED_PHASE%
 2. Verify each item is complete by checking the actual files in the project

@@ -13,6 +13,7 @@ material = "1.13.0"
 kotlinxSerialization = "1.9.0"
 kotlinxCoroutines = "1.10.2"
 kotlinTest = "2.2.21"
+lottie = "6.1.0"
 navigation = "2.9.6"
 constraintLayoutCompose = "1.1.1"
 robolectric = "4.16"
@@ -21,7 +22,7 @@ firebaseBom = "34.7.0"
 googleGmsGoogleServices = "4.4.4"
 jreleaser = "1.20.0"
 proteusCore = "0.0.8"
-proteusBom = "0.0.7"
+proteusBom = "0.0.8"
 jetbrainsKotlinJvm = "2.2.21"
 
 [libraries]
@@ -54,6 +55,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 kotlinx-test = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlinTest" }
+lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-config = { module = "com.google.firebase:firebase-config" }
 proteus-bom = { group = "io.github.maxim-petlyuk", name = "proteus-bom", version.ref = "proteusBom" }
