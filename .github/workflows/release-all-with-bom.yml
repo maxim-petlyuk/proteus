@@ -49,6 +49,12 @@ jobs:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo $DATA | base64 -di > sample-firebase/google-services.json
 
+      # Decode firebase google-services.json
+      - name: Load App Key Sign
+        env:
+          DATA: ${{ secrets.JKS_BASE64 }}
+        run: echo $DATA | base64 -di > keys/proteus.jks
+
       - name: Build project
         run: ./gradlew clean build --no-daemon
 
