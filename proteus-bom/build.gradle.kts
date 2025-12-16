@@ -108,10 +108,16 @@ jreleaser {
         github {
             enabled = true
             tagName = "${artifactName}-v${artifactVersion}"
-            releaseName = "Release ${artifactName} v${artifactVersion}"
+            skipTag = true
+            releaseName = "v${artifactVersion}"
             overwrite.set(true)
             update {
                 enabled.set(true)
+            }
+            changelog {
+                enabled = true
+                external = File(rootProject.rootDir, "CHANGELOG.md")
+                append.enabled = false
             }
         }
     }

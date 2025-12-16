@@ -143,10 +143,15 @@ jreleaser {
         github {
             enabled = true
             tagName = "${artifactName}-v${artifactVersion}"
-            releaseName = "Release ${artifactName} v${artifactVersion}"
+            releaseName = "${artifactName} v${artifactVersion}"
             overwrite.set(true)
             update {
                 enabled.set(true)
+            }
+            changelog {
+                enabled = true
+                external = File(rootProject.rootDir, "proteus-firebase/CHANGELOG.md")
+                append.enabled = false
             }
         }
     }
