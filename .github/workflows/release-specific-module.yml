@@ -73,7 +73,9 @@ jobs:
       - name: Load App Key Sign
         env:
           DATA: ${{ secrets.JKS_BASE64 }}
-        run: echo $DATA | base64 -di > keys/proteus.jks
+        run: |
+          mkdir -p keys
+          echo $DATA | base64 -di > keys/proteus.jks
 
       - name: Update core version in publish.properties
         if: inputs.module == 'proteus-core' || inputs.module == 'all'
