@@ -7,10 +7,13 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -19,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -75,6 +79,67 @@ fun AnimatedBackground(
         modifier = modifier
             .fillMaxSize()
             .clip(RectangleShape)
+    ) {
+        drawBaseGradient(backgroundGradientStart, backgroundGradientEnd)
+        drawFloatingShapeFirst(rotationAngle, density, accentColor)
+        drawFloatingShapeSecond(counterRotationAngle, density, accentColor)
+        drawPatternOverlay(overlayColor)
+    }
+}
+
+// New overload with scroll state for parallax
+@Composable
+fun AnimatedBackground(
+    scrollState: ScrollState,
+    modifier: Modifier = Modifier
+) {
+    val parallaxOffset by remember(scrollState) {
+        derivedStateOf {
+            scrollState.value * 0.3f // Subtle parallax factor
+        }
+    }
+
+    val infiniteTransition = rememberInfiniteTransition(label = "background_animation")
+
+    val rotationAngle by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 20_000,
+                easing = LinearEasing
+            ),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "rotation"
+    )
+
+    val counterRotationAngle by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = -360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 25_000,
+                easing = LinearEasing
+            ),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "counter_rotation"
+    )
+
+    val density = LocalDensity.current
+    val backgroundGradientStart = MaterialTheme.colorScheme.surface
+    val backgroundGradientEnd = MaterialTheme.colorScheme.surfaceVariant
+    val accentColor = MaterialTheme.colorScheme.primary
+    val overlayColor = MaterialTheme.colorScheme.onSurface
+
+    Canvas(
+        modifier = modifier
+            .fillMaxSize()
+            .clip(RectangleShape)
+            .graphicsLayer {
+                translationY = -parallaxOffset
+            }
     ) {
         drawBaseGradient(backgroundGradientStart, backgroundGradientEnd)
         drawFloatingShapeFirst(rotationAngle, density, accentColor)
@@ -171,11 +236,7 @@ private fun DrawScope.drawPatternOverlay(overlayColor: Color) {
     }
 }
 
-@Preview(
-    showBackground = true,
-    widthDp = 360,
-    heightDp = 640
-)
+@Preview(showBackground = true, widthDp = 360, heightDp = 640)
 @Composable
 private fun AnimatedBackgroundPreview() {
     SampleConfigTheme(darkTheme = true) {
@@ -183,12 +244,7 @@ private fun AnimatedBackgroundPreview() {
     }
 }
 
-@Preview(
-    name = "Light Theme",
-    showBackground = true,
-    widthDp = 360,
-    heightDp = 640
-)
+@Preview(name = "Light Theme", showBackground = true, widthDp = 360, heightDp = 640)
 @Composable
 private fun AnimatedBackgroundLightPreview() {
     SampleConfigTheme(darkTheme = false) {

@@ -48,7 +48,7 @@ class DemoScreenViewModel(
     }
 
     private fun createFeatureFlagState(): FeatureFlagState {
-        val key = "optional_server"
+        val key = "ai_assistant_mode"
         val typeClass = String::class
         val value = featureConfigProvider.getString(key)
 

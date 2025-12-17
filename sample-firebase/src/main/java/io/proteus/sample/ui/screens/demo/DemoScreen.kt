@@ -100,10 +100,13 @@ fun DemoScreen(
     state: FeatureFlagState,
     onOpenConfigurator: () -> Unit = { }
 ) {
+    val scrollState = rememberScrollState()
+
     Box(
         modifier = modifier.fillMaxSize()
     ) {
         AnimatedBackground(
+            scrollState = scrollState,
             modifier = Modifier.fillMaxSize()
         )
 
@@ -116,7 +119,6 @@ fun DemoScreen(
                     .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val scrollState = rememberScrollState()
 
                 Box(
                     modifier = Modifier

@@ -1,11 +1,17 @@
 package io.proteus.sample.ui.screens.demo.components
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +32,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -177,17 +187,37 @@ fun FeatureFlagCard(
                         textAlign = TextAlign.Center
                     )
 
-                    Text(
-                        text = state.value,
-                        style = MaterialTheme.typography.displaySmall,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.Center,
-                        letterSpacing = 2.sp
-                    )
+                    AnimatedContent(
+                        targetState = state.value,
+                        transitionSpec = {
+                            fadeIn(animationSpec = tween(300, delayMillis = 150)) +
+                                scaleIn(animationSpec = tween(400), initialScale = 0.8f) togetherWith
+                                fadeOut(animationSpec = tween(150)) +
+                                scaleOut(animationSpec = tween(150), targetScale = 1.1f)
+                        },
+                        label = "value_animation"
+                    ) { targetValue ->
+                        Text(
+                            text = targetValue,
+                            style = MaterialTheme.typography.displaySmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary,
+                            textAlign = TextAlign.Center,
+                            letterSpacing = 2.sp
+                        )
+                    }
                 }
 
-                SourceBadge(source = state.source)
+                var triggerPulse by remember { mutableStateOf(false) }
+
+                LaunchedEffect(state.value, state.source) {
+                    triggerPulse = !triggerPulse
+                }
+
+                SourceBadge(
+                    source = state.source,
+                    triggerPulse = triggerPulse
+                )
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
