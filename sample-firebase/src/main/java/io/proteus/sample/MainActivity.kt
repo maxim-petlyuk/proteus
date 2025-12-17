@@ -25,6 +25,7 @@ class MainActivity : ComponentActivity() {
                 DemoScreen(
                     provider = featureConfigProvider,
                     remoteConfigProviderFactory = Proteus.getInstance().getRemoteConfigProviderFactory(),
+                    mockConfigRepository = Proteus.getInstance().getMockConfigRepository(),
                     onOpenConfigurator = ::onOpenFeatureCatalog
                 )
             }

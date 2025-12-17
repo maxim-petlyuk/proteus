@@ -18,6 +18,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.LookaheadScope
@@ -26,6 +27,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
+import io.proteus.core.data.MockConfigRepository
 import io.proteus.core.provider.FeatureConfigProvider
 import io.proteus.core.provider.FeatureConfigProviderFactory
 import io.proteus.sample.data.FeatureFlagState
@@ -57,7 +59,25 @@ fun DemoScreen(
     modifier: Modifier = Modifier,
     provider: FeatureConfigProvider,
     remoteConfigProviderFactory: FeatureConfigProviderFactory,
-    viewModel: DemoScreenViewModel = viewModel(factory = DemoScreenViewModelFactory(provider, remoteConfigProviderFactory)),
+    mockConfigRepository: MockConfigRepository,
+    onOpenConfigurator: () -> Unit = { }
+) {
+    val factory = remember(provider, remoteConfigProviderFactory, mockConfigRepository) {
+        DemoScreenViewModelFactory(provider, remoteConfigProviderFactory, mockConfigRepository)
+    }
+
+    DemoScreen(
+        modifier = modifier,
+        factory = factory,
+        onOpenConfigurator = onOpenConfigurator
+    )
+}
+
+@Composable
+fun DemoScreen(
+    modifier: Modifier = Modifier,
+    factory: DemoScreenViewModelFactory,
+    viewModel: DemoScreenViewModel = viewModel(factory = factory),
     onOpenConfigurator: () -> Unit = { }
 ) {
     val state by viewModel.featureFlagState.collectAsState()
