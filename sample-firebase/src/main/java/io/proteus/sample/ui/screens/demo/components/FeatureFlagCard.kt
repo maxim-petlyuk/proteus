@@ -19,9 +19,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -47,7 +46,6 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import io.proteus.sample.R
 import io.proteus.sample.data.FeatureFlagState
-import io.proteus.sample.data.FeatureSource
 import io.proteus.sample.ui.theme.SampleConfigTheme
 
 /**
@@ -197,14 +195,14 @@ fun FeatureFlagCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     MetadataItem(
-                        icon = if (state.source == FeatureSource.REMOTE) Icons.Default.Star else Icons.Default.Settings,
-                        label = state.source.name,
-                        color = if (state.source == FeatureSource.REMOTE) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                        icon = Icons.Default.Build,
+                        label = state.owner,
+                        color = MaterialTheme.colorScheme.primary
                     )
 
                     MetadataItem(
-                        icon = Icons.Default.CheckCircle,
-                        label = stringResource(R.string.feature_flag_verified_label),
+                        icon = Icons.Default.Info,
+                        label = state.type,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }

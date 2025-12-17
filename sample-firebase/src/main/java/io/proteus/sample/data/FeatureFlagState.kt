@@ -8,8 +8,8 @@ data class FeatureFlagState(
     val key: String,
     val value: String,
     val type: String,
+    val owner: String,
     val source: FeatureSource,
-    val lastUpdated: Long,
     val description: String
 )
 

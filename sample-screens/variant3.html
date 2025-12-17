@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variant 3 - Dark Mode Elegant</title>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1A1A1A 0%, #2C2C2C 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+
+        .app-bar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .app-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #D7CCC8, #BCAAA4);
+            border-radius: 8px;
+        }
+
+        .app-title {
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .background-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: 0.03;
+            background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 35px,
+                rgba(255,255,255,.1) 35px,
+                rgba(255,255,255,.1) 70px
+            );
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .lottie-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .lottie-container {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(215, 204, 200, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .flag-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .flag-name {
+            font-size: 22px;
+            font-weight: 300;
+            color: #FFECB3;
+        }
+
+        .flag-badge {
+            background: linear-gradient(135deg, #D7CCC8, #BCAAA4);
+            color: #1A1A1A;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .value-display {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .value-label {
+            font-size: 12px;
+            color: #BCAAA4;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .value-content {
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFF3E0, #FFCC80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .value-meta {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #9E9E9E;
+        }
+
+        .meta-icon {
+            width: 16px;
+            height: 16px;
+            fill: #BCAAA4;
+        }
+
+        .description {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #B0B0B0;
+            text-align: center;
+        }
+
+        .bottom-section {
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tooltip {
+            background: rgba(215, 204, 200, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(215, 204, 200, 0.2);
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #D7CCC8;
+            text-align: center;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .config-button {
+            display: block;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #D7CCC8, #BCAAA4);
+            color: #1A1A1A;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .config-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .config-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .config-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(215, 204, 200, 0.3);
+        }
+
+        .button-text {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-bar">
+        <div class="app-icon"></div>
+        <div class="app-title">Proteus Demo</div>
+    </div>
+
+    <div class="main-container">
+        <div class="background-pattern"></div>
+
+        <div class="content-wrapper">
+            <div class="lottie-header">
+                <div class="lottie-container">
+                    <lottie-player
+                        src="https://assets2.lottiefiles.com/packages/lf20_qp1q7mct.json"
+                        background="transparent"
+                        speed="1"
+                        style="width: 150px; height: 150px;"
+                        loop
+                        autoplay>
+                    </lottie-player>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="card-content">
+                    <div class="flag-header">
+                        <h2 class="flag-name">AI Assistant Mode</h2>
+                        <span class="flag-badge">Live</span>
+                    </div>
+
+                    <div class="value-display">
+                        <div class="value-label">Configuration Value</div>
+                        <div class="value-content">ADVANCED</div>
+                        <div class="value-meta">
+                            <div class="meta-item">
+                                <svg class="meta-icon" viewBox="0 0 24 24">
+                                    <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                                </svg>
+                                <span>Remote</span>
+                            </div>
+                            <div class="meta-item">
+                                <svg class="meta-icon" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                                <span>Verified</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="description">
+                        This flag controls the AI assistant capabilities and feature set available to users in the application
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-section">
+        <div class="tooltip">
+            ⚠️ Typically allow this opportunity only in your distributed builds for QA / internal testing, and not for production users
+        </div>
+        <button class="config-button">
+            <span class="button-text">Open Configurator</span>
+        </button>
+    </div>
+</body>
+</html>

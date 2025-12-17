@@ -1,8 +1,8 @@
 package io.proteus.sample.ui.screens.demo.components
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import io.proteus.sample.data.FeatureSource
 import io.proteus.sample.data.FeatureFlagState
+import io.proteus.sample.data.FeatureSource
 
 class FeatureFlagStatePreviewProvider : PreviewParameterProvider<FeatureFlagState> {
 
@@ -12,8 +12,8 @@ class FeatureFlagStatePreviewProvider : PreviewParameterProvider<FeatureFlagStat
             key = "ai_assistant_enabled",
             value = "ADVANCED",
             type = "String",
+            owner = "Firebase",
             source = FeatureSource.REMOTE,
-            lastUpdated = System.currentTimeMillis(),
             description = "Controls the behavior and capabilities of the AI assistant feature in the application."
         ),
         FeatureFlagState(
@@ -21,17 +21,17 @@ class FeatureFlagStatePreviewProvider : PreviewParameterProvider<FeatureFlagStat
             key = "ai_assistant_enabled",
             value = "BASIC",
             type = "String",
+            owner = "Firebase",
             source = FeatureSource.MOCK,
-            lastUpdated = System.currentTimeMillis(),
             description = "Controls the behavior and capabilities of the AI assistant feature in the application."
         ),
         FeatureFlagState(
             name = "Chat History Limit",
             key = "chat_history_limit",
             value = "100",
-            type = "Number",
+            type = "Integer",
+            owner = "CleverTap",
             source = FeatureSource.REMOTE,
-            lastUpdated = System.currentTimeMillis(),
             description = "Maximum number of chat messages stored in local history for performance optimization."
         )
     )

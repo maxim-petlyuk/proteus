@@ -16,18 +16,23 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.LookaheadScope
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import io.proteus.sample.R
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.lifecycle.viewmodel.compose.viewModel
+import io.proteus.core.provider.FeatureConfigProvider
+import io.proteus.core.provider.FeatureConfigProviderFactory
 import io.proteus.sample.data.FeatureFlagState
-import io.proteus.sample.data.FeatureSource
 import io.proteus.sample.ui.screens.demo.components.AnimatedBackground
 import io.proteus.sample.ui.screens.demo.components.ConfiguratorButton
 import io.proteus.sample.ui.screens.demo.components.FeatureFlagCard
+import io.proteus.sample.ui.screens.demo.components.FeatureFlagStatePreviewProvider
 import io.proteus.sample.ui.screens.demo.components.fadingEdgesWithShader
 import io.proteus.sample.ui.theme.SampleConfigTheme
 
@@ -42,12 +47,37 @@ import io.proteus.sample.ui.theme.SampleConfigTheme
  * - FeatureFlagCard: Main card showing feature flag information (Phase 3)
  * - ConfiguratorButton: Button to open the configurator (Phase 6)
  *
+ * @param featureConfigProvider Provider for feature flag values (optional for previews)
  * @param modifier Modifier to be applied to the root Box
  * @param onOpenConfigurator Callback when the configurator button is clicked
  */
+
 @Composable
 fun DemoScreen(
     modifier: Modifier = Modifier,
+    provider: FeatureConfigProvider,
+    remoteConfigProviderFactory: FeatureConfigProviderFactory,
+    viewModel: DemoScreenViewModel = viewModel(factory = DemoScreenViewModelFactory(provider, remoteConfigProviderFactory)),
+    onOpenConfigurator: () -> Unit = { }
+) {
+    val state by viewModel.featureFlagState.collectAsState()
+
+    LifecycleResumeEffect(Unit) {
+        viewModel.refreshFeatureFlagState()
+        onPauseOrDispose { }
+    }
+
+    DemoScreen(
+        modifier = modifier,
+        state = state,
+        onOpenConfigurator = onOpenConfigurator
+    )
+}
+
+@Composable
+fun DemoScreen(
+    modifier: Modifier = Modifier,
+    state: FeatureFlagState,
     onOpenConfigurator: () -> Unit = { }
 ) {
     Box(
@@ -56,6 +86,7 @@ fun DemoScreen(
         AnimatedBackground(
             modifier = Modifier.fillMaxSize()
         )
+
         LookaheadScope {
             Column(
                 modifier = Modifier
@@ -84,15 +115,7 @@ fun DemoScreen(
                                     spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessLow)
                                 }
                             ),
-                        state = FeatureFlagState(
-                            name = stringResource(R.string.demo_feature_name),
-                            key = stringResource(R.string.demo_feature_key),
-                            value = stringResource(R.string.demo_feature_value_advanced),
-                            type = "String",
-                            source = FeatureSource.REMOTE,
-                            lastUpdated = System.currentTimeMillis(),
-                            description = stringResource(R.string.demo_feature_description)
-                        )
+                        state = state
                     )
                 }
 
@@ -107,20 +130,22 @@ fun DemoScreen(
 
 @Preview(name = "Demo Screen Dark", showBackground = true, showSystemUi = true)
 @Composable
-private fun DemoScreenPreview() {
+private fun DemoScreenPreview(
+    @PreviewParameter(FeatureFlagStatePreviewProvider::class)
+    state: FeatureFlagState
+) {
     SampleConfigTheme {
-        DemoScreen(
-            onOpenConfigurator = { }
-        )
+        DemoScreen(state = state)
     }
 }
 
 @Preview(name = "Demo Screen Light", showBackground = true, showSystemUi = true)
 @Composable
-private fun DemoScreenLightPreview() {
+private fun DemoScreenLightPreview(
+    @PreviewParameter(FeatureFlagStatePreviewProvider::class)
+    state: FeatureFlagState
+) {
     SampleConfigTheme {
-        DemoScreen(
-            onOpenConfigurator = { }
-        )
+        DemoScreen(state = state)
     }
 }
