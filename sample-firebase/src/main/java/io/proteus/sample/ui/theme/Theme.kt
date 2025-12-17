@@ -10,7 +10,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
-// Demo Screen Color Schemes
 private val DemoDarkColorScheme = darkColorScheme(
     primary = primaryDemoDark,
     onPrimary = onPrimaryDemoDark,
@@ -114,6 +113,7 @@ fun SampleConfigTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
+
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }

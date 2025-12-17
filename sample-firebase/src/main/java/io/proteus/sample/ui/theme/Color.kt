@@ -62,6 +62,11 @@ val DemoGreen700 = Color(0xFF388E3C)
 val DemoGreen800 = Color(0xFF2E7D32)
 val DemoGreen900 = Color(0xFF1B5E20)
 
+// === Brown Colors for Configurator Button ===
+val ConfiguratorBrown600 = Color(0xFF795548) // Brown base
+val ConfiguratorBrown700 = Color(0xFF8D6E63) // Brown gradient end
+val ConfiguratorBrownDark = Color(0xFF3E2723) // Dark brown for tooltip
+
 // === Semantic Colors for MaterialTheme integration ===
 // These will be accessed via MaterialTheme.colorScheme.primary (for REMOTE)
 // and MaterialTheme.colorScheme.error (for MOCK)

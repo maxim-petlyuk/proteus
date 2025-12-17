@@ -14,4 +14,10 @@
     <string name="demo_feature_value_basic">BASIC</string>
     <string name="demo_feature_description">Controls the behavior and capabilities of the AI assistant feature in the application.</string>
 
+    <!-- Configurator Button -->
+    <string name="configurator_button_text">Open Configurator</string>
+    <string name="configurator_button_description">Open feature flag configurator</string>
+    <string name="configurator_tooltip_title">QA/Testing Mode</string>
+    <string name="configurator_tooltip_description">This opens the configuration interface for testing purposes</string>
+
 </resources>
