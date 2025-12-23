@@ -52,13 +52,13 @@ android {
         }
     }
 
+    kotlin {
+        jvmToolchain(8)
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 
     buildFeatures {
@@ -104,10 +104,14 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)
 
-    implementation(platform(libs.proteus.bom))
-    implementation(libs.proteus.core)
-    implementation(libs.proteus.firebase)
-    implementation(libs.proteus.ui)
+//    implementation(platform(libs.proteus.bom))
+//    implementation(libs.proteus.core)
+//    implementation(libs.proteus.firebase)
+//    implementation(libs.proteus.ui)
+
+    implementation(project(":proteus-core"))
+    implementation(project(":proteus-firebase"))
+    implementation(project(":proteus-ui"))
 
     testImplementation(libs.junit)
 

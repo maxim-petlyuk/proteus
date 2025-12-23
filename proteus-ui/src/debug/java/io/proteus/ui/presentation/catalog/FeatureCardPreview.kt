@@ -17,6 +17,34 @@ import androidx.compose.ui.unit.dp
 import io.proteus.ui.domain.entity.FeatureNote
 import io.proteus.ui.presentation.theme.ProteusTheme
 
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun DarkThemeFeatureNotePreview(
+    @PreviewParameter(StringFeatureNotePreviewProvider::class)
+    featureNote: FeatureNote<*>
+) {
+    PreviewContainer {
+        FeatureCard(
+            modifier = Modifier,
+            featureNote = featureNote
+        )
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun DarkThemeMockedFeatureNotePreview(
+    @PreviewParameter(LongFeatureNotePreviewProvider::class)
+    featureNote: FeatureNote<*>
+) {
+    PreviewContainer {
+        FeatureCard(
+            modifier = Modifier,
+            featureNote = featureNote
+        )
+    }
+}
+
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 private fun StringFeatureNotePreview(

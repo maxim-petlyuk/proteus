@@ -8,8 +8,8 @@ import io.proteus.ui.domain.entity.FeatureNote
 internal class StringFeatureNotePreviewProvider : PreviewParameterProvider<FeatureNote<*>> {
 
     override val values: Sequence<FeatureNote<*>> = sequenceOf(
-        FeatureNote<String>(
-            feature = Feature<String>(
+        FeatureNote(
+            feature = Feature(
                 key = "primary_server",
                 defaultValue = "http://example.com",
                 valueClass = String::class,

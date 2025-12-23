@@ -59,7 +59,7 @@ internal class FeatureBookRepository(
         val remoteConfigProvider = remoteConfigProviderFactory.getProvider(featureContext.key)
 
         return when (featureContext.valueClass) {
-            Long::class -> remoteConfigProvider.getLong(featureContext.key).toString()
+            Int::class, Long::class -> remoteConfigProvider.getLong(featureContext.key).toString()
             String::class -> remoteConfigProvider.getString(featureContext.key)
             Boolean::class -> remoteConfigProvider.getBoolean(featureContext.key).toString()
             Double::class -> remoteConfigProvider.getDouble(featureContext.key).toString()

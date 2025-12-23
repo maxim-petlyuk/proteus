@@ -86,36 +86,20 @@ private val DemoLightColorScheme = lightColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDemoLight,
 )
 
-// Original color schemes (keep for compatibility)
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
-
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-)
-
 @Composable
 fun SampleConfigTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
-    useDemoTheme: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        useDemoTheme && darkTheme -> DemoDarkColorScheme
-        useDemoTheme && !darkTheme -> DemoLightColorScheme
+        darkTheme -> DemoDarkColorScheme
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        else -> DemoLightColorScheme
     }
 
     MaterialTheme(

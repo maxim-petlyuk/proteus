@@ -3,7 +3,7 @@
 
     <string name="feature_book_toolbar" translatable="false">Feature Catalog</string>
     <string name="feature_book_key_title" translatable="false">Feature key:</string>
-    <string name="feature_book_overridden_title" translatable="false">Overridden:</string>
+    <string name="feature_book_overridden_title" translatable="false">Source:</string>
     <string name="feature_book_default_value_title" translatable="false">Default value:</string>
     <string name="feature_book_remote_value_title" translatable="false">Remote value:</string>
     <string name="feature_book_local_value_title" translatable="false">Mock value:</string>
@@ -12,6 +12,8 @@
     <string name="feature_book_placeholder_msg" translatable="false">It looks like there are no feature flags configured yet. Configure some features in your remote config provider to see them here.</string>
     <string name="feature_book_search_placeholder_title" translatable="false">No features found</string>
     <string name="feature_book_search_placeholder_msg" translatable="false">No features match `%s`. Try a different search term or check your spelling.</string>
+    <string name="feature_book_source_remote" translatable="false">Remote</string>
+    <string name="feature_book_source_mock" translatable="false">Mock</string>
 
     <string name="feature_editor_activate_mock_label" translatable="false">Override remote config?</string>
     <string name="feature_editor_activate_mock_status" translatable="false">Use mocked value</string>

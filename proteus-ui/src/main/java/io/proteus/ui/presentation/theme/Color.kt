@@ -262,3 +262,17 @@ val HighlightLight = Color(0xFFFFEB3B)      // Material Yellow 500
 val HighlightDark = Color(0xFF9C8400)       // Darker yellow for dark mode
 val OnHighlightLight = Color(0xFF000000)    // Black text on light highlight
 val OnHighlightDark = Color(0xFFFFFFFF)     // White text on dark highlight
+
+// === Feature Source Badge Colors ===
+
+// Remote State (Production/Cloud) - Green palette
+val RemoteBadgeBackgroundLight = Color(0xFFE8F5E9)  // Green 50
+val RemoteBadgeContentLight = Color(0xFF1B5E20)     // Green 900
+val RemoteBadgeBackgroundDark = Color(0xFF1B5E20)   // Green 900
+val RemoteBadgeContentDark = Color(0xFFC8E6C9)      // Green 100
+
+// Mock State (Local/Override) - Orange palette
+val MockBadgeBackgroundLight = Color(0xFFFFF3E0)    // Orange 50
+val MockBadgeContentLight = Color(0xFFE65100)       // Deep Orange 900
+val MockBadgeBackgroundDark = Color(0xFFBF360C)     // Deep Orange 900
+val MockBadgeContentDark = Color(0xFFFFE0B2)        // Orange 100

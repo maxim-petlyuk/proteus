@@ -5,7 +5,6 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -13,15 +12,10 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.Badge
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -40,7 +34,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -50,7 +43,6 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.constraintlayout.compose.Visibility
 import androidx.constraintlayout.compose.atLeastWrapContent
 import io.proteus.ui.R
 import io.proteus.ui.domain.entity.FeatureNote
@@ -177,7 +169,6 @@ internal fun FeatureCard(
             val (remoteConfigTitle, remoteConfigValue, remoteConfigBg, remoteConfigDivider) = createRefs()
             val (localConfigTitle, localConfigValue, localConfigBg, localConfigDivider) = createRefs()
             val (featureOwnerTitle, featureOwnerValue, featureOwnerBg, titlesVerticalDivider) = createRefs()
-            val overrideBadge = createRef()
 
             val titlesEndBarrier = createEndBarrier(
                 keyTitle,
@@ -254,31 +245,10 @@ internal fun FeatureCard(
                 modifier = Modifier.constrainAs(keyValue) {
                     baseline.linkTo(keyTitle.baseline)
                     start.linkTo(titlesVerticalDivider.end, margin = columnPaddingHorizontal)
-                    end.linkTo(overrideBadge.start, margin = horizontalPadding)
+                    end.linkTo(parent.end, margin = horizontalPadding)
                     width = Dimension.fillToConstraints
                 }
             )
-
-
-            // Override badge
-            Badge(
-                containerColor = MaterialTheme.colorScheme.tertiary,
-                contentColor = MaterialTheme.colorScheme.onTertiary,
-                modifier = Modifier
-                    .constrainAs(overrideBadge) {
-                        centerVerticallyTo(keyValue)
-                        start.linkTo(keyValue.end, margin = 8.dp)
-                        end.linkTo(parent.end, margin = horizontalPadding)
-                        horizontalBias = 0f
-                        visibility = if (featureNote.isOverrideActivated) Visibility.Visible else Visibility.Gone
-                    }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = "Overridden",
-                    modifier = Modifier.size(12.dp)
-                )
-            }
 
             HorizontalDivider(
                 thickness = 0.5.dp,
@@ -316,26 +286,23 @@ internal fun FeatureCard(
                     )
                     .constrainAs(overrideTitle) {
                         top.linkTo(keyDivider.bottom)
+                        bottom.linkTo(overrideBg.bottom)
                         start.linkTo(parent.start)
                     }
             )
 
-            val activatedStatusIcon = if (featureNote.isOverrideActivated) {
-                R.drawable.ic_remote_feature_override_activated
-            } else {
-                R.drawable.ic_remote_feature_override_deactivated
-            }
-
-            Image(
+            FeatureSourceBadge(
                 modifier = Modifier
-                    .size(16.dp)
+                    .padding(
+                        top = rowPaddingVertical,
+                        bottom = rowPaddingVertical
+                    )
                     .constrainAs(overrideIcon) {
-                        top.linkTo(overrideTitle.top)
-                        bottom.linkTo(overrideTitle.bottom)
+                        top.linkTo(keyDivider.bottom)
+                        bottom.linkTo(overrideBg.bottom)
                         start.linkTo(titlesVerticalDivider.end, margin = columnPaddingHorizontal)
                     },
-                painter = painterResource(id = activatedStatusIcon),
-                contentDescription = "Diamonds"
+                isRemote = !featureNote.isOverrideActivated
             )
 
             HorizontalDivider(

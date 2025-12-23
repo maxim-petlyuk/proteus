@@ -9,6 +9,4 @@ interface FeatureConfigProvider {
     fun getLong(featureKey: String): Long
 
     fun getDouble(featureKey: String): Double
-
-    fun isOverridden(featureKey: String): Boolean
 }
