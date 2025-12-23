@@ -260,6 +260,7 @@ private fun LoadedContent(
 
                 MockFeatureActivationToggle(
                     isOverrideActivated = isOverrideActivated,
+                    mockInputType = mockInputType,
                     onToggle = onToggleMockConfig
                 )
 
@@ -383,6 +384,7 @@ private fun LoadedContent(
 private fun MockFeatureActivationToggle(
     modifier: Modifier = Modifier,
     isOverrideActivated: Boolean = false,
+    mockInputType: MockInputType,
     onToggle: (Boolean) -> Unit = {}
 ) {
     Column(
@@ -400,11 +402,18 @@ private fun MockFeatureActivationToggle(
             overflow = TextOverflow.Ellipsis
         )
 
+        val description = if (isOverrideActivated) {
+            stringResource(R.string.feature_editor_mock_status_enabled, mockInputType.label)
+        } else {
+            stringResource(R.string.feature_editor_mock_status_disabled)
+        }
+
         ToggleInput(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             isActivated = isOverrideActivated,
             onToggle = onToggle,
-            text = stringResource(id = R.string.feature_editor_activate_mock_status)
+            text = description,
+            maxLines = 3
         )
 
         HorizontalDivider(
@@ -441,11 +450,18 @@ private fun MockSetupLayout(
 
         when (mockInputType) {
             is MockInputType.Toggle -> {
+                val description = if (mockInputType.isActivated) {
+                    stringResource(R.string.feature_editor_boolean_mock_status_enabled)
+                } else {
+                    stringResource(R.string.feature_editor_boolean_mock_status_disabled)
+                }
+
                 ToggleInput(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                     isActivated = mockInputType.isActivated,
                     onToggle = onChangeBooleanMockedValue,
-                    text = stringResource(id = R.string.feature_editor_activated_label)
+                    text = description,
+                    maxLines = 3
                 )
             }
 
@@ -474,7 +490,8 @@ private fun ToggleInput(
     modifier: Modifier = Modifier,
     isActivated: Boolean = false,
     onToggle: (Boolean) -> Unit = {},
-    text: String = ""
+    text: String = "",
+    maxLines: Int = 1
 ) {
     Row(
         modifier = modifier
@@ -487,7 +504,7 @@ private fun ToggleInput(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Start,
             modifier = Modifier.weight(1f),
-            maxLines = 1,
+            maxLines = maxLines,
             overflow = TextOverflow.Ellipsis
         )
 

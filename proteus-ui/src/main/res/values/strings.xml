@@ -16,9 +16,11 @@
     <string name="feature_book_source_mock" translatable="false">Mock</string>
 
     <string name="feature_editor_activate_mock_label" translatable="false">Override remote config?</string>
-    <string name="feature_editor_activate_mock_status" translatable="false">Use mocked value</string>
+    <string name="feature_editor_mock_status_disabled" translatable="false">No mock value defined for this feature</string>
+    <string name="feature_editor_mock_status_enabled" translatable="false">Using local value: "%s"\nOverriding remote config for testing</string>
+    <string name="feature_editor_boolean_mock_status_disabled" translatable="false">Feature is disabled\nThe feature flag will return false</string>
+    <string name="feature_editor_boolean_mock_status_enabled" translatable="false">Feature is enabled\nThe feature flag will return true</string>
     <string name="feature_editor_replace_label" translatable="false">Replace with?</string>
-    <string name="feature_editor_activated_label" translatable="false">Feature activated</string>
     <string name="feature_editor_btn_save" translatable="false">Save</string>
     <string name="feature_editor_btn_reset" translatable="false">Reset</string>
     <string name="feature_editor_btn_cancel" translatable="false">Cancel</string>

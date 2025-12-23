@@ -50,12 +50,20 @@ internal data class FeatureConfiguratorState(
 
     sealed class MockInputType {
 
-        data class Toggle(val isActivated: Boolean) : MockInputType()
+        abstract val label: String
+
+        data class Toggle(val isActivated: Boolean) : MockInputType() {
+
+            override val label: String = isActivated.toString()
+        }
 
         data class TextInput(
             val text: String,
             val textInputType: TextType
         ) : MockInputType() {
+
+            override val label: String
+                get() = text
 
             val keyboardType = textInputType.asKeyboardType()
         }
