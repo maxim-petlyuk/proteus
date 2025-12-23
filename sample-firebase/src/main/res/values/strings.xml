@@ -20,4 +20,28 @@
     <string name="configurator_tooltip_title">QA/Testing Mode</string>
     <string name="configurator_tooltip_description">This opens the configuration interface for testing purposes</string>
 
+    <!-- Accessibility strings -->
+    <string name="demo_screen_content_description">Demo screen showing feature flag configuration</string>
+    <string name="feature_flag_card_content_description">Feature flag card for %1$s with value %2$s from %3$s source</string>
+    <string name="feature_value_content_description">Feature value: %1$s</string>
+    <string name="feature_type_content_description">Feature type: %1$s</string>
+    <string name="feature_owner_content_description">Feature owner: %1$s</string>
+    <string name="feature_description_content_description">Feature description</string>
+    <string name="source_badge_content_description">Configuration source: %1$s</string>
+    <string name="configurator_button_content_description">Open feature configurator</string>
+    <string name="configurator_tooltip_content_description">Development mode warning tooltip</string>
+
+    <!-- Error handling -->
+    <string name="error_loading_feature_flag">Failed to load feature configuration</string>
+    <string name="error_occurred">An error occurred</string>
+    <string name="error_title">Configuration Error</string>
+    <string name="retry_button">Retry Again</string>
+    <string name="error_state_content_description">Error loading configuration: %1$s</string>
+
+    <!-- Empty states -->
+    <string name="feature_flag_name_placeholder">Unknown Feature</string>
+    <string name="value_not_available">Value not available</string>
+    <string name="description_not_available">No description available</string>
+    <string name="live_badge_text">LIVE</string>
+
 </resources>

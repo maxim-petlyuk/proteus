@@ -251,10 +251,6 @@ fun FeatureFlagCard(
     }
 }
 
-
-/**
- * Metadata item with icon and label
- */
 @Composable
 private fun MetadataItem(
     icon: ImageVector,
@@ -275,19 +271,14 @@ private fun MetadataItem(
         )
         Text(
             text = label,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
             color = color,
             fontWeight = FontWeight.Medium
         )
     }
 }
 
-@Preview(
-    name = "Feature Flag Card",
-    showBackground = true,
-    widthDp = 360,
-    heightDp = 800
-)
+@Preview(name = "Feature Flag Card", showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
 private fun FeatureFlagCardPreview(
     @PreviewParameter(FeatureFlagStatePreviewProvider::class)

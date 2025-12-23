@@ -7,4 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Demo Surface Dark - matches DemoGray950 from Color.kt -->
+    <color name="demo_surface_dark">#FF1A1611</color>
 </resources>

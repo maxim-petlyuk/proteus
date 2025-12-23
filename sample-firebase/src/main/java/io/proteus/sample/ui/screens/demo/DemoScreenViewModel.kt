@@ -7,13 +7,14 @@ import androidx.lifecycle.viewModelScope
 import io.proteus.core.data.MockConfigRepository
 import io.proteus.core.provider.FeatureConfigProvider
 import io.proteus.core.provider.FeatureConfigProviderFactory
+import io.proteus.sample.data.DemoUiState
 import io.proteus.sample.data.FeatureFlagState
 import io.proteus.sample.data.FeatureSource
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * ViewModel for the DemoScreen that handles all business logic related to feature flag state.
@@ -30,61 +31,69 @@ class DemoScreenViewModel(
     private val mockConfigRepository: MockConfigRepository,
 ) : ViewModel() {
 
-    private val _featureFlagState = MutableStateFlow(getPreviewFeatureFlagState())
-    val featureFlagState: StateFlow<FeatureFlagState> = _featureFlagState.asStateFlow()
+    val featureFlagState = MutableStateFlow<DemoUiState>(DemoUiState.Loading)
 
-    init {
+    fun retry() {
         loadFeatureFlagState()
-    }
-
-    fun loadFeatureFlagState() {
-        viewModelScope.launch {
-            _featureFlagState.value = createFeatureFlagState()
-        }
     }
 
     fun refreshFeatureFlagState() {
         loadFeatureFlagState()
     }
 
-    private fun createFeatureFlagState(): FeatureFlagState {
-        val key = "ai_assistant_mode"
-        val typeClass = String::class
-        val value = featureConfigProvider.getString(key)
+    private fun loadFeatureFlagState() {
+        viewModelScope.launch {
+            try {
+                val silently = featureFlagState.value is DemoUiState.Success
 
-        val source = if (hasLocalOverride(key, typeClass)) {
-            FeatureSource.MOCK
-        } else {
-            FeatureSource.REMOTE
+                if (!silently) {
+                    featureFlagState.value = DemoUiState.Loading
+                    delay(2000.milliseconds)
+                }
+
+                val featureFlag = createFeatureFlagState()
+
+                if (featureFlag != null) {
+                    featureFlagState.value = DemoUiState.Success(featureFlag)
+                } else {
+                    featureFlagState.value = DemoUiState.Empty
+                }
+            } catch (e: Exception) {
+                featureFlagState.value = DemoUiState.Error(
+                    message = "Failed to load feature configuration: ${e.localizedMessage ?: "Unknown error"}"
+                )
+            }
         }
+    }
 
-        return FeatureFlagState(
-            name = "AI Assistant Mode",
-            key = key,
-            value = value,
-            type = typeClass.simpleName ?: "",
-            owner = remoteConfigProviderFactory.getProviderTag(key).capitalize(Locale.current),
-            source = source,
-            description = "Controls the AI assistant operational mode for enhanced user interactions and intelligent responses."
-        )
+    private fun createFeatureFlagState(): FeatureFlagState? {
+        return try {
+            val key = "ai_assistant_mode"
+            val typeClass = String::class
+            val value = featureConfigProvider.getString(key)
+
+            val source = if (hasLocalOverride(key, typeClass)) {
+                FeatureSource.MOCK
+            } else {
+                FeatureSource.REMOTE
+            }
+
+            FeatureFlagState(
+                name = "AI Assistant Mode",
+                key = key,
+                value = value,
+                type = typeClass.simpleName ?: "",
+                owner = remoteConfigProviderFactory.getProviderTag(key).capitalize(Locale.current),
+                source = source,
+                description = "Controls the AI assistant operational mode for enhanced user interactions and intelligent responses."
+            )
+        } catch (e: Exception) {
+            // Log the error in a real app
+            null
+        }
     }
 
     private fun hasLocalOverride(key: String, typeClass: KClass<*>): Boolean {
         return mockConfigRepository.getMockedConfigValue(key, typeClass) != null
-    }
-
-    companion object {
-        /**
-         * Creates a preview FeatureFlagState for use in Compose previews
-         */
-        fun getPreviewFeatureFlagState() = FeatureFlagState(
-            name = "",
-            key = "",
-            value = "",
-            type = "",
-            owner = "",
-            source = FeatureSource.REMOTE,
-            description = "typeClass"
-        )
     }
 }

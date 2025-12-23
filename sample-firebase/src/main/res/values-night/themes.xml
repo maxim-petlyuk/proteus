@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MockConfigLab" parent="android:Theme.Material.NoActionBar">
+        <!-- Set window background to match AnimatedBackground start color (DemoGray950) for dark mode -->
+        <item name="android:windowBackground">@color/demo_surface_dark</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+</resources>

@@ -1,8 +1,18 @@
 package io.proteus.sample.ui.screens.demo.components
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import io.proteus.sample.data.DemoUiState
 import io.proteus.sample.data.FeatureFlagState
 import io.proteus.sample.data.FeatureSource
+
+class ScreenLoadedStatePreviewProvider : PreviewParameterProvider<DemoUiState> {
+
+    override val values: Sequence<DemoUiState> = sequenceOf(
+        DemoUiState.Success(
+            featureFlag = FeatureFlagStatePreviewProvider().values.first()
+        )
+    )
+}
 
 class FeatureFlagStatePreviewProvider : PreviewParameterProvider<FeatureFlagState> {
 

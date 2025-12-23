@@ -176,8 +176,8 @@ private fun DrawScope.drawFloatingShapeFirst(
 
         val gradient = Brush.radialGradient(
             colors = listOf(
-                accentColor.copy(alpha = 0.08f),
-                accentColor.copy(alpha = 0.04f),
+                accentColor.copy(alpha = 0.14f),
+                accentColor.copy(alpha = 0.07f),
                 Color.Transparent
             ),
             center = Offset(centerX, centerY),
@@ -204,8 +204,8 @@ private fun DrawScope.drawFloatingShapeSecond(
 
         val gradient = Brush.radialGradient(
             colors = listOf(
-                accentColor.copy(alpha = 0.06f),
-                accentColor.copy(alpha = 0.03f),
+                accentColor.copy(alpha = 0.1f),
+                accentColor.copy(alpha = 0.05f),
                 Color.Transparent
             ),
             center = Offset(centerX, centerY),
