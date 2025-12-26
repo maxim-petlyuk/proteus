@@ -4,7 +4,7 @@
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
     <a href="https://android-arsenal.com/api?level=23"><img src="https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat" alt="API"></a>
     <a href="https://github.com/maxim-petlyuk/proteus-config/actions"><img src="https://img.shields.io/github/actions/workflow/status/maxim-petlyuk/proteus/release-bom-only.yml?branch=main" alt="Build Status"></a>
-    <a href="https://maxim-petlyuk.github.io/proteus-config"><img src="https://img.shields.io/badge/docs-latest-brightgreen.svg" alt="Documentation"></a>
+    <a href="https://github.com/maxim-petlyuk/proteus/tree/main/docs"><img src="https://img.shields.io/badge/docs-latest-brightgreen.svg" alt="Documentation"></a>
     <a href="https://github.com/maxim-petlyuk"><img src="https://img.shields.io/badge/Profile-maxim--petlyuk-blue" alt="Profile"></a><br>
     <a href="https://search.maven.org/artifact/io.github.maxim-petlyuk/proteus-core"><img src="https://img.shields.io/maven-central/v/io.github.maxim-petlyuk/proteus-core.svg?label=proteus-core" alt="Maven Central: proteus-core"></a>
     <a href="https://search.maven.org/artifact/io.github.maxim-petlyuk/proteus-firebase"><img src="https://img.shields.io/maven-central/v/io.github.maxim-petlyuk/proteus-firebase.svg?label=proteus-firebase" alt="Maven Central: proteus-firebase"></a>
@@ -45,18 +45,66 @@ required.
 - **Multi-Module Architecture** - Independent versioning with BOM support for simplified dependency management
 - **Production-Ready** - Comprehensive error handling, thread-safe operations, and coroutines support
 
+## Packages
+
+| Package | Description |
+|---------|-------------|
+| [proteus-core](https://search.maven.org/artifact/io.github.maxim-petlyuk/proteus-core) | Core abstraction layer for remote configuration providers |
+| [proteus-firebase](https://search.maven.org/artifact/io.github.maxim-petlyuk/proteus-firebase) | Firebase Remote Config provider implementation |
+| [proteus-ui](https://search.maven.org/artifact/io.github.maxim-petlyuk/proteus-ui) | Material Design 3 UI for runtime configuration overrides |
+| [proteus-bom](https://search.maven.org/artifact/io.github.maxim-petlyuk/proteus-bom) | Bill of Materials for consistent version management |
+
 ## Installation
 
-Add the Proteus dependencies to your project:
+### Using BOM (Recommended)
 
-```kotlin  
-// In your root build.gradle.kts  
+<a href="https://search.maven.org/artifact/io.github.maxim-petlyuk/proteus-bom"><img src="https://img.shields.io/maven-central/v/io.github.maxim-petlyuk/proteus-bom.svg?label=proteus-bom" alt="Maven Central: proteus-bom"></a>
+
+The Bill of Materials (BOM) ensures all Proteus modules use compatible versions:
+
+```kotlin
 dependencies {
-    implementation("io.proteus:proteus-core:1.0.0")   // Core functionality  
-    implementation("io.proteus:proteus-firebase:1.0.0")   // Firebase Remote Config integration  
-    implementation("io.proteus:proteus-ui:1.0.0")    // UI components for feature discovery and configuration
-}  
-```  
+    // Import the BOM
+    implementation(platform("io.github.maxim-petlyuk:proteus-bom:$version"))
+
+    // Add modules without version numbers
+    implementation("io.github.maxim-petlyuk:proteus-core")
+    implementation("io.github.maxim-petlyuk:proteus-firebase")
+    implementation("io.github.maxim-petlyuk:proteus-ui")
+}
+```
+
+### Version Catalog
+
+For projects using Gradle version catalogs:
+
+```toml
+[versions]
+proteus = "$version"
+
+[libraries]
+proteus-bom = { module = "io.github.maxim-petlyuk:proteus-bom", version.ref = "proteus" }
+proteus-core = { module = "io.github.maxim-petlyuk:proteus-core" }
+proteus-firebase = { module = "io.github.maxim-petlyuk:proteus-firebase" }
+proteus-ui = { module = "io.github.maxim-petlyuk:proteus-ui" }
+
+[bundles]
+proteus = ["proteus-core", "proteus-firebase", "proteus-ui"]
+```
+
+Then in your build.gradle.kts:
+
+```kotlin
+dependencies {
+    implementation(platform(libs.proteus.bom))
+    implementation(libs.bundles.proteus)
+}
+```
+
+### Requirements
+
+- **Minimum Android SDK**: 23
+- **Jetpack Compose**: Required for proteus-ui module only  
 
 ## Setup
 

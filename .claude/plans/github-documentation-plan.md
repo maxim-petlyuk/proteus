@@ -43,22 +43,21 @@ This plan outlines the creation of production-ready GitHub documentation for **P
     - Multi-module architecture with independent versioning
     - Production-ready with comprehensive error handling
 
-#### Installation Section (2 hours)
-- [ ] Create BOM usage example (recommended):
+#### Installation Section (2 hours) ✅
+- [x] Add Packages table with module descriptions (similar to mcpkit)
+- [x] Create BOM usage example (recommended) with version badge:
   ```kotlin
   dependencies {
-      implementation(platform("io.github.maxim-petlyuk:proteus-bom:1.0.0"))
+      implementation(platform("io.github.maxim-petlyuk:proteus-bom:$version"))
       implementation("io.github.maxim-petlyuk:proteus-core")
       implementation("io.github.maxim-petlyuk:proteus-firebase")
       implementation("io.github.maxim-petlyuk:proteus-ui")
   }
   ```
-- [ ] Individual module dependencies (alternative)
-- [ ] Version catalog integration example
-- [ ] Minimum requirements section:
-    - Android SDK 21+
-    - Kotlin 1.9+
-    - Jetpack Compose (for proteus-ui)
+- [x] Version catalog integration example
+- [x] Minimum requirements section:
+    - Android SDK 23+
+    - Jetpack Compose (for proteus-ui only)
 
 #### Quick Start (3 hours)
 - [ ] Minimal working example (5-10 lines):
