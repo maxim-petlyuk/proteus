@@ -252,11 +252,127 @@ class FeatureManager(
 
 | Aspect | Before (Firebase only) | After (Proteus) |
 |--------|------------------------|-----------------|
-| **Testing Speed** | Minutes/hours (deploy changes) | Instant (runtime UI) |
+| **Testing Speed** | Minutes (Firebase Console changes) | Instant (runtime UI) |
 | **Override Capability** | None | Full runtime override |
-| **A/B Testing** | Requires backend setup | Test locally first |
-| **Debug Features** | Complex flags management | Visual UI for all flags |
-| **Development Workflow** | Backend-dependent | Independent testing |
+| **A/B Testing** | Requires Firebase Console setup | Test locally first |
+| **Debug Features** | Switch between Firebase Console & app | Visual UI directly in app |
+| **Development Workflow** | Firebase Console dependent | Independent local testing |
+
+## Core Concepts
+
+### Architecture Overview
+
+Proteus uses a layered architecture with runtime override capabilities:
+
+```mermaid
+graph TB
+    App[Your App]
+    UI[Runtime Override UI]
+    Core[Proteus Core<br/>FeatureConfigProvider]
+    Mock[MockConfigProvider]
+    Storage[(SharedPreferences<br/>Local Overrides)]
+    Firebase[Firebase Remote Config]
+    CleverTap[CleverTap]
+    Custom[Custom Provider]
+
+    App --> Core
+    UI --> Core
+    Core --> Mock
+    Mock --> Storage
+    Core -.fallback.-> Firebase
+    Core -.fallback.-> CleverTap
+    Core -.fallback.-> Custom
+
+    style App fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style UI fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Core fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    style Mock fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    style Storage fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    style Firebase fill:#fff8e1,stroke:#f57f17,stroke-width:2px
+    style CleverTap fill:#fff8e1,stroke:#f57f17,stroke-width:2px
+    style Custom fill:#fff8e1,stroke:#f57f17,stroke-width:2px
+```
+
+### Key Components
+
+- **Proteus** - Central singleton that coordinates the entire system
+- **FeatureConfigProvider** - Type-safe interface for configuration access
+- **FeatureBookDataSource** - Defines all available features and their metadata
+- **MockConfigProvider** - Enables runtime overrides via local storage
+- **ConfigValue** - Type-safe wrapper ensuring correct value types
+
+### Provider Abstraction
+
+All configuration providers implement a simple, type-safe interface:
+
+```kotlin
+interface FeatureConfigProvider {
+    fun getBoolean(featureKey: String): Boolean
+    fun getString(featureKey: String): String
+    fun getLong(featureKey: String): Long
+    fun getDouble(featureKey: String): Double
+}
+```
+
+### Runtime Override Mechanism
+
+The override mechanism follows a simple priority system:
+
+1. **Check Local Override**: First checks `MockConfigProvider` for user-overridden values
+2. **Fallback to Remote**: If no override exists, fetches from remote provider (Firebase, etc.)
+3. **Type Safety**: `ConfigValue` sealed class ensures type-safe value handling
+4. **Persistence**: Overrides are persisted in SharedPreferences across app sessions
+
+```kotlin
+// How FeatureConfigProviderImpl resolves values
+fun getBoolean(featureKey: String): Boolean {
+    return try {
+        mockConfigProvider.getBoolean(featureKey)  // Check override first
+    } catch (e: MockConfigUnavailableException) {
+        remoteProvider.getBoolean(featureKey)      // Fallback to remote
+    }
+}
+```
+
+### Feature Definition
+
+Features are defined with strong typing and default values:
+
+```kotlin
+data class Feature<DataType : Any>(
+    val key: String,                    // Unique identifier
+    val defaultValue: DataType,         // Fallback value
+    val valueClass: KClass<DataType>    // Type information
+)
+
+// Example usage
+Feature(
+    key = "dark_mode_enabled",
+    defaultValue = false,
+    valueClass = Boolean::class
+)
+```
+
+### Configuration Lifecycle
+
+1. **Initialization**: App registers providers and data sources with `Proteus.Builder`
+2. **Feature Discovery**: `FeatureBookDataSource` provides all feature definitions
+3. **Value Resolution**: Provider checks overrides, then remote sources
+4. **Runtime Override**: UI allows instant value changes during development
+5. **Persistence**: Changes are saved and restored on next app launch
+
+### Type Safety with ConfigValue
+
+Proteus uses a sealed class to ensure type safety:
+
+```kotlin
+sealed class ConfigValue<Value> {
+    class Boolean(val value: kotlin.Boolean) : ConfigValue<kotlin.Boolean>()
+    class Long(val value: kotlin.Long) : ConfigValue<kotlin.Long>()
+    class Double(val value: kotlin.Double) : ConfigValue<kotlin.Double>()
+    class Text(val value: String) : ConfigValue<String>()
+}
+```
 
 ### Next Steps
 
@@ -286,7 +402,7 @@ Notice, that **FirebaseOnlyProviderFactory**   is placed inside separate library
 ```
 dependencies {  
   ...
-  implementation("io.proteus:proteus-firebase")
+  implementation("io.github.maxim-petlyuk:proteus-firebase")
   ...
  }
  ```  

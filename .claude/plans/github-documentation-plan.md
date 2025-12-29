@@ -94,21 +94,37 @@ This plan outlines the creation of production-ready GitHub documentation for **P
 - [x] Brief explanation of each step
 - [x] Link to comprehensive setup guide
 
-#### Core Concepts (3 hours)
-- [ ] Create architecture overview diagram:
-    - App Layer → Proteus Core → Provider (Firebase/CleverTap)
-    - Override UI → Local Storage → Runtime Override Layer
-- [ ] Explain provider abstraction:
+#### Core Concepts (3 hours) ✅
+- [x] Create architecture overview diagram:
+    - App Layer → Proteus Core → Provider Layer (Firebase/CleverTap/Custom)
+    - Runtime Override UI → MockConfigProvider → Local Storage (SharedPreferences)
+    - FeatureConfigProviderImpl checks MockConfigProvider first, then falls back to remote
+- [x] Explain provider abstraction:
   ```kotlin
-  interface RemoteConfigProvider {
-      suspend fun getString(key: String, default: String): String
-      suspend fun getBoolean(key: String, default: Boolean): Boolean
-      // ... other types
+  interface FeatureConfigProvider {
+      fun getBoolean(featureKey: String): Boolean
+      fun getString(featureKey: String): String
+      fun getLong(featureKey: String): Long
+      fun getDouble(featureKey: String): Double
   }
   ```
-- [ ] Configuration lifecycle explanation
-- [ ] Runtime override mechanism with visual
-- [ ] Thread safety and coroutines support
+- [x] Key components explanation:
+    - **Proteus**: Central singleton coordinator
+    - **FeatureConfigProvider**: Type-safe configuration interface
+    - **FeatureBookDataSource**: Feature definitions source
+    - **MockConfigProvider**: Runtime override provider
+    - **ConfigValue**: Type-safe value wrapper (Boolean, Long, Double, Text)
+- [x] Configuration lifecycle:
+    1. Initialization with providers and data sources
+    2. Feature discovery from FeatureBookDataSource
+    3. Value resolution (check override → fallback to remote)
+    4. Runtime override via UI
+    5. Persistence in SharedPreferences
+- [x] Runtime override mechanism:
+    - FeatureConfigProviderImpl tries MockConfigProvider first
+    - Falls back to remote provider if no override exists
+    - Type safety with ConfigValue sealed class
+- [x] Feature definition with FeatureContext/Feature interfaces
 
 #### Advanced Features (2 hours)
 - [ ] Custom provider implementation guide
