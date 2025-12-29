@@ -97,7 +97,7 @@ Get Proteus up and running in minutes with this minimal example:
 
 ```kotlin
 class MainApp : Application() {
-    
+
     override fun onCreate() {
         super.onCreate()
 
@@ -217,9 +217,9 @@ Proteus.Builder(this)
 ```kotlin
 class FeatureManager(
     private val remoteConfig : FirebaseRemoteConfig
-) {     
+) {
 
-    fun isDarkModeEnabled(): Boolean {        
+    fun isDarkModeEnabled(): Boolean {
         return remoteConfig.getBoolean("dark_mode_enabled")
     }
 
@@ -242,7 +242,7 @@ class FeatureManager(
     }
 
     // Switch between servers instantly for testing
-    fun getApiUrl(): String {        
+    fun getApiUrl(): String {
         return configProvider.getString("primary_server_url")
     }
 }
@@ -420,24 +420,6 @@ Proteus.Builder(context)
     .build()
 ```
 
-### Multi-Module Integration
-
-Best practices for integrating Proteus in multi-module Android projects:
-
-#### Module Structure
-
-```
-app/
-├── core-module/
-│   └── Dependencies: proteus-core
-├── feature-module/
-│   └── Dependencies: proteus-core
-├── firebase-module/
-│   └── Dependencies: proteus-firebase
-└── app-module/
-    └── Dependencies: all modules + proteus-ui
-```
-
 #### Dependency Injection Setup
 
 Using Hilt/Dagger for dependency injection:
@@ -466,73 +448,6 @@ object ProteusModule {
 }
 ```
 
-#### Using in Feature Modules
-
-```kotlin
-// In any feature module
-class FeatureViewModel @Inject constructor(
-    private val configProvider: FeatureConfigProvider
-) : ViewModel() {
-
-    fun checkFeature() {
-        val isEnabled = configProvider.getBoolean("new_feature_flag")
-        val apiUrl = configProvider.getString("api_endpoint")
-        // Use configuration values
-    }
-}
-```
-
-### Testing Strategies
-
-#### Unit Testing with Mock Provider
-
-```kotlin
-class FeatureViewModelTest {
-
-    private val mockProvider = object : FeatureConfigProvider {
-        override fun getBoolean(key: String) = when(key) {
-            "new_feature_flag" -> true
-            else -> false
-        }
-
-        override fun getString(key: String) = when(key) {
-            "api_endpoint" -> "https://test.api.com"
-            else -> ""
-        }
-
-        override fun getLong(key: String) = 0L
-        override fun getDouble(key: String) = 0.0
-    }
-
-    @Test
-    fun testFeatureWithMockConfig() {
-        val viewModel = FeatureViewModel(mockProvider)
-        // Assert feature behavior with mocked config
-    }
-}
-```
-
-#### Integration Testing
-
-```kotlin
-@Test
-fun testWithRealProteus() {
-    val context = InstrumentationRegistry.getInstrumentation().targetContext
-
-    val proteus = Proteus.Builder(context)
-        .registerConfigProviderFactory(TestProviderFactory())
-        .registerFeatureBookDataSource(
-            StaticFeatureBookDataSource(testFeatures)
-        )
-        .build()
-
-    val provider = proteus.buildConfigProvider()
-
-    // Test with real Proteus instance
-    assertEquals(true, provider.getBoolean("test_feature"))
-}
-```
-
 ### ProGuard/R8 Configuration
 
 Proteus modules include consumer ProGuard rules automatically. For additional safety, you can add:
@@ -556,68 +471,46 @@ Proteus modules include consumer ProGuard rules automatically. For additional sa
 - **Memory Usage**: Override values in SharedPreferences have minimal memory impact
 - **Network Optimization**: Batch fetch configurations when using custom API providers
 
-### Migration from Existing Solutions
+## Community
 
-#### From Firebase-only to Proteus
+### Contributing
 
-```kotlin
-// Before
-val remoteConfig = FirebaseRemoteConfig.getInstance()
-val value = remoteConfig.getString("key")
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on:
+- Code style and guidelines
+- Pull request process
+- Issue reporting
+- Development environment setup
 
-// After
-val configProvider = Proteus.getInstance().buildConfigProvider()
-val value = configProvider.getString("key")
-// Plus: Runtime override capability via UI!
-```
+### Issues and Support
 
-### Next Steps
+- **Bug Reports**: [Create an issue](https://github.com/maxim-petlyuk/proteus/issues/new?template=bug_report.md)
+- **Feature Requests**: [Request a feature](https://github.com/maxim-petlyuk/proteus/issues/new?template=feature_request.md)
+- **Questions**: [Ask in Discussions](https://github.com/maxim-petlyuk/proteus/discussions)
 
-- Check the [comprehensive setup guide](#setup) for detailed configuration
-- Learn about [architecture](#architecture) and core concepts
-- Explore [usage examples](#usage) for common scenarios
+### Connect
 
+- **GitHub**: [@maxim-petlyuk](https://github.com/maxim-petlyuk)
+- **Issues**: [proteus/issues](https://github.com/maxim-petlyuk/proteus/issues)
 
+## Find this library useful? ⭐
 
-## Define remote config service factory
-
-The idea of **Proteus** that it must be scalable in the future and support multiple config providers. Since there is a chance that at some
-day product owner will come to you and ask to integrate Firebase Remote Config & CleverTap parallelly :)
-
-For now the only supported remote config provider is **Firebase**. That's why we have already added factory for you, the only thing which
-you need to do is to register it during initialization.
-
-```kotlin  
-Proteus.Builder(this)
-    ...
-    .registerConfigProviderFactory(FirebaseOnlyProviderFactory())
-    ...
-```
-
-Notice, that **FirebaseOnlyProviderFactory**   is placed inside separate library module
-
-```
-dependencies {  
-  ...
-  implementation("io.github.maxim-petlyuk:proteus-firebase")
-  ...
- }
- ```  
-
-## Architecture
-
-Proteus is built with the following architectural components:
-
-- **Proteus**: Central singleton that coordinates the system
-- **FeatureConfigProvider**: Interface for retrieving typed configuration values
-- **FeatureContext/Feature**: Interface and implementation for defining features
-- **MockConfigProvider**: Provides locally-overridden configurations
-- **FirebaseFeatureConfigProvider**: Implementation for Firebase Remote Config
-- **FeatureBookActivity**: UI for browsing and configuring features
+Support it by joining [**stargazers**](https://github.com/maxim-petlyuk/proteus/stargazers) for this repository. ⭐
+And [**follow**](https://github.com/maxim-petlyuk) me for my next creations! 🤩
 
 ## License
 
-[Include license information here]# Proteus
+```
+Copyright 2025 Maxim Petlyuk
 
-Proteus is a feature flag and remote configuration management system for Android applications. It provides a flexible framework for
-defining, accessing, and overriding feature configurations.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
