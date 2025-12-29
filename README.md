@@ -210,7 +210,7 @@ Proteus.Builder(this)
     .build()
 ```
 
-## Before vs After: Firebase Remote Config Migration
+## Firebase Remote Config Migration
 
 ### Before: Direct Firebase Remote Config Usage
 
@@ -361,17 +361,214 @@ Feature(
 4. **Runtime Override**: UI allows instant value changes during development
 5. **Persistence**: Changes are saved and restored on next app launch
 
-### Type Safety with ConfigValue
+## Advanced Features
 
-Proteus uses a sealed class to ensure type safety:
+### Custom Provider Implementation
+
+Create your own configuration provider for any backend system:
+
+#### 1. Implement the FeatureConfigProvider Interface
 
 ```kotlin
-sealed class ConfigValue<Value> {
-    class Boolean(val value: kotlin.Boolean) : ConfigValue<kotlin.Boolean>()
-    class Long(val value: kotlin.Long) : ConfigValue<kotlin.Long>()
-    class Double(val value: kotlin.Double) : ConfigValue<kotlin.Double>()
-    class Text(val value: String) : ConfigValue<String>()
+class CustomConfigProvider(
+    private val apiClient: YourApiClient
+) : FeatureConfigProvider {
+
+    override fun getBoolean(featureKey: String): Boolean {
+        return apiClient.getConfig(featureKey)?.toBoolean() ?: false
+    }
+
+    override fun getString(featureKey: String): String {
+        return apiClient.getConfig(featureKey) ?: ""
+    }
+
+    override fun getLong(featureKey: String): Long {
+        return apiClient.getConfig(featureKey)?.toLongOrNull() ?: 0L
+    }
+
+    override fun getDouble(featureKey: String): Double {
+        return apiClient.getConfig(featureKey)?.toDoubleOrNull() ?: 0.0
+    }
 }
+```
+
+#### 2. Create a Provider Factory
+
+```kotlin
+class CustomProviderFactory(
+    private val apiClient: YourApiClient
+) : FeatureConfigProviderFactory {
+
+    private val provider = CustomConfigProvider(apiClient)
+
+    override fun getProvider(featureKey: String): FeatureConfigProvider {
+        return provider
+    }
+
+    override fun getProviderTag(featureKey: String): String {
+        return "custom"
+    }
+}
+```
+
+#### 3. Register with Proteus
+
+```kotlin
+Proteus.Builder(context)
+    .registerConfigProviderFactory(CustomProviderFactory(apiClient))
+    .registerFeatureBookDataSource(dataSource)
+    .build()
+```
+
+### Multi-Module Integration
+
+Best practices for integrating Proteus in multi-module Android projects:
+
+#### Module Structure
+
+```
+app/
+├── core-module/
+│   └── Dependencies: proteus-core
+├── feature-module/
+│   └── Dependencies: proteus-core
+├── firebase-module/
+│   └── Dependencies: proteus-firebase
+└── app-module/
+    └── Dependencies: all modules + proteus-ui
+```
+
+#### Dependency Injection Setup
+
+Using Hilt/Dagger for dependency injection:
+
+```kotlin
+@Module
+@InstallIn(SingletonComponent::class)
+object ProteusModule {
+
+    @Provides
+    @Singleton
+    fun provideProteus(@ApplicationContext context: Context): Proteus {
+        return Proteus.Builder(context)
+            .registerConfigProviderFactory(FirebaseOnlyProviderFactory())
+            .registerFeatureBookDataSource(
+                AssetsFeatureBookDataSource(context, "features.json")
+            )
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFeatureConfigProvider(proteus: Proteus): FeatureConfigProvider {
+        return proteus.buildConfigProvider()
+    }
+}
+```
+
+#### Using in Feature Modules
+
+```kotlin
+// In any feature module
+class FeatureViewModel @Inject constructor(
+    private val configProvider: FeatureConfigProvider
+) : ViewModel() {
+
+    fun checkFeature() {
+        val isEnabled = configProvider.getBoolean("new_feature_flag")
+        val apiUrl = configProvider.getString("api_endpoint")
+        // Use configuration values
+    }
+}
+```
+
+### Testing Strategies
+
+#### Unit Testing with Mock Provider
+
+```kotlin
+class FeatureViewModelTest {
+
+    private val mockProvider = object : FeatureConfigProvider {
+        override fun getBoolean(key: String) = when(key) {
+            "new_feature_flag" -> true
+            else -> false
+        }
+
+        override fun getString(key: String) = when(key) {
+            "api_endpoint" -> "https://test.api.com"
+            else -> ""
+        }
+
+        override fun getLong(key: String) = 0L
+        override fun getDouble(key: String) = 0.0
+    }
+
+    @Test
+    fun testFeatureWithMockConfig() {
+        val viewModel = FeatureViewModel(mockProvider)
+        // Assert feature behavior with mocked config
+    }
+}
+```
+
+#### Integration Testing
+
+```kotlin
+@Test
+fun testWithRealProteus() {
+    val context = InstrumentationRegistry.getInstrumentation().targetContext
+
+    val proteus = Proteus.Builder(context)
+        .registerConfigProviderFactory(TestProviderFactory())
+        .registerFeatureBookDataSource(
+            StaticFeatureBookDataSource(testFeatures)
+        )
+        .build()
+
+    val provider = proteus.buildConfigProvider()
+
+    // Test with real Proteus instance
+    assertEquals(true, provider.getBoolean("test_feature"))
+}
+```
+
+### ProGuard/R8 Configuration
+
+Proteus modules include consumer ProGuard rules automatically. For additional safety, you can add:
+
+```pro
+# Proteus
+-keep class io.proteus.** { *; }
+-keep class io.proteus.core.domain.** { *; }
+-keepattributes *Annotation*
+
+# Keep your custom providers
+-keep class com.yourpackage.CustomConfigProvider { *; }
+-keep class com.yourpackage.CustomProviderFactory { *; }
+```
+
+### Performance Considerations
+
+- **Caching**: Provider implementations should cache values to avoid repeated network/disk operations
+- **Lazy Loading**: Initialize Proteus in `Application.onCreate()` for immediate availability
+- **Thread Safety**: All Proteus providers are thread-safe by design
+- **Memory Usage**: Override values in SharedPreferences have minimal memory impact
+- **Network Optimization**: Batch fetch configurations when using custom API providers
+
+### Migration from Existing Solutions
+
+#### From Firebase-only to Proteus
+
+```kotlin
+// Before
+val remoteConfig = FirebaseRemoteConfig.getInstance()
+val value = remoteConfig.getString("key")
+
+// After
+val configProvider = Proteus.getInstance().buildConfigProvider()
+val value = configProvider.getString("key")
+// Plus: Runtime override capability via UI!
 ```
 
 ### Next Steps
