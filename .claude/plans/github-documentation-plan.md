@@ -59,22 +59,40 @@ This plan outlines the creation of production-ready GitHub documentation for **P
     - Android SDK 23+
     - Jetpack Compose (for proteus-ui only)
 
-#### Quick Start (3 hours)
-- [ ] Minimal working example (5-10 lines):
+#### Quick Start (3 hours) ✅
+- [x] Minimal working example (5-10 lines) with two data source options:
   ```kotlin
-  // Initialize with Firebase provider
-  val config = ProteusConfig.Builder()
-      .provider(FirebaseRemoteConfigProvider())
-      .build()
-  
-  // Get configuration value
-  val featureEnabled = config.getBoolean("feature_flag", defaultValue = false)
-  
+  class MainApp : Application() {
+      override fun onCreate() {
+          super.onCreate()
+
+          // ⚠️ IMPORTANT: Initialize Firebase Remote Config BEFORE using FirebaseOnlyProviderFactory
+          // Firebase initialization code should go here
+
+          // Initialize Proteus
+          Proteus.Builder(this)
+              .registerConfigProviderFactory(FirebaseOnlyProviderFactory())
+              .registerFeatureBookDataSource(
+                  // Option A: Load from assets/features.json
+                  AssetsFeatureBookDataSource(this, "features.json")
+                  // Option B: Use runtime code
+                  // StaticFeatureBookDataSource(listOf(Feature(...)))
+              )
+              .build()
+      }
+  }
+
+  // Access configuration values
+  val provider = Proteus.getInstance().buildConfigProvider()
+  val featureEnabled = provider.getBoolean("feature_flag")
+
   // Show override UI (for testing)
-  ProteusUI.show(context, config)
+  startActivity(Intent(this, FeatureBookActivity::class.java))
   ```
-- [ ] Brief explanation of each step
-- [ ] Link to comprehensive setup guide
+- [x] Explain Firebase initialization prerequisite
+- [x] Explain two data source options (JSON file vs runtime code)
+- [x] Brief explanation of each step
+- [x] Link to comprehensive setup guide
 
 #### Core Concepts (3 hours)
 - [ ] Create architecture overview diagram:

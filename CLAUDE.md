@@ -18,7 +18,7 @@ interface.
 
 - Language: Kotlin (target JVM 17)
 - Build: Gradle 8.x with Kotlin DSL
-- Android: Min SDK 21, Target SDK 34
+- Android: Min SDK 23, Target SDK 34
 - UI: Jetpack Compose + Material Design 3
 - Publishing: Maven Central via JReleaser 1.20.0
 
@@ -87,7 +87,7 @@ proteus/
 
 - For CI/CD debugging: `.github/workflows/*.yml`
 - For release config: `gradle.properties` and `publish.properties`
-- For UI theming: `proteus-ui/src/main/kotlin/io/github/maximpetlyuk/proteus/ui/theme/`
+- For UI theming: `proteus-ui/src/main/java/io/proteus/ui/presentation/theme/`
 - For documentation: `docs/*.md`
 
 ## ❌ DO NOT

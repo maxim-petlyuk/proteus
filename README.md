@@ -62,22 +62,6 @@ required.
 
 The Bill of Materials (BOM) ensures all Proteus modules use compatible versions:
 
-```kotlin
-dependencies {
-    // Import the BOM
-    implementation(platform("io.github.maxim-petlyuk:proteus-bom:$version"))
-
-    // Add modules without version numbers
-    implementation("io.github.maxim-petlyuk:proteus-core")
-    implementation("io.github.maxim-petlyuk:proteus-firebase")
-    implementation("io.github.maxim-petlyuk:proteus-ui")
-}
-```
-
-### Version Catalog
-
-For projects using Gradle version catalogs:
-
 ```toml
 [versions]
 proteus = "$version"
@@ -104,132 +88,185 @@ dependencies {
 ### Requirements
 
 - **Minimum Android SDK**: 23
-- **Jetpack Compose**: Required for proteus-ui module only  
+- **Jetpack Compose**: Required for proteus-ui module only
 
-## Setup
+## Quick Start
 
-### 1. Initialize Proteus
+Get Proteus up and running in minutes with this minimal example:
+#### 1. Initialized first:
 
-Initialize Proteus in your Application class:
-
-```kotlin  
+```kotlin
 class MainApp : Application() {
-
+    
     override fun onCreate() {
         super.onCreate()
 
-        // Initialize Firebase SDK before initializing Proteus  
-        FirebaseApp.initializeApp(this)
+        /* IMPORTANT: Initialize Firebase Remote Config BEFORE using FirebaseOnlyProviderFactory */
 
-        val config = FirebaseRemoteConfig.getInstance()
-        val configSettings = FirebaseRemoteConfigSettings.Builder()
-            .setMinimumFetchIntervalInSeconds(60)
-            .build()
-        config.setConfigSettingsAsync(configSettings)
-        config.fetchAndActivate()
-
+        // Initialize Proteus with your feature definitions
         Proteus.Builder(this)
             .registerConfigProviderFactory(FirebaseOnlyProviderFactory())
             .registerFeatureBookDataSource(
-                AssetsFeatureBookDataSource(
-                    context = this,
-                    jsonFilePath = "featurebook.json"
-                )
+                // Option A: Load from assets/features.json
+                AssetsFeatureBookDataSource(this, "features.json")
+                // Option B: Use runtime code
+                // StaticFeatureBookDataSource()
             )
             .build()
     }
-}  
-```  
-
-### 2. Define Your Features
-
-There are 2 ways how you can define information about your feature flags in the application for Proteus library: via json file in assets
-folder or just simple static collection of objects.
-
-- #### json file in assets folder
-
-```
-    Proteus.Builder(this)
-         ...  
-        .registerFeatureBookDataSource(  
-            AssetsFeatureBookDataSource(  
-                context = this,  
-                jsonFilePath = "featurebook.json"  
-            )  
-        )  
-        ...
+}
 ```
 
-```json  
+#### 2. Build Proteus config provider
+```kotlin
+val provider = Proteus.getInstance().buildConfigProvider()
+```
+
+#### 3. Access configuration values anywhere in your app
+```kotlin
+val darkModeEnabled = provider.getBoolean("dark_mode_enabled")
+val maxItems = provider.getLong("max_items_per_page")
+```
+
+#### 4. Show Proteus library UI for overriding remote config
+```kotlin
+startActivity(Intent(this, FeatureBookActivity::class.java))
+```
+
+## Data Source Options
+
+#### Option A: JSON file in assets folder
+
+Create `assets/features.json`:
+```json
 [
   {
-    "feature_key": "primary_server",
-    "default_value": "https://api.example.com",
-    "value_type": "text",
-    "service_owner": "firebase"
+    "feature_key": "dark_mode_enabled",
+    "default_value": "false",
+    "value_type": "boolean"
   },
   {
     "feature_key": "max_items_per_page",
-    "default_value": "25",
-    "value_type": "long",
-    "service_owner": "firebase"
-  },
-  {
-    "feature_key": "animation_threshold",
-    "default_value": "0.5",
-    "value_type": "double",
-    "service_owner": "firebase"
-  },
-  {
-    "feature_key": "dark_mode_enabled",
-    "default_value": "true",
-    "value_type": "boolean",
-    "service_owner": "firebase"
+    "default_value": "20",
+    "value_type": "long"
   }
 ]
-``` 
-
-**feature_key** - key in your remote config service (for now only **Firebase Remote Config** is supported)
-**default_value** - here could be some default local value which you may propagate to remote config service to use as default one (library
-is not using it), but to support strong type-safe access - this value should have the same type as **value_type**
-**value_type** - describe type of the remote config value and could be one of the next types: *text/long/boolean/double*
-
-- #### static collection through kotlin code
-
- ```
-   Proteus.Builder(this)
-      ...  
-      registerFeatureBookDataSource(provideStaticFeatureDataSource())
-      ...
 ```
 
- ```kotlin 
- private fun provideStaticFeatureDataSource(): FeatureBookDataSource {
-    return StaticFeatureBookDataSource(
-        listOf(
-            Feature(
-                key = "primary_server",
-                defaultValue = "https://google.com",
-                valueClass = String::class
-            ),
-            Feature(
-                key = "optional_server",
-                defaultValue = "https://test.com",
-                valueClass = String::class
-            )
-        )
-    )
-}
+Then register it during initialization:
+```kotlin
+Proteus.Builder(this)
+    .registerConfigProviderFactory(FirebaseOnlyProviderFactory())
+    .registerFeatureBookDataSource(AssetsFeatureBookDataSource(context = this, jsonFilePath = "features.json"))
+    .build()
+```
 
-private class StaticFeatureBookDataSource(private val featureBook: List<FeatureContext<*>>) : FeatureBookDataSource {
+#### Option B: Runtime code
+
+Create a custom data source with your feature definitions:
+
+```kotlin
+class SampleFeatureBookDataSource : FeatureBookDataSource {
 
     override suspend fun getFeatureBook(): Result<List<FeatureContext<*>>> {
-        return Result.success(featureBook)
+        return Result.success(
+            listOf(
+                Feature(
+                    key = "dark_mode_enabled",
+                    defaultValue = false,
+                    valueClass = Boolean::class
+                ),
+                Feature(
+                    key = "max_items_per_page",
+                    defaultValue = 20L,
+                    valueClass = Long::class
+                ),
+                Feature(
+                    key = "api_timeout_seconds",
+                    defaultValue = 30L,
+                    valueClass = Long::class
+                ),
+                Feature(
+                    key = "animation_duration_multiplier",
+                    defaultValue = 1.0,
+                    valueClass = Double::class
+                ),
+                Feature(
+                    key = "primary_server_url",
+                    defaultValue = "https://api.production.com",
+                    valueClass = String::class
+                )
+            )
+        )
     }
 }
- ```
+```
 
-### 3. Define remote config service factory
+Then register it during initialization:
+```kotlin
+Proteus.Builder(this)
+    .registerConfigProviderFactory(FirebaseOnlyProviderFactory())
+    .registerFeatureBookDataSource(SampleFeatureBookDataSource())
+    .build()
+```
+
+## Before vs After: Firebase Remote Config Migration
+
+### Before: Direct Firebase Remote Config Usage
+
+```kotlin
+class FeatureManager(
+    private val remoteConfig : FirebaseRemoteConfig
+) {     
+
+    fun isDarkModeEnabled(): Boolean {        
+        return remoteConfig.getBoolean("dark_mode_enabled")
+    }
+
+    fun getApiUrl(): String {
+        return remoteConfig.getString("primary_server_url")
+    }
+}
+```
+
+### After: Using Proteus
+
+```kotlin
+class FeatureManager(
+    private val configProvider: FeatureConfigProvider
+) {
+
+    // Runtime override available via UI
+    fun isDarkModeEnabled(): Boolean {
+        return configProvider.getBoolean("dark_mode_enabled")
+    }
+
+    // Switch between servers instantly for testing
+    fun getApiUrl(): String {        
+        return configProvider.getString("primary_server_url")
+    }
+}
+```
+
+### Key Benefits
+
+| Aspect | Before (Firebase only) | After (Proteus) |
+|--------|------------------------|-----------------|
+| **Testing Speed** | Minutes/hours (deploy changes) | Instant (runtime UI) |
+| **Override Capability** | None | Full runtime override |
+| **A/B Testing** | Requires backend setup | Test locally first |
+| **Debug Features** | Complex flags management | Visual UI for all flags |
+| **Development Workflow** | Backend-dependent | Independent testing |
+
+### Next Steps
+
+- Check the [comprehensive setup guide](#setup) for detailed configuration
+- Learn about [architecture](#architecture) and core concepts
+- Explore [usage examples](#usage) for common scenarios
+
+
+
+## Define remote config service factory
 
 The idea of **Proteus** that it must be scalable in the future and support multiple config providers. Since there is a chance that at some
 day product owner will come to you and ask to integrate Firebase Remote Config & CleverTap parallelly :)
@@ -239,9 +276,9 @@ you need to do is to register it during initialization.
 
 ```kotlin  
 Proteus.Builder(this)
-...
-.registerConfigProviderFactory(FirebaseOnlyProviderFactory())
-...
+    ...
+    .registerConfigProviderFactory(FirebaseOnlyProviderFactory())
+    ...
 ```
 
 Notice, that **FirebaseOnlyProviderFactory**   is placed inside separate library module
@@ -249,41 +286,10 @@ Notice, that **FirebaseOnlyProviderFactory**   is placed inside separate library
 ```
 dependencies {  
   ...
-  implementation("io.proteus:proteus-firebase:1.0.0")
+  implementation("io.proteus:proteus-firebase")
   ...
  }
  ```  
-
-## Usage
-
-### Reading Feature Values
-
-Access feature values through the `FeatureConfigProvider`:
-
-```kotlin  
-class YourViewModel(private val featureConfigProvider: FeatureConfigProvider) : ViewModel() {
-
-    fun getFeatureValues() {
-        val primaryServer = featureConfigProvider.getString("primary_server")
-        val maxItemsPerPage = featureConfigProvider.getLong("max_items_per_page")
-        val animationThreshold = featureConfigProvider.getDouble("animation_threshold")
-        val darkModeEnabled = featureConfigProvider.getBoolean("dark_mode_enabled")
-    }
-}  
-```  
-
-### Launching the Feature Catalog UI
-
-Launch the feature catalog UI to view and modify feature flags during development:
-
-```kotlin  
-class MainActivity : AppCompatActivity() {
-
-    private fun openFeatureCatalog() {
-        startActivity(Intent(this, FeatureBookActivity::class.java))
-    }
-}  
-```  
 
 ## Architecture
 
@@ -295,12 +301,6 @@ Proteus is built with the following architectural components:
 - **MockConfigProvider**: Provides locally-overridden configurations
 - **FirebaseFeatureConfigProvider**: Implementation for Firebase Remote Config
 - **FeatureBookActivity**: UI for browsing and configuring features
-
-## Modules
-
-- **proteus-core**: Core functionality and interfaces
-- **proteus-firebase**: Firebase Remote Config integration
-- **proteus-ui**: UI components for feature discovery and configuration
 
 ## License
 
