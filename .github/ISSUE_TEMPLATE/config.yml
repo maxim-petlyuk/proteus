@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: GitHub Discussions
+    url: https://github.com/maxim-petlyuk/proteus/discussions
+    about: For general discussions, ideas, and community support
+  - name: Documentation
+    url: https://github.com/maxim-petlyuk/proteus#readme
+    about: Check out the documentation for guides and API reference
+  - name: Contributing Guidelines
+    url: https://github.com/maxim-petlyuk/proteus/blob/main/CONTRIBUTING.md
+    about: Please read before contributing to the project
+  - name: Code of Conduct
+    url: https://github.com/maxim-petlyuk/proteus/blob/main/CODE_OF_CONDUCT.md
+    about: Please follow our community guidelines
