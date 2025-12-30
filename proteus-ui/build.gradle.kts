@@ -74,8 +74,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.constraintlayout.compose)
 
-//    implementation(libs.proteus.core.strict)
-    implementation(project(":proteus-core"))
+    implementation(libs.proteus.core.strict)
+//    implementation(project(":proteus-core"))
 
     testImplementation(libs.junit)
 

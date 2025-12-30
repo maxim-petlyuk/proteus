@@ -21,7 +21,7 @@ testCore = "1.7.0"
 firebaseBom = "34.7.0"
 googleGmsGoogleServices = "4.4.4"
 jreleaser = "1.20.0"
-proteusCore = "0.0.8"
+proteusCore = "1.0.0"
 proteusBom = "0.0.8"
 jetbrainsKotlinJvm = "2.3.0"
 
