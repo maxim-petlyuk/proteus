@@ -22,7 +22,7 @@ firebaseBom = "34.7.0"
 googleGmsGoogleServices = "4.4.4"
 jreleaser = "1.20.0"
 proteusCore = "1.0.0"
-proteusBom = "0.0.8"
+proteusBom = "1.0.0"
 jetbrainsKotlinJvm = "2.3.0"
 
 [libraries]

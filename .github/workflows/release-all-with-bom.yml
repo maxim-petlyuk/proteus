@@ -1,9 +1,9 @@
 name: Release All Modules + BOM
 
 on:
-  push:
-    tags:
-      - 'v*'
+#  push:
+#    tags:
+#      - 'v*'
   workflow_dispatch:
     inputs:
       version:
