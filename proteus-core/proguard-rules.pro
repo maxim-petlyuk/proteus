@@ -1,4 +1,5 @@
 -keep interface io.proteus.core.domain.FeatureContext { *; }
+-keep interface io.proteus.core.provider.SynchronousFeatureConfigProvider { *; }
 -keep interface io.proteus.core.provider.FeatureConfigProvider { *; }
 -keep interface io.proteus.core.provider.FeatureConfigProviderFactory { *; }
 -keep interface io.proteus.core.data.FeatureBookDataSource { *; }

@@ -517,82 +517,11 @@ docs/
 
 ---
 
-## Phase 6: Sample Application (Priority: HIGH)
-**Estimated Effort**: 2-3 days  
-**Goal**: Working examples for all features
-
-### 6.1 Sample App Structure
-**Effort**: 1 hour
-```
-sample/
-├── src/main/
-│   ├── java/io/github/maximpetlyuk/proteus/sample/
-│   │   ├── MainActivity.kt
-│   │   ├── examples/
-│   │   │   ├── BasicUsageExample.kt
-│   │   │   ├── FirebaseExample.kt
-│   │   │   ├── OverrideUIExample.kt
-│   │   │   ├── CustomProviderExample.kt
-│   │   │   └── ComposeIntegrationExample.kt
-│   │   └── providers/
-│   │       ├── MockProvider.kt
-│   │       └── JsonFileProvider.kt
-│   └── res/
-│       ├── layout/
-│       └── values/
-└── README.md
-```
-
-### 6.2 Example Implementations
-**Effort**: 8 hours
-
-#### Basic Usage Example (1 hour)
-- [ ] Simple configuration retrieval
-- [ ] Type-safe value access
-- [ ] Default value handling
-- [ ] Error handling
-
-#### Firebase Integration Example (1.5 hours)
-- [ ] Firebase setup and initialization
-- [ ] Configuration fetch and activation
-- [ ] Default values configuration
-- [ ] Real-time updates
-
-#### Override UI Example (1.5 hours)
-- [ ] Showing the override UI
-- [ ] Creating overrides
-- [ ] Testing with overrides
-- [ ] Resetting overrides
-- [ ] Debug features
-
-#### Custom Provider Example (2 hours)
-- [ ] Implement JSON file provider
-- [ ] Implement mock provider for testing
-- [ ] Show provider registration
-- [ ] Demonstrate provider switching
-
-#### Compose Integration Example (2 hours)
-- [ ] ProteusConfig in Compose
-- [ ] Observing configuration changes
-- [ ] Override UI integration
-- [ ] Material Design 3 theming
-- [ ] State management
-
-### 6.3 Sample App Documentation
-**Effort**: 2 hours
-- [ ] Sample README explaining structure
-- [ ] How to run the sample app
-- [ ] What each example demonstrates
-- [ ] Links to relevant documentation
-- [ ] Screenshots/GIFs of sample app
-
----
-
-## Phase 7: Community & Automation (Priority: LOW)
+## Phase 6: Community & Automation (Priority: LOW)
 **Estimated Effort**: 1 day  
 **Goal**: Streamlined contribution and maintenance
 
-### 7.1 PR Template
+### 6.1 PR Template
 **Effort**: 30 minutes
 ```markdown
 ## Description
@@ -612,7 +541,7 @@ sample/
 - [ ] All tests passing
 ```
 
-### 7.2 Automated Checks
+### 6.2 Automated Checks
 **Effort**: 2 hours
 - [ ] GitHub Actions for PR validation:
     - Build verification
@@ -622,14 +551,14 @@ sample/
 - [ ] Automated labeling
 - [ ] Stale issue/PR management
 
-### 7.3 Discussion Templates
+### 6.3 Discussion Templates
 **Effort**: 1 hour
 - [ ] Ideas category
 - [ ] Q&A category
 - [ ] Show and tell category
 - [ ] General category
 
-### 7.4 Funding & Sponsorship
+### 6.4 Funding & Sponsorship
 **Effort**: 30 minutes
 - [ ] GitHub Sponsors configuration (if applicable)
 - [ ] Ko-fi or similar link
@@ -638,11 +567,11 @@ sample/
 
 ---
 
-## Phase 8: Content Marketing (Priority: LOW)
+## Phase 7: Content Marketing (Priority: LOW)
 **Estimated Effort**: 2-3 days  
 **Goal**: Amplify library awareness
 
-### 8.1 Announcement Blog Post
+### 7.1 Announcement Blog Post
 **Effort**: 4 hours
 - [ ] Write comprehensive announcement post
 - [ ] Include use cases and examples
@@ -650,7 +579,7 @@ sample/
 - [ ] Publish on Medium/Dev.to
 - [ ] Share on social media
 
-### 8.2 Video Tutorial
+### 7.2 Video Tutorial
 **Effort**: 6 hours (optional)
 - [ ] Script creation
 - [ ] Screen recording
@@ -658,7 +587,7 @@ sample/
 - [ ] Upload to YouTube
 - [ ] Add to documentation
 
-### 8.3 Social Media
+### 7.3 Social Media
 **Effort**: 2 hours
 - [ ] Twitter/X announcement thread
 - [ ] LinkedIn post
@@ -666,7 +595,7 @@ sample/
 - [ ] Android Weekly submission
 - [ ] Kotlin Weekly submission
 
-### 8.4 Community Engagement
+### 7.4 Community Engagement
 **Effort**: Ongoing
 - [ ] Respond to GitHub issues
 - [ ] Answer Stack Overflow questions
@@ -754,37 +683,17 @@ Track these metrics to measure documentation success:
 
 ## Timeline Summary
 
-| Phase | Priority | Effort | Deliverables |
-|-------|----------|--------|--------------|
-| **Phase 1: Core Docs** | CRITICAL | 2-3 days | README, LICENSE, CONTRIBUTING, COC, Issue Templates |
-| **Phase 2: Module Docs** | HIGH | 1 day | Module READMEs (core, firebase, ui, bom) |
+| Phase                      | Priority | Effort | Deliverables |
+|----------------------------|----------|--------|--------------|
+| **Phase 1: Core Docs**     | CRITICAL | 2-3 days | README, LICENSE, CONTRIBUTING, COC, Issue Templates |
+| **Phase 2: Module Docs**   | HIGH | 1 day | Module READMEs (core, firebase, ui, bom) |
 | **Phase 3: Visual Assets** | HIGH | 2-3 days | Logo, diagrams, screenshots, GIFs |
-| **Phase 4: API Docs** | MEDIUM | 1 day | Dokka setup, KDoc, GitHub Pages |
+| **Phase 4: API Docs**      | MEDIUM | 1 day | Dokka setup, KDoc, GitHub Pages |
 | **Phase 5: Enhanced Docs** | MEDIUM | 2-3 days | Guides, tutorials, troubleshooting, FAQ |
-| **Phase 6: Sample App** | HIGH | 2-3 days | Working examples, sample documentation |
-| **Phase 7: Community** | LOW | 1 day | PR template, automation, discussions |
-| **Phase 8: Marketing** | LOW | 2-3 days | Blog post, video, social media |
+| **Phase 6: Community**     | LOW | 1 day | PR template, automation, discussions |
+| **Phase 7: Marketing**     | LOW | 2-3 days | Blog post, video, social media |
 
 **Total Estimated Effort**: 13-19 days
-
-### Recommended Execution Order
-
-**Week 1**: Focus on adoption enablement
-1. Day 1-3: Phase 1 (Core Docs)
-2. Day 4: Phase 2 (Module Docs)
-3. Day 5: Phase 6 start (Basic sample app)
-
-**Week 2**: Focus on quality and depth
-1. Day 6-8: Phase 3 (Visual Assets)
-2. Day 9: Phase 4 (API Docs)
-3. Day 10: Phase 6 complete (Sample app examples)
-
-**Week 3**: Polish and promote
-1. Day 11-13: Phase 5 (Enhanced Docs)
-2. Day 14: Phase 7 (Community)
-3. Day 15: Phase 8 (Marketing)
-
----
 
 ## Next Steps
 

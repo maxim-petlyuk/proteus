@@ -2,6 +2,8 @@ package io.proteus.core.data
 
 import io.proteus.core.domain.ConfigValue
 import io.proteus.core.exceptions.IllegalConfigDataTypeException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlin.reflect.KClass
 
 internal class MockConfigRepositoryImpl(
@@ -9,7 +11,7 @@ internal class MockConfigRepositoryImpl(
 ) : MockConfigRepository {
 
     @Throws(IllegalConfigDataTypeException::class)
-    override fun getMockedConfigValue(featureKey: String, typeClass: KClass<*>): ConfigValue<*>? {
+    override suspend fun getMockedConfigValue(featureKey: String, typeClass: KClass<*>): ConfigValue<*>? {
         if (!mockConfigStorage.contains(featureKey)) {
             return null
         }
@@ -42,7 +44,7 @@ internal class MockConfigRepositoryImpl(
         }
     }
 
-    override fun save(featureKey: String, typeClass: KClass<*>, configValue: ConfigValue<*>) {
+    override suspend fun save(featureKey: String, typeClass: KClass<*>, configValue: ConfigValue<*>) {
         when (typeClass) {
             Int::class,
             Long::class -> {
@@ -79,7 +81,7 @@ internal class MockConfigRepositoryImpl(
         }
     }
 
-    override fun remove(featureKey: String) {
+    override suspend fun remove(featureKey: String) {
         mockConfigStorage.remove(featureKey)
     }
 }

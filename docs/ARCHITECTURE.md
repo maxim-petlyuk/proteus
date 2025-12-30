@@ -178,27 +178,27 @@ sequenceDiagram
     Mock->>Storage: load existing overrides
 
     Note over App,Storage: 2. Configuration Access
-    App->>Provider: getBoolean("feature_key")
-    Provider->>Mock: hasOverride("feature_key")
+    App->>Provider: getBoolean("feature_key") [suspend]
+    Provider->>Mock: hasOverride("feature_key") [suspend]
 
     alt Override exists
         Mock-->>Provider: override value
         Provider-->>App: override value
     else No override
-        Provider->>Remote: getBoolean("feature_key")
+        Provider->>Remote: getBoolean("feature_key") [suspend]
         Remote-->>Provider: remote value
         Provider-->>App: remote value
     end
 
     Note over App,Storage: 3. Runtime Override
-    App->>Mock: setOverride("feature_key", value)
-    Mock->>Storage: persist override
+    App->>Mock: setOverride("feature_key", value) [suspend]
+    Mock->>Storage: persist override [suspend]
     Storage-->>Mock: confirmation
     Mock-->>App: success
 
     Note over App,Storage: 4. Override Removal
-    App->>Mock: removeOverride("feature_key")
-    Mock->>Storage: delete override
+    App->>Mock: removeOverride("feature_key") [suspend]
+    Mock->>Storage: delete override [suspend]
     Storage-->>Mock: confirmation
     Mock-->>App: success
 ```
@@ -309,16 +309,25 @@ Built-in testing capabilities:
 - Singleton pattern minimizes instance overhead
 - Lazy loading of providers
 - Efficient caching of configuration values
+- Coroutine context pooling for async operations
+
+### Async Operations
+- Non-blocking configuration access via suspend functions
+- Proper coroutine cancellation with lifecycle awareness
+- Background I/O operations with appropriate dispatchers
+- Timeout handling for remote provider calls
 
 ### Storage
 - SharedPreferences for lightweight persistence
 - JSON serialization for complex values
 - Automatic cleanup of unused overrides
+- Async I/O operations to prevent main thread blocking
 
 ### Network
 - Provider-specific optimization
 - Caching strategies vary by provider
 - Background refresh capabilities
+- Coroutine-based network operations
 
 ## Security Considerations
 

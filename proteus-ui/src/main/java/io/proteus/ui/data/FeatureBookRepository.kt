@@ -44,7 +44,7 @@ internal class FeatureBookRepository(
             .map { it.aggregateConfig() }
     }
 
-    private fun List<FeatureContext<*>>.aggregateConfig(): List<FeatureNote<*>> {
+    private suspend fun List<FeatureContext<*>>.aggregateConfig(): List<FeatureNote<*>> {
         return this.map { featureContext ->
             FeatureNote<Any>(
                 serviceOwner = remoteConfigProviderFactory.getProviderTag(featureContext.key),
@@ -55,7 +55,7 @@ internal class FeatureBookRepository(
         }
     }
 
-    private fun <T : Any> getRemoteConfigValue(featureContext: FeatureContext<T>): String {
+    private suspend fun <T : Any> getRemoteConfigValue(featureContext: FeatureContext<T>): String {
         val remoteConfigProvider = remoteConfigProviderFactory.getProvider(featureContext.key)
 
         return when (featureContext.valueClass) {
@@ -67,7 +67,7 @@ internal class FeatureBookRepository(
         }
     }
 
-    private fun getLocalConfigValue(featureContext: FeatureContext<*>): ConfigValue<*>? {
+    private suspend fun getLocalConfigValue(featureContext: FeatureContext<*>): ConfigValue<*>? {
         return mockConfigRepository.getMockedConfigValue(
             featureKey = featureContext.key,
             typeClass = featureContext.valueClass

@@ -111,14 +111,35 @@ The internal implementation that:
 ## Usage Example
 
 ```kotlin
-// After initialization, use the same API as any Proteus provider
-val provider = Proteus.getInstance().buildConfigProvider()
+// Async usage (recommended) - must be called from suspend context
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-// Values are fetched from Firebase Remote Config
-val isEnabled = provider.getBoolean("feature_flag")
-val timeout = provider.getLong("request_timeout")
-val endpoint = provider.getString("api_endpoint")
-val rate = provider.getDouble("sampling_rate")
+        lifecycleScope.launch {
+            val provider = Proteus.getInstance().buildConfigProvider()
+
+            // Values are fetched from Firebase Remote Config
+            val isEnabled = provider.getBoolean("feature_flag")
+            val timeout = provider.getLong("request_timeout")
+            val endpoint = provider.getString("api_endpoint")
+            val rate = provider.getDouble("sampling_rate")
+
+            // Use configuration values...
+        }
+    }
+}
+```
+
+```kotlin
+// Synchronous usage (legacy compatibility)
+val syncProvider = Proteus.getInstance().buildSynchronousConfigProvider()
+
+// Can be called from any context
+val isEnabled = syncProvider.getBoolean("feature_flag")
+val timeout = syncProvider.getLong("request_timeout")
+val endpoint = syncProvider.getString("api_endpoint")
+val rate = syncProvider.getDouble("sampling_rate")
 ```
 
 ## Migration from Direct Firebase Usage
@@ -133,8 +154,16 @@ val isEnabled = remoteConfig.getBoolean("feature_flag")
 
 ### After (With Proteus)
 ```kotlin
-val provider = Proteus.getInstance().buildConfigProvider()
-val isEnabled = provider.getBoolean("feature_flag")
+// Async approach (recommended)
+lifecycleScope.launch {
+    val provider = Proteus.getInstance().buildConfigProvider()
+    val isEnabled = provider.getBoolean("feature_flag")
+    // Use value...
+}
+
+// Or synchronous approach (legacy compatibility)
+val syncProvider = Proteus.getInstance().buildSynchronousConfigProvider()
+val isEnabled = syncProvider.getBoolean("feature_flag")
 ```
 
 Benefits of migration:
@@ -176,8 +205,10 @@ FirebaseRemoteConfig.getInstance().setConfigSettingsAsync(
 1. **Initialize Firebase first**: Always before Proteus initialization
 2. **Use consistent keys**: Match Firebase parameter keys with feature definitions
 3. **Set reasonable defaults**: Define fallback values in feature definitions
-4. **Test with overrides**: Use Proteus UI to test different configurations
-5. **Monitor fetch failures**: Add logging for fetch/activation failures
+4. **Use lifecycle scopes**: Prefer lifecycleScope/viewModelScope for config access
+5. **Test with overrides**: Use Proteus UI to test different configurations
+6. **Monitor fetch failures**: Add logging for fetch/activation failures
+7. **Handle async properly**: Wrap config calls in proper coroutine scopes
 
 ## License
 

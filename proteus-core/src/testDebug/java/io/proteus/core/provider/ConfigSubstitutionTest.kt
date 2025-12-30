@@ -5,8 +5,11 @@ import io.proteus.core.data.MockConfigStorage
 import io.proteus.core.mock.FeatureTestGuide
 import io.proteus.core.mock.MemoryFeatureConfigProvider
 import io.proteus.core.mock.MemoryMockConfigStorage
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 internal class ConfigSubstitutionTest {
 
@@ -15,12 +18,12 @@ internal class ConfigSubstitutionTest {
         MockConfigProvider(MockConfigRepositoryImpl(memoryMockConfigStorage))
 
     @Before
-    fun setUp() {
+    fun setUp() = runTest {
         memoryMockConfigStorage.clear()
     }
 
     @Test
-    fun `verify that mocked boolean config is used when available`() {
+    fun `verify that mocked boolean config is used when available`() = runTest {
         // Given
         val featureKey = "featureA"
         val expectedValue = true
@@ -42,14 +45,11 @@ internal class ConfigSubstitutionTest {
         val mockedValueOfFeatureA = configProvider.getBoolean(featureKey)
 
         // Then
-        assert(mockedValueOfFeatureA == expectedValue) {
-            "Expected mocked value of feature is [$expectedValue], " +
-                "but was [$mockedValueOfFeatureA]"
-        }
+        assertTrue(mockedValueOfFeatureA)
     }
 
     @Test
-    fun `verify that remote boolean config is used when mocked config is not available`() {
+    fun `verify that remote boolean config is used when mocked config is not available`() = runTest {
         // Given
         val featureKey = "featureA"
         val expectedValue = true
@@ -70,14 +70,11 @@ internal class ConfigSubstitutionTest {
         val mockedValueOfFeatureA = configProvider.getBoolean(featureKey)
 
         // Then
-        assert(mockedValueOfFeatureA == expectedValue) {
-            "Expected mocked value of feature is [$expectedValue], " +
-                "but was [$mockedValueOfFeatureA]"
-        }
+        assertTrue(mockedValueOfFeatureA)
     }
 
     @Test
-    fun `verify that mocked string config is used when available`() {
+    fun `verify that mocked string config is used when available`() = runTest {
         // Given
         val featureKey = "featureB"
         val expectedValue = "this is a string"
@@ -99,14 +96,11 @@ internal class ConfigSubstitutionTest {
         val mockedValueOfFeatureB = configProvider.getString(featureKey)
 
         // Then
-        assert(mockedValueOfFeatureB == expectedValue) {
-            "Expected mocked value of feature is [$expectedValue], " +
-                "but was [$mockedValueOfFeatureB]"
-        }
+        assertEquals(expectedValue, mockedValueOfFeatureB)
     }
 
     @Test
-    fun `verify that remote string config is used when mocked config is not available`() {
+    fun `verify that remote string config is used when mocked config is not available`() = runTest {
         // Given
         val featureKey = "featureB"
         val expectedValue = "this is a string"
@@ -127,14 +121,11 @@ internal class ConfigSubstitutionTest {
         val mockedValueOfFeatureB = configProvider.getString(featureKey)
 
         // Then
-        assert(mockedValueOfFeatureB == expectedValue) {
-            "Expected mocked value of feature is [$expectedValue], " +
-                "but was [$mockedValueOfFeatureB]"
-        }
+        assertEquals(expectedValue, mockedValueOfFeatureB)
     }
 
     @Test
-    fun `verify that mocked long config is used when available`() {
+    fun `verify that mocked long config is used when available`() = runTest {
         // Given
         val featureKey = "featureC"
         val expectedValue = 5L
@@ -156,14 +147,11 @@ internal class ConfigSubstitutionTest {
         val mockedValueOfFeatureC = configProvider.getLong(featureKey)
 
         // Then
-        assert(mockedValueOfFeatureC == expectedValue) {
-            "Expected mocked value of feature is [$expectedValue], " +
-                "but was [$mockedValueOfFeatureC]"
-        }
+        assertEquals(expectedValue, mockedValueOfFeatureC)
     }
 
     @Test
-    fun `verify that remote long config is used when mocked config is not available`() {
+    fun `verify that remote long config is used when mocked config is not available`() = runTest {
         // Given
         val featureKey = "featureC"
         val expectedValue = 5L
@@ -184,14 +172,11 @@ internal class ConfigSubstitutionTest {
         val mockedValueOfFeatureC = configProvider.getLong(featureKey)
 
         // Then
-        assert(mockedValueOfFeatureC == expectedValue) {
-            "Expected mocked value of feature is [$expectedValue], " +
-                "but was [$mockedValueOfFeatureC]"
-        }
+        assertEquals(expectedValue, mockedValueOfFeatureC)
     }
 
     @Test
-    fun `verify that mocked double config is used when available`() {
+    fun `verify that mocked double config is used when available`() = runTest {
         // Given
         val featureKey = "featureD"
         val expectedValue = 5.0
@@ -213,14 +198,11 @@ internal class ConfigSubstitutionTest {
         val mockedValueOfFeatureD = configProvider.getDouble(featureKey)
 
         // Then
-        assert(mockedValueOfFeatureD == expectedValue) {
-            "Expected mocked value of feature is [$expectedValue], " +
-                "but was [$mockedValueOfFeatureD]"
-        }
+        assertEquals(expectedValue, mockedValueOfFeatureD)
     }
 
     @Test
-    fun `verify that remote double config is used when mocked config is not available`() {
+    fun `verify that remote double config is used when mocked config is not available`() = runTest {
         // Given
         val featureKey = "featureD"
         val expectedValue = 5.0
@@ -241,10 +223,7 @@ internal class ConfigSubstitutionTest {
         val mockedValueOfFeatureD = configProvider.getDouble(featureKey)
 
         // Then
-        assert(mockedValueOfFeatureD == expectedValue) {
-            "Expected mocked value of feature is [$expectedValue], " +
-                "but was [$mockedValueOfFeatureD]"
-        }
+        assertEquals(expectedValue, mockedValueOfFeatureD)
     }
 
     private fun provideMemoryConfigFactory(vararg featuresGuide: FeatureTestGuide<*>): FeatureConfigProviderFactory {

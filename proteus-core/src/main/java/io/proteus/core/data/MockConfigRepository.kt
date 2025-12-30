@@ -7,9 +7,9 @@ import kotlin.reflect.KClass
 interface MockConfigRepository {
 
     @Throws(IllegalConfigDataTypeException::class)
-    fun getMockedConfigValue(featureKey: String, typeClass: KClass<*>): ConfigValue<*>?
+    suspend fun getMockedConfigValue(featureKey: String, typeClass: KClass<*>): ConfigValue<*>?
 
-    fun save(featureKey: String, typeClass: KClass<*>, configValue: ConfigValue<*>)
+    suspend fun save(featureKey: String, typeClass: KClass<*>, configValue: ConfigValue<*>)
 
-    fun remove(featureKey: String)
+    suspend fun remove(featureKey: String)
 }

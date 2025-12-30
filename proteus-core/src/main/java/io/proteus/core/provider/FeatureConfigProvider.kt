@@ -2,11 +2,11 @@ package io.proteus.core.provider
 
 interface FeatureConfigProvider {
 
-    fun getBoolean(featureKey: String): Boolean
+    suspend fun getBoolean(featureKey: String): Boolean
 
-    fun getString(featureKey: String): String
+    suspend fun getString(featureKey: String): String
 
-    fun getLong(featureKey: String): Long
+    suspend fun getLong(featureKey: String): Long
 
-    fun getDouble(featureKey: String): Double
+    suspend fun getDouble(featureKey: String): Double
 }

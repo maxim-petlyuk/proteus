@@ -1,24 +1,24 @@
 package io.proteus.core.provider
 
 import io.proteus.core.exceptions.MockConfigUnavailableException
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertThrows
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 internal class StubFeatureConfigProviderTest {
 
     @Test
-    fun `getBoolean should throw MockConfigUnavailableException`() {
+    fun `getBoolean should throw MockConfigUnavailableException`() = runTest {
         // Arrange
         val featureA = "featureA"
         val stubFeatureConfigProvider = StubFeatureConfigProvider
 
-        // Act
-        val exception = assertThrows(MockConfigUnavailableException::class.java) {
+        // Act & Assert
+        val exception = assertFailsWith<MockConfigUnavailableException> {
             stubFeatureConfigProvider.getBoolean(featureA)
         }
 
-        // Assert
         assertEquals(
             "Mock config is not available under StubFeatureConfigProvider",
             exception.message
@@ -26,17 +26,16 @@ internal class StubFeatureConfigProviderTest {
     }
 
     @Test
-    fun `getString should throw MockConfigUnavailableException`() {
+    fun `getString should throw MockConfigUnavailableException`() = runTest {
         // Arrange
         val featureB = "featureB"
         val stubFeatureConfigProvider = StubFeatureConfigProvider
 
-        // Act
-        val exception = assertThrows(MockConfigUnavailableException::class.java) {
+        // Act & Assert
+        val exception = assertFailsWith<MockConfigUnavailableException> {
             stubFeatureConfigProvider.getString(featureB)
         }
 
-        // Assert
         assertEquals(
             "Mock config is not available under StubFeatureConfigProvider",
             exception.message
@@ -44,17 +43,16 @@ internal class StubFeatureConfigProviderTest {
     }
 
     @Test
-    fun `getLong should throw MockConfigUnavailableException`() {
+    fun `getLong should throw MockConfigUnavailableException`() = runTest {
         // Arrange
         val featureC = "featureC"
         val stubFeatureConfigProvider = StubFeatureConfigProvider
 
-        // Act
-        val exception = assertThrows(MockConfigUnavailableException::class.java) {
+        // Act & Assert
+        val exception = assertFailsWith<MockConfigUnavailableException> {
             stubFeatureConfigProvider.getLong(featureC)
         }
 
-        // Assert
         assertEquals(
             "Mock config is not available under StubFeatureConfigProvider",
             exception.message
@@ -62,17 +60,16 @@ internal class StubFeatureConfigProviderTest {
     }
 
     @Test
-    fun `getDouble should throw MockConfigUnavailableException`() {
+    fun `getDouble should throw MockConfigUnavailableException`() = runTest {
         // Arrange
         val featureD = "featureD"
         val stubFeatureConfigProvider = StubFeatureConfigProvider
 
-        // Act
-        val exception = assertThrows(MockConfigUnavailableException::class.java) {
+        // Act & Assert
+        val exception = assertFailsWith<MockConfigUnavailableException> {
             stubFeatureConfigProvider.getDouble(featureD)
         }
 
-        // Assert
         assertEquals(
             "Mock config is not available under StubFeatureConfigProvider",
             exception.message

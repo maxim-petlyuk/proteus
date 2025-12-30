@@ -4,8 +4,11 @@ import io.proteus.core.data.MockConfigRepositoryImpl
 import io.proteus.core.data.MockConfigStorage
 import io.proteus.core.exceptions.MockConfigUnavailableException
 import io.proteus.core.mock.MemoryMockConfigStorage
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 internal class MockConfigProviderTest {
 
@@ -14,12 +17,12 @@ internal class MockConfigProviderTest {
         MockConfigProvider(MockConfigRepositoryImpl(memoryMockConfigStorage))
 
     @Before
-    fun setUp() {
+    fun setUp() = runTest {
         memoryMockConfigStorage.clear()
     }
 
     @Test
-    fun `should return correct mocked boolean value when feature is found`() {
+    fun `should return correct mocked boolean value when feature is found`() = runTest {
         // Given
         val featureA = "featureA"
 
@@ -30,25 +33,22 @@ internal class MockConfigProviderTest {
         val result = mockConfigProvider.getBoolean(featureA)
 
         // Then
-        assert(result == expectedValue) {
-            "Expected result is $expectedValue, but was [$result]"
-        }
-    }
-
-    @Test(expected = MockConfigUnavailableException::class)
-    fun `should throw exception when boolean config value is not found`() {
-        // Given
-        val featureA = "featureA"
-
-        // When
-        mockConfigProvider.getBoolean(featureA)
-
-        // Then
-        // Expecting MockConfigUnavailableException
+        assertEquals(expectedValue, result)
     }
 
     @Test
-    fun `should return correct mocked string value when feature is found`() {
+    fun `should throw exception when boolean config value is not found`() = runTest {
+        // Given
+        val featureA = "featureA"
+
+        // When & Then
+        assertFailsWith<MockConfigUnavailableException> {
+            mockConfigProvider.getBoolean(featureA)
+        }
+    }
+
+    @Test
+    fun `should return correct mocked string value when feature is found`() = runTest {
         // Given
         val featureB = "featureB"
 
@@ -59,25 +59,22 @@ internal class MockConfigProviderTest {
         val result = mockConfigProvider.getString(featureB)
 
         // Then
-        assert(result == expectedValue) {
-            "Expected result is $expectedValue, but was [$result]"
-        }
-    }
-
-    @Test(expected = MockConfigUnavailableException::class)
-    fun `should throw exception when text config value is not found`() {
-        // Given
-        val featureB = "featureB"
-
-        // When
-        mockConfigProvider.getString(featureB)
-
-        // Then
-        // Expecting MockConfigUnavailableException
+        assertEquals(expectedValue, result)
     }
 
     @Test
-    fun `should return correct mocked long value when feature is found`() {
+    fun `should throw exception when text config value is not found`() = runTest {
+        // Given
+        val featureB = "featureB"
+
+        // When & Then
+        assertFailsWith<MockConfigUnavailableException> {
+            mockConfigProvider.getString(featureB)
+        }
+    }
+
+    @Test
+    fun `should return correct mocked long value when feature is found`() = runTest {
         // Given
         val featureC = "featureC"
         val expectedValue = 100L
@@ -88,25 +85,22 @@ internal class MockConfigProviderTest {
         val result = mockConfigProvider.getLong(featureC)
 
         // Then
-        assert(result == expectedValue) {
-            "Expected result is $expectedValue, but was [$result]"
-        }
-    }
-
-    @Test(expected = MockConfigUnavailableException::class)
-    fun `should throw exception when long config value is not found`() {
-        // Given
-        val featureC = "featureC"
-
-        // When
-        mockConfigProvider.getLong(featureC)
-
-        // Then
-        // Expecting MockConfigUnavailableException
+        assertEquals(expectedValue, result)
     }
 
     @Test
-    fun `should return correct mocked double value when feature is found`() {
+    fun `should throw exception when long config value is not found`() = runTest {
+        // Given
+        val featureC = "featureC"
+
+        // When & Then
+        assertFailsWith<MockConfigUnavailableException> {
+            mockConfigProvider.getLong(featureC)
+        }
+    }
+
+    @Test
+    fun `should return correct mocked double value when feature is found`() = runTest {
         // Given
         val featureD = "featureD"
         val expectedValue = 100.0
@@ -117,20 +111,17 @@ internal class MockConfigProviderTest {
         val result = mockConfigProvider.getDouble(featureD)
 
         // Then
-        assert(result == expectedValue) {
-            "Expected result is $expectedValue, but was [$result]"
-        }
+        assertEquals(expectedValue, result)
     }
 
-    @Test(expected = MockConfigUnavailableException::class)
-    fun `should throw exception when double config value is not found`() {
+    @Test
+    fun `should throw exception when double config value is not found`() = runTest {
         // Given
         val featureD = "featureD"
 
-        // When
-        mockConfigProvider.getDouble(featureD)
-
-        // Then
-        // Expecting MockConfigUnavailableException
+        // When & Then
+        assertFailsWith<MockConfigUnavailableException> {
+            mockConfigProvider.getDouble(featureD)
+        }
     }
 }

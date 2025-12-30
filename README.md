@@ -43,7 +43,7 @@ required.
 - **Multi-Provider Support** - Seamlessly integrate with Firebase, CleverTap, or custom providers
 - **Material Design 3** - Beautiful beige-themed UI that follows the latest design guidelines
 - **Multi-Module Architecture** - Independent versioning with BOM support for simplified dependency management
-- **Production-Ready** - Comprehensive error handling, thread-safe operations, and coroutines support
+- **Production-Ready** - Comprehensive error handling, async/await support with coroutines, and thread-safe operations
 
 ## Packages
 
@@ -88,6 +88,7 @@ dependencies {
 ### Requirements
 
 - **Minimum Android SDK**: 23
+- **Kotlin Coroutines**: Required for async operations
 - **Jetpack Compose**: Required for proteus-ui module only
 
 ## Quick Start
@@ -123,9 +124,23 @@ val provider = Proteus.getInstance().buildConfigProvider()
 ```
 
 #### 3. Access configuration values anywhere in your app
+
+**Async Usage (Recommended):**
 ```kotlin
-val darkModeEnabled = provider.getBoolean("dark_mode_enabled")
-val maxItems = provider.getLong("max_items_per_page")
+// In Activity/Fragment
+lifecycleScope.launch {
+    val darkModeEnabled = provider.getBoolean("dark_mode_enabled")
+    val maxItems = provider.getLong("max_items_per_page")
+    // Use configuration values...
+}
+```
+
+**Synchronous Usage (Legacy Compatibility):**
+```kotlin
+// For non-coroutine contexts
+val syncProvider = Proteus.getInstance().buildSynchronousConfigProvider()
+val darkModeEnabled = syncProvider.getBoolean("dark_mode_enabled")
+val maxItems = syncProvider.getLong("max_items_per_page")
 ```
 
 #### 4. Show Proteus library UI for overriding remote config
@@ -236,13 +251,18 @@ class FeatureManager(
     private val configProvider: FeatureConfigProvider
 ) {
 
-    // Runtime override available via UI
-    fun isDarkModeEnabled(): Boolean {
+    // Async approach (recommended)
+    suspend fun isDarkModeEnabled(): Boolean {
         return configProvider.getBoolean("dark_mode_enabled")
     }
 
-    // Switch between servers instantly for testing
-    fun getApiUrl(): String {
+    // Or use synchronous wrapper for legacy code
+    fun isDarkModeEnabledSync(): Boolean {
+        val syncProvider = Proteus.getInstance().buildSynchronousConfigProvider()
+        return syncProvider.getBoolean("dark_mode_enabled")
+    }
+
+    suspend fun getApiUrl(): String {
         return configProvider.getString("primary_server_url")
     }
 }
@@ -307,10 +327,10 @@ All configuration providers implement a simple, type-safe interface:
 
 ```kotlin
 interface FeatureConfigProvider {
-    fun getBoolean(featureKey: String): Boolean
-    fun getString(featureKey: String): String
-    fun getLong(featureKey: String): Long
-    fun getDouble(featureKey: String): Double
+    suspend fun getBoolean(featureKey: String): Boolean
+    suspend fun getString(featureKey: String): String
+    suspend fun getLong(featureKey: String): Long
+    suspend fun getDouble(featureKey: String): Double
 }
 ```
 
@@ -325,7 +345,7 @@ The override mechanism follows a simple priority system:
 
 ```kotlin
 // How FeatureConfigProviderImpl resolves values
-fun getBoolean(featureKey: String): Boolean {
+suspend fun getBoolean(featureKey: String): Boolean {
     return try {
         mockConfigProvider.getBoolean(featureKey)  // Check override first
     } catch (e: MockConfigUnavailableException) {
@@ -361,6 +381,65 @@ Feature(
 4. **Runtime Override**: UI allows instant value changes during development
 5. **Persistence**: Changes are saved and restored on next app launch
 
+## Coroutines Usage Patterns
+
+Proteus supports both asynchronous (suspend functions) and synchronous APIs:
+
+### In Activities/Fragments
+```kotlin
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            val provider = Proteus.getInstance().buildConfigProvider()
+            val isEnabled = provider.getBoolean("feature_enabled")
+            // Use configuration...
+        }
+    }
+}
+```
+
+### In ViewModels
+```kotlin
+class FeatureViewModel : ViewModel() {
+    fun loadConfiguration() {
+        viewModelScope.launch {
+            val provider = Proteus.getInstance().buildConfigProvider()
+            val config = AppConfig(
+                isEnabled = provider.getBoolean("feature_enabled"),
+                timeout = provider.getLong("timeout_ms")
+            )
+            // Update UI state...
+        }
+    }
+}
+```
+
+### In Compose
+```kotlin
+@Composable
+fun FeatureScreen() {
+    var isEnabled by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        val provider = Proteus.getInstance().buildConfigProvider()
+        isEnabled = provider.getBoolean("feature_enabled")
+    }
+
+    if (isEnabled) {
+        NewFeatureContent()
+    }
+}
+```
+
+### Synchronous API (Legacy Compatibility)
+```kotlin
+// For non-coroutine contexts or legacy code
+val syncProvider = Proteus.getInstance().buildSynchronousConfigProvider()
+val isEnabled = syncProvider.getBoolean("feature_enabled")
+```
+
 ## Advanced Features
 
 ### Custom Provider Implementation
@@ -374,20 +453,20 @@ class CustomConfigProvider(
     private val apiClient: YourApiClient
 ) : FeatureConfigProvider {
 
-    override fun getBoolean(featureKey: String): Boolean {
-        return apiClient.getConfig(featureKey)?.toBoolean() ?: false
+    override suspend fun getBoolean(featureKey: String): Boolean = withContext(Dispatchers.IO) {
+        apiClient.getConfig(featureKey)?.toBoolean() ?: false
     }
 
-    override fun getString(featureKey: String): String {
-        return apiClient.getConfig(featureKey) ?: ""
+    override suspend fun getString(featureKey: String): String = withContext(Dispatchers.IO) {
+        apiClient.getConfig(featureKey) ?: ""
     }
 
-    override fun getLong(featureKey: String): Long {
-        return apiClient.getConfig(featureKey)?.toLongOrNull() ?: 0L
+    override suspend fun getLong(featureKey: String): Long = withContext(Dispatchers.IO) {
+        apiClient.getConfig(featureKey)?.toLongOrNull() ?: 0L
     }
 
-    override fun getDouble(featureKey: String): Double {
-        return apiClient.getConfig(featureKey)?.toDoubleOrNull() ?: 0.0
+    override suspend fun getDouble(featureKey: String): Double = withContext(Dispatchers.IO) {
+        apiClient.getConfig(featureKey)?.toDoubleOrNull() ?: 0.0
     }
 }
 ```

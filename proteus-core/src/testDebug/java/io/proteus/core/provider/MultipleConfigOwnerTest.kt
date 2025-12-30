@@ -5,12 +5,16 @@ import io.proteus.core.mock.FeatureTestGuide
 import io.proteus.core.mock.MemoryFeatureConfigProvider
 import io.proteus.core.mock.MockFeatureConfigOwner
 import io.proteus.core.mock.MockFeatureConfigProviderFactory
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
 internal class MultipleConfigOwnerTest {
 
-    @Test(expected = IllegalConfigOwnerException::class)
-    fun `verify that factory will throw exception if provider is not registered`() {
+    @Test
+    fun `verify that factory will throw exception if provider is not registered`() = runTest {
         // Given
         val firebaseFeatureConfigProvider = MemoryFeatureConfigProvider()
         val cleverTapFeatureConfigProvider = MemoryFeatureConfigProvider()
@@ -24,15 +28,14 @@ internal class MultipleConfigOwnerTest {
             )
         )
 
-        // When
-        configProviderFactory.getProvider("UnknownFeatureKey")
-
-        // Then
-        // Expecting IllegalConfigOwnerException
+        // When & Then
+        assertFailsWith<IllegalConfigOwnerException> {
+            configProviderFactory.getProvider("UnknownFeatureKey")
+        }
     }
 
     @Test
-    fun `verify that the provider returns the correct config value of the right owner`() {
+    fun `verify that the provider returns the correct config value of the right owner`() = runTest {
         // Given
         val featureA = "featureA"
         val featureTestGuideA = FeatureTestGuide(
@@ -70,14 +73,7 @@ internal class MultipleConfigOwnerTest {
         val remoteValueOfFeatureB = featureConfigProvider.getString(featureB)
 
         // Then
-        assert(mockedValueOfFeatureA) {
-            "Expected mocked value of featureA is [${featureTestGuideA.mockValue}], " +
-                "but was [$mockedValueOfFeatureA]"
-        }
-
-        assert(remoteValueOfFeatureB == featureTestGuideB.remoteValue) {
-            "Expected remote value of featureB is [${featureTestGuideB.remoteValue}], " +
-                "but was [$remoteValueOfFeatureB]"
-        }
+        assertTrue(mockedValueOfFeatureA)
+        assertEquals(featureTestGuideB.remoteValue, remoteValueOfFeatureB)
     }
 }

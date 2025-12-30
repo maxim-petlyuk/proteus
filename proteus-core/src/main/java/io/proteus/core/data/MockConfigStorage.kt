@@ -2,25 +2,25 @@ package io.proteus.core.data
 
 interface MockConfigStorage {
 
-    fun contains(featureKey: String): Boolean
+    suspend fun contains(featureKey: String): Boolean
 
-    fun getLong(featureKey: String): Long
+    suspend fun getLong(featureKey: String): Long
 
-    fun getDouble(featureKey: String): Double
+    suspend fun getDouble(featureKey: String): Double
 
-    fun getString(featureKey: String): String
+    suspend fun getString(featureKey: String): String
 
-    fun getBoolean(featureKey: String): Boolean
+    suspend fun getBoolean(featureKey: String): Boolean
 
-    fun save(featureKey: String, value: Long)
+    suspend fun save(featureKey: String, value: Long)
 
-    fun save(featureKey: String, value: Double)
+    suspend fun save(featureKey: String, value: Double)
 
-    fun save(featureKey: String, value: String)
+    suspend fun save(featureKey: String, value: String)
 
-    fun save(featureKey: String, value: Boolean)
+    suspend fun save(featureKey: String, value: Boolean)
 
-    fun remove(featureKey: String)
+    suspend fun remove(featureKey: String)
 
-    fun clear()
+    suspend fun clear()
 }

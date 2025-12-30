@@ -9,7 +9,7 @@ internal class MockConfigProvider(
 ) : FeatureConfigProvider {
 
     @Throws(MockConfigUnavailableException::class)
-    override fun getBoolean(featureKey: String): Boolean {
+    override suspend fun getBoolean(featureKey: String): Boolean {
         val localConfig = mockConfigRepository.getMockedConfigValue(featureKey, Boolean::class)
 
         if (localConfig !is ConfigValue.Boolean) {
@@ -20,7 +20,7 @@ internal class MockConfigProvider(
     }
 
     @Throws(MockConfigUnavailableException::class)
-    override fun getString(featureKey: String): String {
+    override suspend fun getString(featureKey: String): String {
         val localConfig = mockConfigRepository.getMockedConfigValue(featureKey, String::class)
 
         if (localConfig !is ConfigValue.Text) {
@@ -31,7 +31,7 @@ internal class MockConfigProvider(
     }
 
     @Throws(MockConfigUnavailableException::class)
-    override fun getLong(featureKey: String): Long {
+    override suspend fun getLong(featureKey: String): Long {
         val localConfig = mockConfigRepository.getMockedConfigValue(featureKey, Long::class)
 
         if (localConfig !is ConfigValue.Long) {
@@ -42,7 +42,7 @@ internal class MockConfigProvider(
     }
 
     @Throws(MockConfigUnavailableException::class)
-    override fun getDouble(featureKey: String): Double {
+    override suspend fun getDouble(featureKey: String): Double {
         val localConfig = mockConfigRepository.getMockedConfigValue(featureKey, Double::class)
 
         if (localConfig !is ConfigValue.Double) {

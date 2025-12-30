@@ -60,6 +60,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
+    implementation(libs.kotlinx.coroutines.android)
+
     implementation(libs.kotlinx.serialization)
 
     implementation(platform(libs.androidx.compose.bom))
@@ -72,7 +74,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.constraintlayout.compose)
 
-    implementation(libs.proteus.core.strict)
+//    implementation(libs.proteus.core.strict)
+    implementation(project(":proteus-core"))
 
     testImplementation(libs.junit)
 

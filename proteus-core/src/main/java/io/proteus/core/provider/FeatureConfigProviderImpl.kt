@@ -7,39 +7,39 @@ class FeatureConfigProviderImpl(
     private val providerFactory: FeatureConfigProviderFactory
 ) : FeatureConfigProvider {
 
-    override fun getBoolean(featureKey: String): Boolean {
+    override suspend fun getBoolean(featureKey: String): Boolean {
         return tryOverriddenConfig(
             { mockConfigProvider.getBoolean(featureKey) },
             { providerFactory.getProvider(featureKey).getBoolean(featureKey) }
         )
     }
 
-    override fun getString(featureKey: String): String {
+    override suspend fun getString(featureKey: String): String {
         return tryOverriddenConfig(
             { mockConfigProvider.getString(featureKey) },
             { providerFactory.getProvider(featureKey).getString(featureKey) }
         )
     }
 
-    override fun getLong(featureKey: String): Long {
+    override suspend fun getLong(featureKey: String): Long {
         return tryOverriddenConfig(
             { mockConfigProvider.getLong(featureKey) },
             { providerFactory.getProvider(featureKey).getLong(featureKey) }
         )
     }
 
-    override fun getDouble(featureKey: String): Double {
+    override suspend fun getDouble(featureKey: String): Double {
         return tryOverriddenConfig(
             { mockConfigProvider.getDouble(featureKey) },
             { providerFactory.getProvider(featureKey).getDouble(featureKey) }
         )
     }
 
-    private fun <T> tryOverriddenConfig(mockRequest: () -> T, originalRequest: () -> T): T {
+    private suspend fun <T> tryOverriddenConfig(mockRequest: suspend () -> T, originalRequest: suspend () -> T): T {
         return try {
-            mockRequest.invoke()
+            mockRequest()
         } catch (_: MockConfigUnavailableException) {
-            originalRequest.invoke()
+            originalRequest()
         }
     }
 }

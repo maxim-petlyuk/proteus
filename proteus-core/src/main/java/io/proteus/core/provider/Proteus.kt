@@ -19,6 +19,11 @@ class Proteus private constructor(
         )
     }
 
+    fun buildSynchronousConfigProvider(): SynchronousFeatureConfigProvider {
+        val suspendProvider = buildConfigProvider()
+        return SynchronousFeatureConfigProvider(suspendProvider)
+    }
+
     fun getFeatureBookDataSource(): FeatureBookDataSource {
         return featureBookDataSource
     }

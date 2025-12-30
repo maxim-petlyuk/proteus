@@ -3,68 +3,72 @@ package io.proteus.core.data
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.security.MessageDigest
+import kotlin.coroutines.CoroutineContext
 
 internal class PreferenceMockConfigStorage(
     private val context: Context,
-    private val fileName: String = "config_storage"
+    private val fileName: String = "config_storage",
+    private val coroutineContext: CoroutineContext = Dispatchers.IO
 ) : MockConfigStorage {
 
     private val sharedPreferences: SharedPreferences
         get() = context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
 
-    override fun contains(featureKey: String): Boolean {
-        return sharedPreferences.contains(featureKey.asPreferenceKey())
+    override suspend fun contains(featureKey: String): Boolean = withContext(coroutineContext) {
+        sharedPreferences.contains(featureKey.asPreferenceKey())
     }
 
-    override fun getLong(featureKey: String): Long {
-        return sharedPreferences.getLong(featureKey.asPreferenceKey(), DEFAULT_LONG)
+    override suspend fun getLong(featureKey: String): Long = withContext(coroutineContext) {
+        sharedPreferences.getLong(featureKey.asPreferenceKey(), DEFAULT_LONG)
     }
 
-    override fun getDouble(featureKey: String): Double {
-        return sharedPreferences.getFloat(featureKey.asPreferenceKey(), DEFAULT_FLOAT).toString().toDouble()
+    override suspend fun getDouble(featureKey: String): Double = withContext(coroutineContext) {
+        sharedPreferences.getFloat(featureKey.asPreferenceKey(), DEFAULT_FLOAT).toString().toDouble()
     }
 
-    override fun getString(featureKey: String): String {
-        return sharedPreferences.getString(featureKey.asPreferenceKey(), DEFAULT_TEXT)
+    override suspend fun getString(featureKey: String): String = withContext(coroutineContext) {
+        sharedPreferences.getString(featureKey.asPreferenceKey(), DEFAULT_TEXT)
             ?: DEFAULT_TEXT
     }
 
-    override fun getBoolean(featureKey: String): Boolean {
-        return sharedPreferences.getBoolean(featureKey.asPreferenceKey(), DEFAULT_BOOLEAN)
+    override suspend fun getBoolean(featureKey: String): Boolean = withContext(coroutineContext) {
+        sharedPreferences.getBoolean(featureKey.asPreferenceKey(), DEFAULT_BOOLEAN)
     }
 
-    override fun save(featureKey: String, value: Long) {
+    override suspend fun save(featureKey: String, value: Long) = withContext(coroutineContext) {
         sharedPreferences.edit {
             putLong(featureKey.asPreferenceKey(), value)
         }
     }
 
-    override fun save(featureKey: String, value: Double) {
+    override suspend fun save(featureKey: String, value: Double) = withContext(coroutineContext) {
         sharedPreferences.edit {
             putFloat(featureKey.asPreferenceKey(), value.toFloat())
         }
     }
 
-    override fun save(featureKey: String, value: String) {
+    override suspend fun save(featureKey: String, value: String) = withContext(coroutineContext) {
         sharedPreferences.edit {
             putString(featureKey.asPreferenceKey(), value)
         }
     }
 
-    override fun save(featureKey: String, value: Boolean) {
+    override suspend fun save(featureKey: String, value: Boolean) = withContext(coroutineContext) {
         sharedPreferences.edit {
             putBoolean(featureKey.asPreferenceKey(), value)
         }
     }
 
-    override fun remove(featureKey: String) {
+    override suspend fun remove(featureKey: String) = withContext(coroutineContext) {
         sharedPreferences.edit {
             remove(featureKey.asPreferenceKey())
         }
     }
 
-    override fun clear() {
+    override suspend fun clear() = withContext(coroutineContext) {
         sharedPreferences.edit {
             clear()
         }

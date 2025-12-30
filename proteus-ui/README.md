@@ -151,10 +151,43 @@ val Typography = Typography(
 
 ## Performance Considerations
 
+- **Async operations**: All configuration access uses coroutines for non-blocking UI
 - **Lazy loading**: Feature lists use `LazyColumn` for efficient scrolling
 - **Search debouncing**: 300ms delay for search queries
+- **Lifecycle awareness**: ViewModels use viewModelScope for automatic cancellation
 - **Image caching**: Icons and images are cached
 - **State preservation**: Configuration state survives configuration changes
+- **Background loading**: Configuration values loaded asynchronously
+
+## Integration with ViewModels
+
+The UI integrates seamlessly with coroutines and ViewModels:
+
+```kotlin
+class FeatureCatalogViewModel : ViewModel() {
+    private val _features = MutableLiveData<List<Feature>>()
+    val features: LiveData<List<Feature>> = _features
+
+    fun loadFeatures() {
+        viewModelScope.launch {
+            try {
+                val provider = Proteus.getInstance().buildConfigProvider()
+                val featureList = loadFeatureDefinitions()
+
+                // Load current values asynchronously
+                val enrichedFeatures = featureList.map { feature ->
+                    feature.copy(
+                        currentValue = provider.getString(feature.key)
+                    )
+                }
+                _features.value = enrichedFeatures
+            } catch (e: Exception) {
+                // Handle error state
+            }
+        }
+    }
+}
+```
 
 ## Troubleshooting
 

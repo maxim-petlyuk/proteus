@@ -66,7 +66,7 @@ class DemoScreenViewModel(
         }
     }
 
-    private fun createFeatureFlagState(): FeatureFlagState? {
+    private suspend fun createFeatureFlagState(): FeatureFlagState? {
         return try {
             val key = "ai_assistant_mode"
             val typeClass = String::class
@@ -93,7 +93,7 @@ class DemoScreenViewModel(
         }
     }
 
-    private fun hasLocalOverride(key: String, typeClass: KClass<*>): Boolean {
+    private suspend fun hasLocalOverride(key: String, typeClass: KClass<*>): Boolean {
         return mockConfigRepository.getMockedConfigValue(key, typeClass) != null
     }
 }

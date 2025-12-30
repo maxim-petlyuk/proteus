@@ -4,8 +4,13 @@ import io.proteus.core.domain.ConfigValue
 import io.proteus.core.exceptions.IllegalConfigDataTypeException
 import io.proteus.core.mock.MemoryMockConfigStorage
 import io.proteus.core.mock.MockFeatureConfigOwner
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertIs
+import kotlin.test.assertNull
 
 internal class MockConfigRepositoryTest {
 
@@ -13,12 +18,12 @@ internal class MockConfigRepositoryTest {
     private val mockConfigRepository: MockConfigRepository = MockConfigRepositoryImpl(memoryMockConfigStorage)
 
     @Before
-    fun setUp() {
+    fun setUp() = runTest {
         memoryMockConfigStorage.clear()
     }
 
     @Test
-    fun `should return null when feature is not found`() {
+    fun `should return null when feature is not found`() = runTest {
         // Given
         val featureKey = "feature"
 
@@ -26,11 +31,11 @@ internal class MockConfigRepositoryTest {
         val result = mockConfigRepository.getMockedConfigValue(featureKey, String::class)
 
         // Then
-        assert(result == null)
+        assertNull(result)
     }
 
     @Test
-    fun `should return correct long value when feature is found`() {
+    fun `should return correct long value when feature is found`() = runTest {
         // Given
         val featureKey = "feature"
 
@@ -41,17 +46,12 @@ internal class MockConfigRepositoryTest {
         val result = mockConfigRepository.getMockedConfigValue(featureKey, Long::class)
 
         // Then
-        assert(result is ConfigValue.Long) {
-            "Expected result is Long, but was [${result?.javaClass}]"
-        }
-
-        assert(result?.value as Long == expectedValue) {
-            "Expected result is [$expectedValue], but was [${result.value}]"
-        }
+        assertIs<ConfigValue.Long>(result)
+        assertEquals(expectedValue, result.value)
     }
 
     @Test
-    fun `should return correct string value when feature is found`() {
+    fun `should return correct string value when feature is found`() = runTest {
         // Given
         val featureKey = "feature"
         val expectedValue = "John Doe"
@@ -62,17 +62,12 @@ internal class MockConfigRepositoryTest {
         val result = mockConfigRepository.getMockedConfigValue(featureKey, String::class)
 
         // Then
-        assert(result is ConfigValue.Text) {
-            "Expected result is String, but was [${result?.javaClass}]"
-        }
-
-        assert(result?.value as String == expectedValue) {
-            "Expected result is [$expectedValue], but was [${result.value}]"
-        }
+        assertIs<ConfigValue.Text>(result)
+        assertEquals(expectedValue, result.value)
     }
 
     @Test
-    fun `should return correct double value when feature is found`() {
+    fun `should return correct double value when feature is found`() = runTest {
         // Given
         val featureKey = "feature"
         val expectedValue = 5.7
@@ -83,17 +78,12 @@ internal class MockConfigRepositoryTest {
         val result = mockConfigRepository.getMockedConfigValue(featureKey, Double::class)
 
         // Then
-        assert(result is ConfigValue.Double) {
-            "Expected result is Double, but was [${result?.javaClass}]"
-        }
-
-        assert(result?.value as Double == expectedValue) {
-            "Expected result is [$expectedValue], but was [${result.value}]"
-        }
+        assertIs<ConfigValue.Double>(result)
+        assertEquals(expectedValue, result.value)
     }
 
     @Test
-    fun `should return correct boolean value when feature is found`() {
+    fun `should return correct boolean value when feature is found`() = runTest {
         // Given
         val featureKey = "feature"
         val expectedValue = true
@@ -104,26 +94,21 @@ internal class MockConfigRepositoryTest {
         val result = mockConfigRepository.getMockedConfigValue(featureKey, Boolean::class)
 
         // Then
-        assert(result is ConfigValue.Boolean) {
-            "Expected result is Boolean, but was [${result?.javaClass}]"
-        }
-
-        assert(result?.value as Boolean == expectedValue) {
-            "Expected result is [$expectedValue], but was [${result.value}]"
-        }
+        assertIs<ConfigValue.Boolean>(result)
+        assertEquals(expectedValue, result.value)
     }
 
-    @Test(expected = IllegalConfigDataTypeException::class)
-    fun `throw exception when feature is found but value is not of correct type`() {
+    @Test
+    fun `throw exception when feature is found but value is not of correct type`() = runTest {
         // Given
         val featureKey = "feature"
         val expectedValue = "John Doe"
 
         memoryMockConfigStorage.save(featureKey, expectedValue)
 
-        // When
-        mockConfigRepository.getMockedConfigValue(featureKey, MockFeatureConfigOwner::class)
-
-        // Then
+        // When & Then
+        assertFailsWith<IllegalConfigDataTypeException> {
+            mockConfigRepository.getMockedConfigValue(featureKey, MockFeatureConfigOwner::class)
+        }
     }
 }

@@ -45,10 +45,13 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
 
+    implementation(libs.kotlinx.coroutines.android)
+
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)
 
-    implementation(libs.proteus.core.strict)
+//    implementation(libs.proteus.core.strict)
+    implementation(project(":proteus-core"))
 
     testImplementation(libs.junit)
 

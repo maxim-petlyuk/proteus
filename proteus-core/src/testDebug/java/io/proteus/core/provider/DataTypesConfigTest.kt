@@ -2,12 +2,15 @@ package io.proteus.core.provider
 
 import io.proteus.core.mock.FeatureTestGuide
 import io.proteus.core.mock.MemoryFeatureConfigProvider
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 internal class DataTypesConfigTest {
 
     @Test
-    fun `verify that boolean type function is giving correct result`() {
+    fun `verify that boolean type function is giving correct result`() = runTest {
         // Given
         val featureKey = "featureA"
 
@@ -27,14 +30,11 @@ internal class DataTypesConfigTest {
         val mockedValueOfFeatureA = configProvider.getBoolean(featureKey)
 
         // Then
-        assert(mockedValueOfFeatureA) {
-            "Expected mocked value of feature is [${featureTestGuideA.mockValue}], " +
-                "but was [$mockedValueOfFeatureA]"
-        }
+        assertTrue(mockedValueOfFeatureA)
     }
 
     @Test
-    fun `verify that string type function is giving correct result`() {
+    fun `verify that string type function is giving correct result`() = runTest {
         // Given
         val featureB = "featureB"
 
@@ -54,14 +54,11 @@ internal class DataTypesConfigTest {
         val mockedValueOfFeatureB = configProvider.getString(featureB)
 
         // Then
-        assert(mockedValueOfFeatureB == featureTestGuideB.mockValue) {
-            "Expected mocked value of feature is [${featureTestGuideB.mockValue}], " +
-                "but was [$mockedValueOfFeatureB]"
-        }
+        assertEquals(featureTestGuideB.mockValue, mockedValueOfFeatureB)
     }
 
     @Test
-    fun `verify that long type function is giving correct result`() {
+    fun `verify that long type function is giving correct result`() = runTest {
         // Given
         val featureB = "featureB"
 
@@ -81,14 +78,11 @@ internal class DataTypesConfigTest {
         val mockedValueOfFeatureB = configProvider.getLong(featureB)
 
         // Then
-        assert(mockedValueOfFeatureB == featureTestGuideB.mockValue) {
-            "Expected mocked value of the feature is [${featureTestGuideB.mockValue}], " +
-                "but was [$mockedValueOfFeatureB]"
-        }
+        assertEquals(featureTestGuideB.mockValue, mockedValueOfFeatureB)
     }
 
     @Test
-    fun `verify that double type function is giving correct result`() {
+    fun `verify that double type function is giving correct result`() = runTest {
         // Given
         val featureB = "featureB"
 
@@ -108,10 +102,7 @@ internal class DataTypesConfigTest {
         val mockedValueOfFeatureB = configProvider.getDouble(featureB)
 
         // Then
-        assert(mockedValueOfFeatureB == featureTestGuideB.mockValue) {
-            "Expected mocked value of feature is [${featureTestGuideB.mockValue}], " +
-                "but was [$mockedValueOfFeatureB]"
-        }
+        assertEquals(featureTestGuideB.mockValue, mockedValueOfFeatureB)
     }
 
     private class TestFeatureConfigProviderFactory(vararg featuresGuide: FeatureTestGuide<*>) : FeatureConfigProviderFactory {

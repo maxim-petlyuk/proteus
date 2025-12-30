@@ -44,10 +44,10 @@ The main interface for accessing configuration values with type safety.
 
 ```kotlin
 interface FeatureConfigProvider {
-    fun getBoolean(featureKey: String): Boolean
-    fun getString(featureKey: String): String
-    fun getLong(featureKey: String): Long
-    fun getDouble(featureKey: String): Double
+    suspend fun getBoolean(featureKey: String): Boolean
+    suspend fun getString(featureKey: String): String
+    suspend fun getLong(featureKey: String): Long
+    suspend fun getDouble(featureKey: String): Double
 }
 ```
 
@@ -149,17 +149,87 @@ val dataSource = object : FeatureBookDataSource {
 
 ## Usage Examples
 
-### Basic Configuration Access
+### Basic Configuration Access (Async - Recommended)
 
 ```kotlin
-// Get the configuration provider
-val provider = Proteus.getInstance().buildConfigProvider()
+// In Activity/Fragment using lifecycleScope
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-// Access configuration values
-val isFeatureEnabled = provider.getBoolean("new_feature_flag")
-val maxRetries = provider.getLong("max_retry_count")
-val apiEndpoint = provider.getString("api_endpoint")
-val threshold = provider.getDouble("confidence_threshold")
+        lifecycleScope.launch {
+            val provider = Proteus.getInstance().buildConfigProvider()
+
+            // All config access must be in suspend context
+            val isFeatureEnabled = provider.getBoolean("new_feature_flag")
+            val maxRetries = provider.getLong("max_retry_count")
+            val apiEndpoint = provider.getString("api_endpoint")
+            val threshold = provider.getDouble("confidence_threshold")
+
+            // Use configuration values...
+        }
+    }
+}
+```
+
+```kotlin
+// In ViewModel using viewModelScope
+class MyViewModel : ViewModel() {
+    private val _config = MutableLiveData<AppConfig>()
+    val config: LiveData<AppConfig> = _config
+
+    fun loadConfiguration() {
+        viewModelScope.launch {
+            val provider = Proteus.getInstance().buildConfigProvider()
+            val appConfig = AppConfig(
+                isEnabled = provider.getBoolean("feature_enabled"),
+                timeout = provider.getLong("request_timeout"),
+                endpoint = provider.getString("api_endpoint")
+            )
+            _config.value = appConfig
+        }
+    }
+}
+```
+
+### Synchronous Usage (Legacy Compatibility)
+
+```kotlin
+// For non-coroutine contexts or legacy compatibility
+val syncProvider = Proteus.getInstance().buildSynchronousConfigProvider()
+
+// Can be called from any context (blocks calling thread)
+val isFeatureEnabled = syncProvider.getBoolean("new_feature_flag")
+val maxRetries = syncProvider.getLong("max_retry_count")
+val apiEndpoint = syncProvider.getString("api_endpoint")
+val threshold = syncProvider.getDouble("confidence_threshold")
+```
+
+### Compose Usage
+
+```kotlin
+@Composable
+fun FeatureScreen() {
+    var isEnabled by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) {
+        try {
+            val provider = Proteus.getInstance().buildConfigProvider()
+            isEnabled = provider.getBoolean("new_feature_enabled")
+        } catch (e: Exception) {
+            // Handle error
+        } finally {
+            isLoading = false
+        }
+    }
+
+    when {
+        isLoading -> CircularProgressIndicator()
+        isEnabled -> NewFeatureContent()
+        else -> LegacyContent()
+    }
+}
 ```
 
 ### Runtime Override Flow
@@ -208,8 +278,12 @@ ProGuard rules are automatically included with the library. No additional config
 1. **Initialize early**: Set up Proteus in your Application class
 2. **Define features upfront**: Use JSON files or code-based definitions
 3. **Type safety**: Always use the appropriate getter for your value type
-4. **Testing**: Leverage MockConfigProvider for testing different configurations
-5. **Production**: Consider disabling override UI in release builds
+4. **Use coroutines**: Prefer suspend functions with proper lifecycle scopes
+5. **Handle errors**: Wrap config calls in try-catch for robust error handling
+6. **Testing**: Leverage MockConfigProvider for testing different configurations
+7. **Sync API sparingly**: Use synchronous API only for legacy compatibility
+8. **Production**: Consider disabling override UI in release builds
+9. **Performance**: Use viewModelScope and lifecycleScope for automatic cancellation
 
 ## License
 
