@@ -35,6 +35,7 @@ kotlin {
             dependencies {
                 implementation(libs.kotlinx.serialization)
                 implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.androidx.datastore.preferences)
             }
         }
 
@@ -49,6 +50,7 @@ kotlin {
             dependencies {
                 implementation(libs.androidx.core.ktx)
                 implementation(libs.kotlinx.coroutines.android)
+                implementation(libs.androidx.datastore.preferences.android)
             }
         }
 

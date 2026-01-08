@@ -1,10 +1,10 @@
 package io.proteus.core.provider
 
-import android.content.Context
 import io.proteus.core.data.FeatureBookDataSource
 import io.proteus.core.data.MockConfigRepository
 import io.proteus.core.data.MockConfigStorage
 import io.proteus.core.di.ProteusInjection
+import io.proteus.core.platform.PlatformContext
 
 class Proteus private constructor(
     private val featureBookDataSource: FeatureBookDataSource,
@@ -36,7 +36,7 @@ class Proteus private constructor(
         return remoteConfigProviderFactory
     }
 
-    class Builder(context: Context) {
+    class Builder(context: PlatformContext) {
 
         private var storage: MockConfigStorage = ProteusInjection.provideMockConfigStorage(context)
         private var configProviderFactory: FeatureConfigProviderFactory? = null
@@ -80,14 +80,10 @@ class Proteus private constructor(
 
     companion object {
 
-        @Volatile
         private var instance: Proteus? = null
-        private var mutex = Object()
 
         fun getInstance(): Proteus {
-            return synchronized(mutex) {
-                instance ?: throw IllegalStateException("Proteus is not initialized. Call Builder().build() first.")
-            }
+            return instance ?: throw IllegalStateException("Proteus is not initialized. Call Builder().build() first.")
         }
     }
 }

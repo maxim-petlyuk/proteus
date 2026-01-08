@@ -24,4 +24,5 @@
 -keep class io.proteus.core.mock.** { *; }
 -keep interface io.proteus.core.data.MockConfigStorage { *; }
 -keep class io.proteus.core.data.MockConfigRepositoryImpl { *; }
+-keep class io.proteus.core.data.DataStoreMockConfigStorage { *; }
 -keep class io.proteus.core.data.StaticFeatureBookDataSource { *; }

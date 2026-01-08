@@ -153,8 +153,7 @@ internal class SynchronousFeatureConfigProviderTest {
         )
 
         val syncProvider = SynchronousFeatureConfigProvider(
-            suspendProvider = suspendProvider,
-            coroutineContext = customContext
+            suspendProvider = suspendProvider
         )
 
         // When

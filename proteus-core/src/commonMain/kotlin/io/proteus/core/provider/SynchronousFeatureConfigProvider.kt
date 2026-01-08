@@ -1,6 +1,6 @@
 package io.proteus.core.provider
 
-import kotlinx.coroutines.Dispatchers
+import io.proteus.core.platform.DefaultDispatcher
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import kotlin.coroutines.CoroutineContext
@@ -9,12 +9,12 @@ import kotlin.time.Duration.Companion.seconds
 
 class SynchronousFeatureConfigProvider(
     private val suspendProvider: FeatureConfigProvider,
-    private val coroutineContext: CoroutineContext = Dispatchers.IO,
-    private val timeout: Duration = 30.seconds
+    private val timeout: Duration = 30.seconds,
+    private val coroutineContext: CoroutineContext = DefaultDispatcher.context
 ) {
 
     fun getBoolean(featureKey: String): Boolean {
-        return runBlocking(context = coroutineContext) {
+        return runBlocking(coroutineContext) {
             withTimeout(timeout) {
                 suspendProvider.getBoolean(featureKey)
             }
@@ -22,7 +22,7 @@ class SynchronousFeatureConfigProvider(
     }
 
     fun getString(featureKey: String): String {
-        return runBlocking(context = coroutineContext) {
+        return runBlocking(coroutineContext) {
             withTimeout(timeout) {
                 suspendProvider.getString(featureKey)
             }
@@ -30,7 +30,7 @@ class SynchronousFeatureConfigProvider(
     }
 
     fun getLong(featureKey: String): Long {
-        return runBlocking(context = coroutineContext) {
+        return runBlocking(coroutineContext) {
             withTimeout(timeout) {
                 suspendProvider.getLong(featureKey)
             }
@@ -38,7 +38,7 @@ class SynchronousFeatureConfigProvider(
     }
 
     fun getDouble(featureKey: String): Double {
-        return runBlocking(context = coroutineContext) {
+        return runBlocking(coroutineContext) {
             withTimeout(timeout) {
                 suspendProvider.getDouble(featureKey)
             }
