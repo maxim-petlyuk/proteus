@@ -50,8 +50,8 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)
 
-    implementation(libs.proteus.core.strict)
-//    implementation(project(":proteus-core"))
+//    implementation(libs.proteus.core.strict)
+    implementation(project(":proteus-core"))
 
     testImplementation(libs.junit)
 

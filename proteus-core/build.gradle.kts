@@ -3,12 +3,90 @@ import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.library)
-    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     id("org.jreleaser")
     id("maven-publish")
     id("signing")
+}
+
+kotlin {
+    // Android target
+    androidTarget {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
+        }
+        publishLibraryVariants("release")
+    }
+
+    // iOS targets
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "ProteusCore"
+            isStatic = true
+        }
+    }
+
+    // Source sets configuration
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.kotlinx.serialization)
+                implementation(libs.kotlinx.coroutines.core)
+            }
+        }
+
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation(libs.kotlinx.coroutines.test)
+            }
+        }
+
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.androidx.core.ktx)
+                implementation(libs.kotlinx.coroutines.android)
+            }
+        }
+
+        val androidUnitTest by getting {
+            dependencies {
+                implementation(libs.junit)
+                implementation(libs.robolectric)
+                implementation(libs.androidx.test.core)
+                implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.kotlinx.test)
+            }
+        }
+
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+
+        val iosMain by creating {
+            dependsOn(commonMain)
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+        }
+
+        val iosX64Test by getting
+        val iosArm64Test by getting
+        val iosSimulatorArm64Test by getting
+
+        val iosTest by creating {
+            dependsOn(commonTest)
+            iosX64Test.dependsOn(this)
+            iosArm64Test.dependsOn(this)
+            iosSimulatorArm64Test.dependsOn(this)
+        }
+    }
 }
 
 android {
@@ -17,7 +95,6 @@ android {
 
     defaultConfig {
         minSdk = 23
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -30,10 +107,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-
-    kotlin {
-        jvmToolchain(8)
     }
 
     compileOptions {
@@ -49,25 +122,6 @@ android {
     }
 }
 
-dependencies {
-    implementation(libs.androidx.core.ktx)
-
-    implementation(libs.kotlinx.coroutines.android)
-
-    implementation(libs.kotlinx.serialization)
-
-    testImplementation(libs.junit)
-    testImplementation(libs.robolectric)
-    testImplementation(libs.androidx.test.core)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.kotlinx.test)
-
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(kotlin("test"))
-}
-
 val publishProperties = Properties().apply {
     load(FileInputStream(File(rootProject.rootDir, "publish.properties")))
 }
@@ -77,9 +131,12 @@ description = publishProperties["proteus.core.description"].toString()
 
 publishing {
     publications {
-        create<MavenPublication>("release") {
+        withType<MavenPublication> {
             groupId = publishProperties["proteus.group"].toString()
-            artifactId = publishProperties["proteus.core.artifact"].toString()
+            artifactId = when (name) {
+                "kotlinMultiplatform" -> publishProperties["proteus.core.artifact"].toString() + "-kmp"
+                else -> publishProperties["proteus.core.artifact"].toString() + "-$name"
+            }
 
             pom {
                 name.set(publishProperties["proteus.core.version"].toString())
@@ -112,10 +169,6 @@ publishing {
                         url.set("https://www.linkedin.com/in/maxim-petlyuk-1464a6121/")
                     }
                 }
-
-                afterEvaluate {
-                    from(components["release"])
-                }
             }
         }
     }
@@ -126,7 +179,6 @@ publishing {
         }
     }
 }
-
 
 val artifactName = publishProperties["proteus.core.artifact"].toString()
 val artifactVersion = publishProperties["proteus.core.version"].toString()
