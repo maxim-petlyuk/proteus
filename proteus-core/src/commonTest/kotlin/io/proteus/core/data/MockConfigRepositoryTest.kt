@@ -3,21 +3,20 @@ package io.proteus.core.data
 import io.proteus.core.domain.ConfigValue
 import io.proteus.core.exceptions.IllegalConfigDataTypeException
 import io.proteus.core.mock.MemoryMockConfigStorage
-import io.proteus.core.mock.MockFeatureConfigOwner
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
 import kotlin.test.assertNull
 
-internal class MockConfigRepositoryTest {
+class MockConfigRepositoryTest {
 
     private val memoryMockConfigStorage: MockConfigStorage = MemoryMockConfigStorage()
     private val mockConfigRepository: MockConfigRepository = MockConfigRepositoryImpl(memoryMockConfigStorage)
 
-    @Before
+    @BeforeTest
     fun setUp() = runTest {
         memoryMockConfigStorage.clear()
     }
@@ -108,7 +107,8 @@ internal class MockConfigRepositoryTest {
 
         // When & Then
         assertFailsWith<IllegalConfigDataTypeException> {
-            mockConfigRepository.getMockedConfigValue(featureKey, MockFeatureConfigOwner::class)
+            // Using a dummy class to trigger the exception
+            mockConfigRepository.getMockedConfigValue(featureKey, List::class)
         }
     }
 }

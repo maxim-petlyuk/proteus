@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class FeatureMetadata(
+data class FeatureMetadata(
     @SerialName("feature_key")
     val featureKey: String,
 

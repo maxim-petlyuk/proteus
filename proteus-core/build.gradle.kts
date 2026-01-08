@@ -12,7 +12,6 @@ plugins {
 }
 
 kotlin {
-    // Android target
     androidTarget {
         compilerOptions {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
@@ -20,7 +19,6 @@ kotlin {
         publishLibraryVariants("release")
     }
 
-    // iOS targets
     listOf(
         iosX64(),
         iosArm64(),
@@ -32,7 +30,6 @@ kotlin {
         }
     }
 
-    // Source sets configuration
     sourceSets {
         val commonMain by getting {
             dependencies {

@@ -1,7 +1,7 @@
 package io.proteus.core.data
 
 import io.proteus.core.domain.Feature
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -10,7 +10,7 @@ import kotlin.test.assertTrue
 class StaticFeatureBookDataSourceTest {
 
     @Test
-    fun `test getFeatureBook returns provided features`() = runBlocking {
+    fun `test getFeatureBook returns provided features`() = runTest {
         // Given
         val features = listOf(
             Feature("test_string", "default", String::class),
@@ -29,4 +29,4 @@ class StaticFeatureBookDataSourceTest {
         assertEquals(features.size, returnedFeatures.size)
         assertEquals(features, returnedFeatures)
     }
-} 
+}

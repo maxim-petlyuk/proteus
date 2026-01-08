@@ -66,4 +66,4 @@ class FeatureMetadataTest {
         assertEquals(metadata1.hashCode(), metadata2.hashCode())
         assertFalse(metadata1.hashCode() == metadata3.hashCode())
     }
-} 
+}

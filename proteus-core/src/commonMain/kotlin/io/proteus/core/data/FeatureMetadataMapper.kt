@@ -7,7 +7,7 @@ import io.proteus.core.domain.FeatureMetadata
 class FeatureMetadataMapper {
 
     @Throws(IllegalArgumentException::class)
-    internal fun toFeatureContext(from: FeatureMetadata): FeatureContext<*> {
+    fun toFeatureContext(from: FeatureMetadata): FeatureContext<*> {
         val featureKey = from.featureKey
         if (featureKey.isEmpty()) {
             throw IllegalArgumentException("Feature key must not be empty")

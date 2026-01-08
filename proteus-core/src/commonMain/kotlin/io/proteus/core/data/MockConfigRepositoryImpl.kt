@@ -2,15 +2,14 @@ package io.proteus.core.data
 
 import io.proteus.core.domain.ConfigValue
 import io.proteus.core.exceptions.IllegalConfigDataTypeException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlin.coroutines.cancellation.CancellationException
 import kotlin.reflect.KClass
 
-internal class MockConfigRepositoryImpl(
+class MockConfigRepositoryImpl(
     private val mockConfigStorage: MockConfigStorage
 ) : MockConfigRepository {
 
-    @Throws(IllegalConfigDataTypeException::class)
+    @Throws(IllegalConfigDataTypeException::class, CancellationException::class)
     override suspend fun getMockedConfigValue(featureKey: String, typeClass: KClass<*>): ConfigValue<*>? {
         if (!mockConfigStorage.contains(featureKey)) {
             return null

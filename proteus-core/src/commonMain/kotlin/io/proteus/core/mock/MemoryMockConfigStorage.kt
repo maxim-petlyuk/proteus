@@ -2,7 +2,7 @@ package io.proteus.core.mock
 
 import io.proteus.core.data.MockConfigStorage
 
-internal class MemoryMockConfigStorage : MockConfigStorage {
+class MemoryMockConfigStorage : MockConfigStorage {
 
     private val storage = mutableMapOf<String, Any>()
 

@@ -14,3 +14,14 @@
 -keep class io.proteus.core.exceptions.IllegalConfigOwnerException { *; }
 -keep class io.proteus.core.exceptions.MockConfigUnavailableException { *; }
 -keep class io.proteus.core.data.AssetsFeatureBookDataSource { *; }
+
+# Minimal rules for FeatureMetadata serialization only
+-keep class io.proteus.core.domain.FeatureMetadata { *; }
+-keep class io.proteus.core.domain.FeatureMetadata$Companion { *; }
+-keep class io.proteus.core.data.FeatureMetadataMapper { *; }
+
+# Keep test support classes moved to commonMain
+-keep class io.proteus.core.mock.** { *; }
+-keep interface io.proteus.core.data.MockConfigStorage { *; }
+-keep class io.proteus.core.data.MockConfigRepositoryImpl { *; }
+-keep class io.proteus.core.data.StaticFeatureBookDataSource { *; }
