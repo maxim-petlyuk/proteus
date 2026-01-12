@@ -3,7 +3,7 @@ package io.proteus.core.provider
 import io.proteus.core.mock.FeatureTestGuide
 import io.proteus.core.mock.MemoryFeatureConfigProvider
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -109,7 +109,7 @@ internal class DataTypesConfigTest {
 
         private val guide = featuresGuide.toList()
 
-        override fun getProvider(owner: String): FeatureConfigProvider {
+        override fun getProvider(featureKey: String): FeatureConfigProvider {
             return MemoryFeatureConfigProvider(guide)
         }
 

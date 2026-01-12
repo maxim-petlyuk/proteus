@@ -2,7 +2,7 @@ package io.proteus.core.provider
 
 import io.proteus.core.exceptions.MockConfigUnavailableException
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 

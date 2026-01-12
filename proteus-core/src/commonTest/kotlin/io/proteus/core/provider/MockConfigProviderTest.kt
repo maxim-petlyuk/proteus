@@ -5,8 +5,8 @@ import io.proteus.core.data.MockConfigStorage
 import io.proteus.core.exceptions.MockConfigUnavailableException
 import io.proteus.core.mock.MemoryMockConfigStorage
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
@@ -16,7 +16,7 @@ internal class MockConfigProviderTest {
     private val mockConfigProvider: MockConfigProvider =
         MockConfigProvider(MockConfigRepositoryImpl(memoryMockConfigStorage))
 
-    @Before
+    @BeforeTest
     fun setUp() = runTest {
         memoryMockConfigStorage.clear()
     }

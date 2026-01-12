@@ -2,22 +2,23 @@ package io.proteus.core.provider
 
 import io.proteus.core.data.MockConfigRepositoryImpl
 import io.proteus.core.data.MockConfigStorage
+import io.proteus.core.di.ProteusInjection
 import io.proteus.core.mock.FeatureTestGuide
 import io.proteus.core.mock.MemoryFeatureConfigProvider
 import io.proteus.core.mock.MemoryMockConfigStorage
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 internal class ConfigSubstitutionTest {
 
     private val memoryMockConfigStorage: MockConfigStorage = MemoryMockConfigStorage()
-    private val mockConfigProvider: MockConfigProvider =
-        MockConfigProvider(MockConfigRepositoryImpl(memoryMockConfigStorage))
+    private val mockConfigProvider: FeatureConfigProvider =
+        ProteusInjection.getMockConfigProvider(MockConfigRepositoryImpl(memoryMockConfigStorage))
 
-    @Before
+    @BeforeTest
     fun setUp() = runTest {
         memoryMockConfigStorage.clear()
     }

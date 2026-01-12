@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.invoke
 import org.jreleaser.model.Active
 import java.io.FileInputStream
 import java.util.Properties
@@ -61,6 +62,16 @@ kotlin {
                 implementation(libs.androidx.test.core)
                 implementation(libs.kotlinx.coroutines.test)
                 implementation(libs.kotlinx.test)
+            }
+        }
+
+        val androidInstrumentedTest by getting {
+            dependencies {
+                implementation(libs.junit)
+                implementation(libs.androidx.test.core)
+                implementation(libs.androidx.junit)
+                implementation(libs.androidx.espresso.core)
+                implementation(libs.kotlinx.coroutines.test)
             }
         }
 
@@ -130,12 +141,9 @@ description = publishProperties["proteus.core.description"].toString()
 
 publishing {
     publications {
-        withType<MavenPublication> {
+        create<MavenPublication>("release") {
             groupId = publishProperties["proteus.group"].toString()
-            artifactId = when (name) {
-                "kotlinMultiplatform" -> publishProperties["proteus.core.artifact"].toString() + "-kmp"
-                else -> publishProperties["proteus.core.artifact"].toString() + "-$name"
-            }
+            artifactId = publishProperties["proteus.core.artifact"].toString()
 
             pom {
                 name.set(publishProperties["proteus.core.version"].toString())
@@ -167,6 +175,10 @@ publishing {
                         email.set("mpetlyuk@gmail.com")
                         url.set("https://www.linkedin.com/in/maxim-petlyuk-1464a6121/")
                     }
+                }
+
+                afterEvaluate {
+                    from(components["release"])
                 }
             }
         }

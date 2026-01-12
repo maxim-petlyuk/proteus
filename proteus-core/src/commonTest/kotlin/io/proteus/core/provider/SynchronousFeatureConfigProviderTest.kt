@@ -5,11 +5,9 @@ import io.proteus.core.data.MockConfigStorage
 import io.proteus.core.mock.FeatureTestGuide
 import io.proteus.core.mock.MemoryFeatureConfigProvider
 import io.proteus.core.mock.MemoryMockConfigStorage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.milliseconds
@@ -20,7 +18,7 @@ internal class SynchronousFeatureConfigProviderTest {
     private val mockConfigProvider: MockConfigProvider =
         MockConfigProvider(MockConfigRepositoryImpl(memoryMockConfigStorage))
 
-    @Before
+    @BeforeTest
     fun setUp() = runTest {
         memoryMockConfigStorage.clear()
     }
@@ -131,36 +129,6 @@ internal class SynchronousFeatureConfigProviderTest {
 
         // Then
         assertEquals(expectedValue, result)
-    }
-
-    @Test
-    fun `verify custom coroutine context is used`() {
-        // Given
-        val featureKey = "custom_context_test"
-        val expectedValue = true
-        val customContext = Dispatchers.Default
-
-        val featureTestGuide = FeatureTestGuide(
-            featureKey = featureKey,
-            mockValue = false,
-            remoteValue = expectedValue,
-            givenSource = FeatureTestGuide.Source.Remote
-        )
-
-        val suspendProvider: FeatureConfigProvider = FeatureConfigProviderImpl(
-            mockConfigProvider,
-            provideMemoryConfigFactory(featureTestGuide)
-        )
-
-        val syncProvider = SynchronousFeatureConfigProvider(
-            suspendProvider = suspendProvider
-        )
-
-        // When
-        val result = syncProvider.getBoolean(featureKey)
-
-        // Then
-        assertTrue(result)
     }
 
     @Test

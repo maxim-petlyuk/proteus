@@ -6,7 +6,7 @@ import io.proteus.core.mock.MemoryFeatureConfigProvider
 import io.proteus.core.mock.MockFeatureConfigOwner
 import io.proteus.core.mock.MockFeatureConfigProviderFactory
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
